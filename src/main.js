@@ -30,7 +30,9 @@ import {
   BreadcrumbItem,
   Tree,
   Tabs,
-  TabPane
+  TabPane,
+  Badge,
+  Empty
 } from 'element-ui'
 
 // Vue.component(Button.name, Button);
@@ -61,6 +63,8 @@ Vue.use(BreadcrumbItem)
 Vue.use(Tree)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Badge)
+Vue.use(Empty)
 
 Vue.config.productionTip = false
 

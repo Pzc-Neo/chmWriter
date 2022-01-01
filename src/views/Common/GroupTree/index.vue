@@ -126,5 +126,6 @@ export default {
 <style lang="scss" scoped>
 .group_tree {
   width: 160px;
+  border-right: solid 1px #e6e6e6;
 }
 </style>

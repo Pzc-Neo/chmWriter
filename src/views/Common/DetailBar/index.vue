@@ -9,5 +9,6 @@ export default {}
 <style lang="scss" scoped>
 .detail_bar {
   width: 200px;
+  border-left: solid 1px #e6e6e6;
 }
 </style>
