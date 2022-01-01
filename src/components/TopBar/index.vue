@@ -1,6 +1,6 @@
 <template>
   <div class="top_bar">
-    <span class="left">城墨写作</span>
+    <span class="left">{{ $t('info.app_name') }}</span>
     <span class="center">默认文件</span>
     <span class="right">一 口 X</span>
   </div>

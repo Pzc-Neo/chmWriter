@@ -1,5 +1,5 @@
 <template>
-  <div class="main_bar">
+  <div class="data_panel">
     <GroupTree />
     <ItemList />
     <ContentBar />
@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import GroupTree from '@/components/MiddleBar/GroupTree'
-import ItemList from '@/components/MiddleBar/ItemList'
-import ContentBar from '@/components/MiddleBar/ContentBar'
-import DetailBar from '@/components/MiddleBar/DetailBar'
+import GroupTree from '@/views/Common/GroupTree'
+import ItemList from '@/views/Common/ItemList'
+import ContentBar from '@/views/Common/ContentBar'
+import DetailBar from '@/views/Common/DetailBar'
 
 export default {
   components: {
@@ -24,8 +24,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main_bar {
+.data_panel {
   flex: 1;
   display: flex;
+  background-color: rgb(228, 228, 228);
 }
 </style>

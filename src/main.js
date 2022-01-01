@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'normalize.css'
+import i18n from './i18n'
 
 import {
   Button,
@@ -27,7 +28,9 @@ import {
   TableColumn,
   Breadcrumb,
   BreadcrumbItem,
-  Tree
+  Tree,
+  Tabs,
+  TabPane
 } from 'element-ui'
 
 // Vue.component(Button.name, Button);
@@ -56,11 +59,14 @@ Vue.use(TableColumn)
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
 Vue.use(Tree)
+Vue.use(Tabs)
+Vue.use(TabPane)
 
 Vue.config.productionTip = false
 
 new Vue({
   router,
   store,
+  i18n,
   render: h => h(App)
 }).$mount('#app')

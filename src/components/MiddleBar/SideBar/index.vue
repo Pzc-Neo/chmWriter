@@ -1,11 +1,12 @@
 <template>
   <div class="side_bar">
     <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse">
-      <el-menu-item index="2">
-        <i class="el-icon-document"></i>
+      <el-menu-item index="2" @click="changePanel('/data')">
+        <!-- <i class="el-icon-document"></i> -->
+        <i class="el-icon-notebook-2"></i>
         <span slot="title">资料</span>
       </el-menu-item>
-      <el-menu-item index="3">
+      <el-menu-item index="3" @click="changePanel('/')">
         <i class="el-icon-edit"></i>
         <span slot="title">写作</span>
       </el-menu-item>
@@ -19,7 +20,7 @@
         <span slot="title">角色</span>
       </el-menu-item>
       <el-menu-item index="6">
-        <i class="el-icon-notebook-2"></i>
+        <i class="el-icon-chat-line-round"></i>
         <span slot="title">情节</span>
       </el-menu-item>
       <el-menu-item index="7">
@@ -34,17 +35,6 @@
     </el-menu>
   </div>
 </template>
-<style lang="scss" scoped>
-.side_bar {
-  .el-menu-vertical-demo {
-    height: 100%;
-  }
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 180px;
-    height: 100%;
-  }
-}
-</style>
 
 <script>
 export default {
@@ -59,14 +49,23 @@ export default {
     },
     handleClose (key, keyPath) {
       console.log(key, keyPath)
+    },
+    changePanel (panelPath) {
+      this.$router.push(panelPath)
+      console.log(this.$router)
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// .side_bar {
-//   .collapse_btn {
-//   }
-// }
+.side_bar {
+  .el-menu-vertical-demo {
+    height: 100%;
+  }
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 180px;
+    height: 100%;
+  }
+}
 </style>

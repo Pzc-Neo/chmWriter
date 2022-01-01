@@ -1,17 +1,16 @@
 <template>
   <div class="middle_bar">
     <SideBar />
-    <MainBar />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import SideBar from '@/components/MiddleBar/SideBar'
-import MainBar from '@/components/MiddleBar/MainBar'
 export default {
   components: {
-    SideBar,
-    MainBar
+    SideBar
+    // MainBar
   }
 }
 </script>
