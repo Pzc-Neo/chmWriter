@@ -1,21 +1,29 @@
 <template>
   <div class="item_list">
     <div
-      class="item"
       shadow="hover"
       v-for="(item, index) in itemList"
       :key="item.id"
       @click="changeTo(item)"
+      :class="{ item, active: isActive(item) }"
+      @contextmenu="showContextmenu($event, item)"
     >
       {{ index }}. {{ item.title }}
-      <!-- <div @click.stop="changeTo(item)">{{ index }}. {{ item.title }}</div> -->
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  props: {
+    menuList: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
+  data() {
     return {
       itemList: [
         {
@@ -98,12 +106,26 @@ export default {
           other: null,
           sort_num: 29
         }
-      ]
+      ],
+      activeItem: null
     }
   },
   methods: {
-    changeTo (item) {
+    changeTo(item) {
       this.$emit('changeTo', item)
+      this.activeItem = item
+    },
+    isActive(item) {
+      return this.activeItem && this.activeItem.id === item.id
+    },
+    showContextmenu(ev, targetItem) {
+      const param = {
+        ev,
+        targetItem,
+        menuList: this.menuList
+      }
+
+      this.$store.commit('SHOW_CONTEXTMENU', param)
     }
   }
 }
@@ -118,6 +140,9 @@ export default {
     cursor: pointer;
   }
   .item:hover {
+    background-color: #f5f7fa;
+  }
+  .item.active {
     background-color: #f5f7fa;
   }
 }

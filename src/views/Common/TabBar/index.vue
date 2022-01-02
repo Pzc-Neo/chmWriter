@@ -14,13 +14,6 @@
     >
       <Editor :item="item" />
     </el-tab-pane>
-    <!-- <el-button size="small" @click="addTab(editableTabsValue)">
-        add tab
-      </el-button>
-
-      <el-button size="small" @click="changeLocaleTest()">
-        changeLocaleTest
-      </el-button> -->
   </el-tabs>
 </template>
 <script>
@@ -73,13 +66,6 @@ export default {
 
       this.editableTabsValue = activeName
       this.editableTabs = tabs.filter(tab => tab.name !== targetName)
-    },
-    changeLocaleTest () {
-      if (this.$i18n.locale === 'ch') {
-        this.$i18n.locale = 'en'
-      } else {
-        this.$i18n.locale = 'ch'
-      }
     }
   }
 }

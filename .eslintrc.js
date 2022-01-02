@@ -8,7 +8,7 @@ module.exports = {
     parser: 'babel-eslint'
   },
   rules: {
-    // 'space-before-function-paren': [2, 'always'], // 函数前面加上空格
+    'space-before-function-paren': [0, 'always'], // 函数前面加上空格
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }

@@ -1,7 +1,7 @@
 <template>
   <div class="writing_panel">
     <GroupTree />
-    <ItemList @changeTo="changeTo" />
+    <ItemList @changeTo="changeTo" :menuList="menuList" />
     <ContentBar>
       <el-empty
         style="height: 100%"
@@ -47,15 +47,41 @@ export default {
     DetailBar,
     Editor
   },
-  data () {
+  data() {
     return {
       editableTabsId: '2',
       editableTabs: [],
-      tabIndex: 2
+      tabIndex: 2,
+      menuList: [
+        {
+          id: 'rename',
+          title: '重命名',
+          icon: 'el-icon-edit',
+          func: targetItem => {
+            console.log(this)
+          }
+        },
+        {
+          id: 'othter',
+          title: '其他',
+          // icon: 'el-icon-delete',
+          func: targetItem => {
+            // this.removeTab(targetItem.id)
+          }
+        },
+        {
+          id: 'delect',
+          title: '删除',
+          icon: 'el-icon-delete',
+          func: targetItem => {
+            this.removeTab(targetItem.id)
+          }
+        }
+      ]
     }
   },
   methods: {
-    changeTo (item) {
+    changeTo(item) {
       this.$store.state.wrting.chapter.current = item
       this.editableTabsId = item.title
       const index = this.editableTabs.findIndex(_item => {
@@ -66,7 +92,7 @@ export default {
       }
       this.editableTabsId = item.id
     },
-    removeTab (targetId) {
+    removeTab(targetId) {
       const tabs = this.editableTabs
       let activeId = this.editableTabsId
       if (activeId === targetId) {

@@ -2,6 +2,15 @@ export default {
   info: {
     app_name: '城墨写作'
   },
+  menuBar: {
+    file: '文件',
+    edit: '编辑',
+    help: '帮助',
+    about: '关于',
+    language: '语言',
+    ch: '中文',
+    en: '英文'
+  },
   panel: {
     data: '资料',
     writing: '写作',

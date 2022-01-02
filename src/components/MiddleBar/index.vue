@@ -1,15 +1,20 @@
 <template>
   <div class="middle_bar">
     <SideBar />
-    <router-view></router-view>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+    <ContextMenuBar />
   </div>
 </template>
 
 <script>
 import SideBar from '@/components/MiddleBar/SideBar'
+import ContextMenuBar from '@/components/MiddleBar/ContextMenuBar'
 export default {
   components: {
-    SideBar
+    SideBar,
+    ContextMenuBar
     // MainBar
   }
 }

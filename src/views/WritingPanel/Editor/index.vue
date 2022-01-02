@@ -25,6 +25,8 @@ import 'codemirror/mode/markdown/markdown'
 // import theme style
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/theme/base16-light.css'
+import 'codemirror/theme/mdn-like.css'
+import 'codemirror/theme/eclipse.css'
 
 // vim mode
 import 'codemirror/keymap/vim'
@@ -62,7 +64,8 @@ export default {
       cmOptions: {
         tabSize: 4,
         mode: 'markdown',
-        theme: 'base16-light',
+        // theme: 'base16-light',
+        theme: 'eclipse',
         lineNumbers: true,
         line: true,
         lineWrapping: true,

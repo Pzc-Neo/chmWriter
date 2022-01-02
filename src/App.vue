@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" @click="$store.commit('HIDE_CONTEXTMENU')">
     <TopBar />
     <MiddleBar />
     <BottomBar />
@@ -25,6 +25,7 @@ export default {
   flex-direction: column;
   height: 100vh;
   color: #303133;
+  font-size: 15px;
   ul {
     margin: 0px;
     padding: 0px;

@@ -38,6 +38,7 @@ import {
 // Vue.component(Button.name, Button);
 // Vue.component(Select.name, Select);
 // 或写为
+
 Vue.use(Button)
 Vue.use(Select)
 Vue.use(Container)
