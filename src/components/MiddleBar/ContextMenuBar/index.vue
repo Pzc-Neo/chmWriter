@@ -27,12 +27,12 @@ export default {
     ...mapState({
       isShow: state => state.contextmenu.isShow,
       menuList: state => state.contextmenu.prama.menuList,
-      ev: state => state.contextmenu.prama.ev,
+      event: state => state.contextmenu.prama.event,
       targetItem: state => state.contextmenu.prama.targetItem
     }),
     styleMenu() {
-      const x = this.ev.pageX
-      let y = this.ev.pageY
+      const x = this.event.pageX
+      let y = this.event.pageY
       // If mouse's position lower than half of clientHeight's height,then show the menu over mouse
       const height = document.body.clientHeight
       if (y > height / 2) {

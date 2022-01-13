@@ -43,7 +43,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0px 8px;
+  padding-left: 8px;
   color: #ffffff;
   background-color: #409eff;
   .left {

@@ -6,6 +6,7 @@
   <codemirror
     class="editor"
     ref="cmEditor"
+    :style="styleEditorContent"
     :value="item.content"
     :options="cmOptions"
     @ready="onCmReady"
@@ -30,6 +31,8 @@ import 'codemirror/theme/eclipse.css'
 
 // vim mode
 import 'codemirror/keymap/vim'
+import 'codemirror/addon/dialog/dialog.js'
+import 'codemirror/addon/dialog/dialog.css'
 
 import 'codemirror/addon/edit/closebrackets'
 import 'codemirror/addon/edit/closetag'
@@ -58,9 +61,9 @@ export default {
   components: {
     codemirror
   },
-  data () {
+  data() {
     return {
-      code: 'const a = 10',
+      code: '',
       cmOptions: {
         tabSize: 4,
         mode: 'markdown',
@@ -98,11 +101,11 @@ export default {
           // Toggle Fullscreen
           //   F11: function (cm) {
           //     if (cm.getOption('fullScreen')) {
-          //       cw.view.style_editor_content.transform = 'translateX(-50%)'
-          //       cw.view.style_editor_content.zIndex = 1
+          //       cw.view.styleEditorContent.transform = 'translateX(-50%)'
+          //       cw.view.styleEditorContent.zIndex = 1
           //     } else {
-          //       cw.view.style_editor_content.transform = ''
-          //       cw.view.style_editor_content.zIndex = 100
+          //       cw.view.styleEditorContent.transform = ''
+          //       cw.view.styleEditorContent.zIndex = 100
           //     }
           //     cm.setOption('fullScreen', !cm.getOption('fullScreen'))
           //   },
@@ -118,18 +121,24 @@ export default {
             cm.foldCode(cm.getCursor())
           }
         }
+      },
+      styleEditorContent: {
+        letterSpacing: '-1px',
+        fontSize: '15px',
+        lineHeight: '24px',
+        textAlign: 'justify'
       }
     }
   },
   methods: {
-    onCmReady (cm) {},
-    onCmFocus (cm) {},
-    onCmCodeChange (newCode) {
+    onCmReady(cm) {},
+    onCmFocus(cm) {},
+    onCmCodeChange(newCode) {
       this.code = newCode
     }
   },
   computed: {
-    codemirror () {
+    codemirror() {
       return this.$refs.cmEditor.codemirror
     }
   }

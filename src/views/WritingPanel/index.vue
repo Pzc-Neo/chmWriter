@@ -1,7 +1,18 @@
 <template>
   <div class="writing_panel">
-    <GroupTree />
-    <ItemList @changeTo="changeTo" :menuList="menuList" />
+    <DialogBar />
+    <GroupBar
+      :itemList="groupList"
+      @changeTo="changeToGroup"
+      :menuList="menuListGroup"
+      @changePid="changeItemGroupId"
+      @updateSorts="updateGroupSorts"
+    />
+    <ItemBar
+      :itemList="itemList"
+      @changeTo="changeTo"
+      :menuList="menuListChapter"
+    />
     <ContentBar>
       <el-empty
         style="height: 100%"
@@ -28,37 +39,73 @@
         </el-tab-pane>
       </el-tabs>
     </ContentBar>
-    <DetailBar />
+    <DetailBar :item="currentItem">
+      <InfoBox title="信息">
+        <AttrBox :item="currentItem" />
+      </InfoBox>
+      <InfoBox title="备注">
+        <TextareaBox :content="currentItem.content" />
+      </InfoBox>
+    </DetailBar>
   </div>
 </template>
 
 <script>
-import GroupTree from '@/views/Common/GroupTree'
-import ItemList from '@/views/Common/ItemList'
+import GroupBar from '@/views/Common/GroupBar'
+import ItemBar from '@/views/Common/ItemBar'
 import ContentBar from '@/views/Common/ContentBar'
 import DetailBar from '@/views/Common/DetailBar'
 import Editor from '@/views/WritingPanel/Editor'
+import InfoBox from '@/views/Common/DetailBar/InfoBox'
+import DialogBar from '@/views/Common/DialogBar'
+import AttrBox from '@/views/WritingPanel/AttrBox'
+import TextareaBox from '@/views/WritingPanel/TextareaBox'
+
+import { dbUpdate, dbUpdateGroupSorts, dbChangeToGroup } from '@/db'
+import { listToTree, rename, deleteGroup } from '@/util/base'
 
 export default {
   components: {
-    GroupTree,
-    ItemList,
+    GroupBar,
+    ItemBar,
     ContentBar,
     DetailBar,
-    Editor
+    InfoBox,
+    Editor,
+    DialogBar,
+    AttrBox,
+    TextareaBox
   },
   data() {
     return {
       editableTabsId: '2',
       editableTabs: [],
       tabIndex: 2,
-      menuList: [
+      menuListGroup: [
         {
           id: 'rename',
           title: '重命名',
           icon: 'el-icon-edit',
           func: targetItem => {
-            console.log(this)
+            rename.call(this, 'chapter_groups', targetItem)
+          }
+        },
+        {
+          id: 'delect',
+          title: '删除',
+          icon: 'el-icon-delete',
+          func: targetItem => {
+            deleteGroup.call(this, targetItem)
+          }
+        }
+      ],
+      menuListChapter: [
+        {
+          id: 'rename',
+          title: '重命名',
+          icon: 'el-icon-edit',
+          func: targetItem => {
+            rename.call(this, 'chapters', targetItem)
           }
         },
         {
@@ -74,15 +121,28 @@ export default {
           title: '删除',
           icon: 'el-icon-delete',
           func: targetItem => {
-            this.removeTab(targetItem.id)
+            this.removeChapter(targetItem)
+          }
+        },
+        {
+          id: 'info',
+          title: '信息',
+          icon: 'el-icon-info',
+          func: targetItem => {
+            console.log(targetItem)
+            // this.removeChapter(targetItem)
           }
         }
-      ]
+      ],
+      groupList: [],
+      itemList: [],
+      currentItem: {}
     }
   },
   methods: {
     changeTo(item) {
-      this.$store.state.wrting.chapter.current = item
+      this.$store.state.writing.chapter.current = item
+      this.currentItem = item
       this.editableTabsId = item.title
       const index = this.editableTabs.findIndex(_item => {
         return _item.id === item.id
@@ -91,6 +151,39 @@ export default {
         this.editableTabs.push(item)
       }
       this.editableTabsId = item.id
+    },
+    changeToGroup(group) {
+      this.itemList = dbChangeToGroup.call(this, 'chapters', group.id)
+    },
+    updateGroupSorts(paramData) {
+      dbUpdateGroupSorts.call(this, 'chapter_groups', paramData)
+    },
+    changeItemGroupId(groupId, itemId) {
+      dbUpdate.call(this, 'chapters', 'group_id', groupId, itemId)
+    },
+    removeChapter(targetItem) {
+      this.$confirm(
+        `此操作将永久删除章节：[${targetItem.title}], 是否继续?`,
+        '提示',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }
+      )
+        .then(() => {
+          this.removeTab(targetItem.id)
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          })
+        })
     },
     removeTab(targetId) {
       const tabs = this.editableTabs
@@ -109,6 +202,13 @@ export default {
       this.editableTabsId = activeId
       this.editableTabs = tabs.filter(tab => tab.id !== targetId)
     }
+  },
+  mounted() {
+    this.groupList = this.$db
+      .prepare('SELECT * FROM  chapter_groups order by sort ASC')
+      .all()
+    this.groupList = listToTree(this.groupList)
+    this.itemList = this.$db.prepare('SELECT * FROM  chapters').all()
   }
 }
 </script>

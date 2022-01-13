@@ -1,18 +1,18 @@
 <template>
   <div class="side_bar">
     <el-menu
-      default-active="1-4-1"
+      :default-active="$route.path"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
       :collapse="isCollapse"
     >
-      <el-menu-item index="2" @click="changePanel('/data')">
+      <el-menu-item index="/data" @click="changePanel('/data')">
         <!-- <i class="el-icon-document"></i> -->
         <i class="el-icon-notebook-2"></i>
         <span slot="title">{{ $t('panel.data') }}</span>
       </el-menu-item>
-      <el-menu-item index="3" @click="changePanel('/')">
+      <el-menu-item index="/" @click="changePanel('/')">
         <i class="el-icon-edit"></i>
         <span slot="title">{{ $t('panel.writing') }}</span>
       </el-menu-item>
@@ -40,31 +40,34 @@
         <i :class="'el-icon-d-arrow-' + (isCollapse ? 'right' : 'left')"></i>
         <span slot="title">{{ collapseText }}</span>
       </el-menu-item>
+      <el-button @click="$store.commit('TOGGLE_BAR_VISIBILITY', 'detailBar')">
+        显隐
+      </el-button>
     </el-menu>
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       isCollapse: true
     }
   },
   methods: {
-    handleOpen (key, keyPath) {
+    handleOpen(key, keyPath) {
       console.log(key, keyPath)
     },
-    handleClose (key, keyPath) {
+    handleClose(key, keyPath) {
       console.log(key, keyPath)
     },
-    changePanel (panelPath) {
+    changePanel(panelPath) {
+      console.log(this.$route)
       this.$router.push(panelPath)
-      console.log(this.$router)
     }
   },
   computed: {
-    collapseText () {
+    collapseText() {
       return this.isCollapse ? this.$t('panel.expand') : this.$t('panel.collapse')
     }
   }

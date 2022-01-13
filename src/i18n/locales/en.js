@@ -5,6 +5,7 @@ export default {
   menuBar: {
     file: 'File',
     edit: 'Edit',
+    history: 'History',
     help: 'Help',
     about: 'About',
     language: 'Language',
@@ -22,9 +23,39 @@ export default {
     expand: 'Expand'
   },
   writing: {
-    nothingOpen: 'Nothing open'
+    nothingOpen: 'Nothing open',
+    type: {
+      name: 'Type',
+      normal: 'Normal',
+      important: 'Important',
+      transform: 'Transform'
+    },
+    language: 'Language',
+    status: {
+      name: 'Status',
+      first: 'First',
+      second: 'Second',
+      final: 'Final'
+    },
+    created: 'Created',
+    updated: 'Updated',
+    width: 'Width',
+    rate: 'Rate',
+    is_export: 'Export?'
   },
   message: {
-    hello: 'Hello World'
+    hello: 'Hello World',
+    nonempty: "Can't be empty",
+    rename: 'Rename',
+    pleaseInput: 'Please input content',
+    confirm: 'Confirm',
+    cancel: 'Cancel'
+  },
+  result: {
+    success: 'Success',
+    error: 'Error',
+    warning: 'Warning',
+    info: 'Info',
+    noChange: 'Nothing change'
   }
 }

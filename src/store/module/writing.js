@@ -1,5 +1,7 @@
 export default {
   state: {
+    currentChapter: {},
+    currentGroup: {},
     group: {
       current: null
     },

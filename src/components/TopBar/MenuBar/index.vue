@@ -23,6 +23,16 @@
           <el-menu-item index="3-4-3">选项3</el-menu-item>
         </el-submenu>
       </el-submenu>
+      <el-submenu index="history">
+        <template slot="title">{{ $t('menuBar.history') }}</template>
+        <el-menu-item
+          v-for="history in historys"
+          :index="history.id"
+          :key="history.id"
+        >
+          {{ history.title }}
+        </el-menu-item>
+      </el-submenu>
       <el-submenu index="help">
         <template slot="title">{{ $t('menuBar.help') }}</template>
         <el-menu-item index="about">{{ $t('menuBar.about') }}</el-menu-item>
@@ -38,6 +48,14 @@
 
 <script>
 export default {
+  props: {
+    historys: {
+      type: Array,
+      default() {
+        return []
+      }
+    }
+  },
   data() {
     return {
       activeIndex: '1'
