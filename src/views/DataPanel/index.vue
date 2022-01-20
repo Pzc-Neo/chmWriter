@@ -29,7 +29,7 @@
           :name="item.id"
           @dblclick="removeTab(item.id)"
         >
-          <Editor :item="item" />
+          <CmEditor :item="item" />
         </el-tab-pane>
       </el-tabs>
     </ContentBar>
@@ -44,10 +44,9 @@ import GroupBar from '@/views/Common/GroupBar'
 import ItemBar from '@/views/Common/ItemBar'
 import ContentBar from '@/views/Common/ContentBar'
 import DetailBar from '@/views/Common/DetailBar'
-import Editor from '@/views/WritingPanel/Editor'
+import CmEditor from '@/views/WritingPanel/components/CmEditor'
 import InfoBox from '@/views/Common/DetailBar/InfoBox'
 
-import { dbUpdate } from '@/db'
 import { listToTree } from '@/util/base'
 
 export default {
@@ -57,7 +56,7 @@ export default {
     ContentBar,
     DetailBar,
     InfoBox,
-    Editor
+    CmEditor
   },
   data() {
     return {
@@ -92,7 +91,8 @@ export default {
         }
       ],
       groupList: [],
-      itemList: []
+      itemList: [],
+      currentGroupId: ''
     }
   },
   methods: {
@@ -107,22 +107,17 @@ export default {
       }
       this.editableTabsId = item.id
     },
-    changeToGroup(group) {
-      this.itemList = this.$db
-        .prepare(`SELECT * FROM  data_items WHERE group_id='${group.id}'`)
-        .all()
+    changeToGroup(groupId) {
+      this.itemList = this.$db.getItems('data_items', groupId)
+      console.log(this.itemList)
+      this.currentGroupId = groupId
+      this.$db.setConfig('last_data_item_group_id', groupId)
     },
     updateGroupSorts(paramData) {
       for (let index = 0; index < paramData.length; index++) {
         const item = paramData[index]
-        dbUpdate.call(
-          this,
-          'data_item_groups',
-          'sort',
-          item.sort,
-          item.targetId
-        )
-        dbUpdate.call(this, 'data_item_groups', 'pid', item.pid, item.targetId)
+        this.$db.update('data_item_groups', 'sort', item.sort, item.targetId)
+        this.$db.update('data_item_groups', 'pid', item.pid, item.targetId)
       }
     },
     removeChapter(targetItem) {
@@ -168,11 +163,11 @@ export default {
     }
   },
   mounted() {
-    this.groupList = this.$db
+    this.groupList = this.$db.db
       .prepare('SELECT * FROM  data_item_groups order by sort ASC')
       .all()
     this.groupList = listToTree(this.groupList)
-    this.itemList = this.$db.prepare('SELECT * FROM  data_items').all()
+    this.itemList = this.$db.db.prepare('SELECT * FROM  data_items').all()
   }
 }
 </script>

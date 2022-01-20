@@ -32,7 +32,7 @@ export default {
   border-radius: $border-radius;
   .header {
     height: $dtb-height;
-    line-height: $dtb-height;
+    line-height: $dtb-line-height;
     text-align: center;
     user-select: none;
   }

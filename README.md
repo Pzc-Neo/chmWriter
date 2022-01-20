@@ -1,9 +1,15 @@
 # chm-writer
 
+## Screenshot
+
+### Writing Panel
+
+![Writing Panel](./screenshot/writing_panel.png)
+
 ## Project setup
 
 ```
-yarn install
+yarn
 ```
 
 ### Compiles and hot-reloads for development

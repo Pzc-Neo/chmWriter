@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isShow" class="contextmenu_bar" :style="styleMenu">
+  <div v-show="isShow" class="contextmenu_bar" :style="styleMenu">
     <el-menu>
       <el-menu-item
         :index="menu.id"
@@ -31,15 +31,18 @@ export default {
       targetItem: state => state.contextmenu.prama.targetItem
     }),
     styleMenu() {
-      const x = this.event.pageX
-      let y = this.event.pageY
+      const x = this.event?.pageX
+      let y = this.event?.pageY
+
       // If mouse's position lower than half of clientHeight's height,then show the menu over mouse
       const height = document.body.clientHeight
       if (y > height / 2) {
-        const myDiv = document.querySelector('.contextmenu_bar')
-        const h = window.getComputedStyle(myDiv, null).height
-        if (h !== 'auto') {
-          y = y - parseInt(h)
+        const menuBar = document.querySelector('.contextmenu_bar')
+        if (menuBar !== null) {
+          const h = window.getComputedStyle(menuBar, null).height
+          if (h !== 'auto') {
+            y = y - parseInt(h)
+          }
         }
       }
       const menuStyle = {

@@ -9,13 +9,13 @@
       <span class="app_name">{{ $t('info.app_name') }}</span>
     </span>
     <span class="right">
-      <div class="icon">
+      <div class="icon" @click="appCommand('app:minimize')">
         <i class="el-icon-minus"></i>
       </div>
-      <div class="icon">
+      <div class="icon" @click="appCommand('app:maximize')">
         <i class="el-icon-full-screen"></i>
       </div>
-      <div class="icon close">
+      <div class="icon close" @click="appCommand('app:close')">
         <i class="el-icon-close"></i>
       </div>
     </span>
@@ -24,10 +24,16 @@
 
 <script>
 import MenuBar from './MenuBar'
+import { ipcRenderer } from 'electron'
 export default {
   data() {
     return {
       logo: require('@/assets/logo.svg')
+    }
+  },
+  methods: {
+    appCommand(command) {
+      ipcRenderer.sendSync(command)
     }
   },
   components: {

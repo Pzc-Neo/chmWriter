@@ -1,6 +1,6 @@
 <template>
   <!-- Two-way Data-Binding -->
-  <!-- <codemirror v-model="code" :options="cmOptions" /> -->
+  <!-- <codemirror v-model="content" :options="cmOptions" /> -->
 
   <!-- Or manually control the data synchronization -->
   <codemirror
@@ -12,6 +12,7 @@
     @ready="onCmReady"
     @focus="onCmFocus"
     @input="onCmCodeChange"
+    @keyHandled="onKeyHandled"
   />
 </template>
 
@@ -23,6 +24,7 @@ import 'codemirror/lib/codemirror.css'
 
 // import language js
 import 'codemirror/mode/markdown/markdown'
+
 // import theme style
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/theme/base16-light.css'
@@ -33,6 +35,12 @@ import 'codemirror/theme/eclipse.css'
 import 'codemirror/keymap/vim'
 import 'codemirror/addon/dialog/dialog.js'
 import 'codemirror/addon/dialog/dialog.css'
+
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/fold/foldgutter'
+// import 'codemirror/addon/fold/foldcode'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/fold/markdown-fold'
 
 import 'codemirror/addon/edit/closebrackets'
 import 'codemirror/addon/edit/closetag'
@@ -63,7 +71,7 @@ export default {
   },
   data() {
     return {
-      code: '',
+      content: '',
       cmOptions: {
         tabSize: 4,
         mode: 'markdown',
@@ -119,6 +127,14 @@ export default {
 
           'Ctrl-E': function (cm) {
             cm.foldCode(cm.getCursor())
+          },
+          'Ctrl-S': cm => {
+            this.$bus.$emit(
+              'writing.editor:save_content',
+              cm.getValue(),
+              this.item.id
+            )
+            // cm.foldCode(cm.getCursor())
           }
         }
       },
@@ -134,7 +150,10 @@ export default {
     onCmReady(cm) {},
     onCmFocus(cm) {},
     onCmCodeChange(newCode) {
-      this.code = newCode
+      this.content = newCode
+    },
+    onKeyHandled(cm, name, event) {
+      console.log(cm, name, event)
     }
   },
   computed: {
@@ -148,6 +167,7 @@ export default {
 <style lang="scss" scoped>
 .editor {
   height: 100%;
+  border-right: 1px solid #e6e6e6;
   /deep/.vue-codemirror {
     height: 100%;
   }

@@ -1,11 +1,17 @@
 <template>
-  <div class="group_bar" :style="{ width }">
+  <div
+    class="group_bar"
+    v-show="isShow"
+    :style="{ width }"
+    @contextmenu="showBarMenu"
+  >
     <el-tree
       :data="itemList"
       node-key="id"
       :expand-on-click-node="false"
       default-expand-all
       :highlight-current="true"
+      :current-node-key="currentGroupId"
       @node-drag-start="handleDragStart"
       @node-drag-enter="handleDragEnter"
       @node-drag-leave="handleDragLeave"
@@ -32,9 +38,16 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   props: {
     itemList: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
+    menuListBar: {
       type: Array,
       default() {
         return []
@@ -49,6 +62,10 @@ export default {
     width: {
       type: String,
       default: '170px'
+    },
+    currentGroupId: {
+      type: String,
+      default: ''
     }
   },
   mounted() {},
@@ -57,7 +74,8 @@ export default {
   },
   methods: {
     changeTo(data, clickedNode) {
-      this.$emit('changeTo', data)
+      this.currentGroup = data
+      this.$emit('changeTo', data.id)
     },
     handleDragStart(node, ev) {
       console.log('drag start', node)
@@ -128,7 +146,6 @@ export default {
       // })
     },
     allowDrop(draggingNode, dropNode, type) {
-      console.log(123)
       if (dropNode.data.label === '二级 3-1') {
         return type !== 'inner'
       } else {
@@ -141,24 +158,35 @@ export default {
     },
     drop(ev, data) {
       const itemId = ev.dataTransfer.getData('itemId')
-      console.log(data, itemId)
       this.$emit('changePid', data.id, itemId)
     },
+    showBarMenu(event) {
+      const param = {
+        event,
+        targetItem: {},
+        menuList: this.menuListBar
+      }
+      this.$store.commit('SHOW_CONTEXTMENU', param)
+    },
     showContextmenu(event, targetItem) {
-      console.log(event, targetItem)
       const param = {
         event,
         targetItem,
         menuList: this.menuList
       }
-
       this.$store.commit('SHOW_CONTEXTMENU', param)
     }
+  },
+  computed: {
+    ...mapState({
+      isShow: state => state.barVisible.groupBar
+    })
   }
 }
 </script>
 <style lang="scss" scoped>
 .group_bar {
+  position: relative;
   border-right: solid 1px #e6e6e6;
   /deep/.group_tree_node {
     overflow: hidden;

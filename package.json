@@ -11,13 +11,16 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "main": "background.js",
+  "main": "./src/electronMain/background.js",
   "dependencies": {
     "aws-sdk": "^2.1048.0",
     "better-sqlite3": "^7.4.6",
     "core-js": "^3.6.5",
+    "echarts": "^5.2.2",
     "element-ui": "^2.15.6",
+    "nanoid": "^3.2.0",
     "normalize.css": "^8.0.1",
+    "v-hotkey": "^0.9.0",
     "vue": "^2.6.11",
     "vue-codemirror": "^4.0.6",
     "vue-i18n": "^8.26.8",

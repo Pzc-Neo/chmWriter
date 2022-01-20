@@ -1,11 +1,62 @@
-import { dbUpdate } from '@/db'
+/**
+ * Rename an item.
+ * @param {Function} callback Callback function will take the result value
+ * @param {Object} targetItem The item that you want to rename
+ */
+export const getInput = function (callback, targetItem) {
+  this.$prompt(this.$t('message.pleaseInput'), this.$t('action.getInput'), {
+    inputValue: targetItem?.title || '',
+    confirmButtonText: this.$t('message.confirm'),
+    cancelButtonText: this.$t('message.cancel'),
+    inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/, // nonempty
+    inputErrorMessage: this.$t('message.nonempty')
+  })
+    .then(({ value }) => {
+      callback(value.trim())
+      this.$message({
+        type: 'success',
+        message: this.$t('message.rename') + ' ' + this.$t('result.success')
+      })
+    })
+    .catch(() => {
+      this.$message({
+        type: 'info',
+        message: this.$t('message.cancel')
+      })
+    })
+}
 
+export const getConfirm = function (callback, targetItem) {
+  this.$confirm(
+    `${this.$t('action.delete')} ${targetItem?.title}?`,
+    this.$t('result.warning'),
+    {
+      confirmButtonText: this.$t('message.confirm'),
+      cancelButtonText: this.$t('message.cancel'),
+      type: 'warning'
+    }
+  )
+    .then(() => {
+      callback()
+      this.$message({
+        type: 'success',
+        message: this.$t('message.success')
+      })
+    })
+    .catch(() => {
+      this.$message({
+        type: 'info',
+        message: this.$t('message.cancel')
+      })
+    })
+}
 /**
  * Rename an item.
  * @param {String} tableName The Table's name of database which you want to modify
  * @param {Object} targetItem The item that you want to rename
+ * @param {String} column The column of table (optional, default is 'title')
  */
-export const rename = function (tableName, targetItem) {
+export const rename = function (tableName, targetItem, column = 'title') {
   this.$prompt(this.$t('message.pleaseInput'), this.$t('message.rename'), {
     inputValue: targetItem.title,
     confirmButtonText: this.$t('message.confirm'),
@@ -21,7 +72,7 @@ export const rename = function (tableName, targetItem) {
         })
       } else {
         targetItem.title = value.trim()
-        dbUpdate.call(this, tableName, 'title', targetItem.title, targetItem.id)
+        this.$db.update(tableName, column, targetItem.title, targetItem.id)
         this.$message({
           type: 'success',
           message: this.$t('message.rename') + ' ' + this.$t('result.success')

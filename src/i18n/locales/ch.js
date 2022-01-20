@@ -12,7 +12,7 @@ export default {
     ch: '中文',
     en: '英文'
   },
-  panel: {
+  sideBar: {
     data: '资料',
     writing: '写作',
     world: '世界',
@@ -20,31 +20,60 @@ export default {
     plot: '情节',
     analysis: '分析',
     collapse: '折叠',
-    expand: '展开'
+    expand: '展开',
+    group: '分组',
+    item: '项目',
+    detail: '细节'
+  },
+  detailBar: {
+    attribute: '属性',
+    note: '备注'
+  },
+  common: {
+    created: '创建',
+    updated: '修改'
   },
   writing: {
-    nothingOpen: '没有打开的章节',
+    nothingOpen: '什么都没有打开',
     type: {
       name: '类别',
       normal: '普通',
       important: '重点',
-      transform: '过渡'
+      transition: '过渡'
     },
     language: '语言',
-    status: { name: '状态', first: '初稿', second: '初稿', final: '初稿' },
+    status: { name: '状态', first: '初稿', second: '二稿', final: '终稿' },
     created: '创建',
     updated: '修改',
     width: '宽度',
     rate: '进度',
-    is_export: '是否导出'
+    is_export: '导出',
+    words: '字数',
+    saved: '已保存'
+  },
+  character: {
+    name: '姓名',
+    sex: { name: '性别', girl: '女', boy: '男', unknow: '未知' },
+    age: '年龄',
+    height: '身高',
+    weight: '体重',
+    identity: '身份',
+    birthday: '生日',
+    hobby: '爱好',
+    description: '描述'
+  },
+  action: {
+    update: '更新',
+    delete: '删除',
+    save: '保存',
+    getInput: '获取输入'
   },
   message: {
-    hello: '你好，世界',
+    confirm: '确定',
+    cancel: '取消',
     nonempty: '不能为空',
     rename: '重命名',
-    pleaseInput: '请输入内容',
-    confirm: '确定',
-    cancel: '取消'
+    pleaseInput: '请输入内容'
   },
   result: {
     success: '成功',

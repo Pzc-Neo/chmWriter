@@ -37,7 +37,11 @@ import {
   Tag,
   Switch,
   Slider,
-  Progress
+  Progress,
+  Tooltip,
+  Checkbox,
+  CheckboxGroup,
+  CheckboxButton
 } from 'element-ui'
 
 Vue.use(Button)
@@ -76,7 +80,12 @@ Vue.use(Button)
   .use(Switch)
   .use(Slider)
   .use(Progress)
+  .use(Tooltip)
+  .use(Checkbox)
+  .use(CheckboxGroup)
+  .use(CheckboxButton)
 
 Vue.prototype.$message = Message
 Vue.prototype.$confirm = MessageBox.confirm
 Vue.prototype.$prompt = MessageBox.prompt
+Vue.prototype.$alert = MessageBox.alert

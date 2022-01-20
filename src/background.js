@@ -3,7 +3,11 @@
 import { app, protocol, BrowserWindow, session } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import path from 'path'
+import createMenu from './electronMain/Menu'
+import createTray from './electronMain/Tray'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
+import { registerAppEvent } from '@/electronMain/ipcMain/app'
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // Scheme must be registered before the app is ready
@@ -24,7 +28,9 @@ async function createWindow() {
       contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION
     }
   })
-
+  createMenu(win)
+  createTray(win)
+  registerAppEvent(app, win)
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
     await win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)

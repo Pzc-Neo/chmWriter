@@ -5,9 +5,9 @@
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-submenu index="2">
+      <el-submenu index="file">
         <template slot="title">{{ $t('menuBar.file') }}</template>
-        <el-menu-item index="2-1">选项1</el-menu-item>
+        <el-menu-item index="new-file">新建</el-menu-item>
         <el-menu-item index="2-2">选项2</el-menu-item>
         <el-menu-item index="2-3">选项3</el-menu-item>
       </el-submenu>
@@ -68,10 +68,16 @@ export default {
         if (keyPath[1] === 'language') {
           this.changeLocale(key)
         }
+      } else if (keyPath[0] === 'file') {
+        if (keyPath[1] === 'new-file') {
+          console.log('new file')
+          // this.$db.createDb()
+        }
       }
     },
     changeLocale(local) {
       this.$i18n.locale = local
+      this.$db.setConfig('locale', local)
     }
   }
 }
@@ -104,7 +110,7 @@ export default {
     }
     .el-submenu {
       .el-submenu__title {
-        padding: 0 15px;
+        padding: 0 10px;
         color: #ffffff;
         i {
           color: #ffffff;

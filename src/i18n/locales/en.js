@@ -12,7 +12,7 @@ export default {
     ch: 'Chiness',
     en: 'English'
   },
-  panel: {
+  sideBar: {
     data: 'Data',
     writing: 'Writing',
     world: 'World',
@@ -20,15 +20,26 @@ export default {
     plot: 'Plot',
     analysis: 'Analysis',
     collapse: 'Collapse',
-    expand: 'Expand'
+    expand: 'Expand',
+    group: 'Group',
+    item: 'Item',
+    detail: 'Detail'
+  },
+  detailBar: {
+    attribute: 'Attribute',
+    note: 'Note'
+  },
+  common: {
+    created: 'Created',
+    updated: 'Updated'
   },
   writing: {
     nothingOpen: 'Nothing open',
     type: {
       name: 'Type',
-      normal: 'Normal',
-      important: 'Important',
-      transform: 'Transform'
+      normal: 'Plain',
+      important: 'Main',
+      transition: 'Transition'
     },
     language: 'Language',
     status: {
@@ -41,7 +52,26 @@ export default {
     updated: 'Updated',
     width: 'Width',
     rate: 'Rate',
-    is_export: 'Export?'
+    is_export: 'Export',
+    words: 'Words',
+    saved: 'Saved'
+  },
+  character: {
+    name: 'Name',
+    sex: { name: 'Sex', girl: 'Girl', boy: 'Boy', unknow: 'Unknow' },
+    age: 'Age',
+    height: 'Height',
+    weight: 'Weight',
+    identity: 'Identity',
+    birthday: 'Birthday',
+    hobby: 'Hobby',
+    description: 'Description'
+  },
+  action: {
+    update: 'Update',
+    delete: 'Delete',
+    save: 'Save',
+    getInput: 'Get Input'
   },
   message: {
     hello: 'Hello World',

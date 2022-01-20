@@ -11,11 +11,14 @@ export default new Vuex.Store({
       type: null,
       prama: {}
     },
+    currentPanel: '/writing',
     barVisible: {
       groupBar: true,
       itemBar: true,
       detailBar: true
-    }
+    },
+    isShowIndex: false,
+    isSimpleMode: false
   },
   mutations: {
     SHOW_CONTEXTMENU(state, prama) {
@@ -27,6 +30,10 @@ export default new Vuex.Store({
     },
     TOGGLE_BAR_VISIBILITY(state, bar) {
       state.barVisible[bar] = !state.barVisible[bar]
+    },
+    CHANGE_CURRENT_PANEL(state, panel) {
+      state.currentPanel = panel
+      console.log(state.currentPanel)
     }
   },
   actions: {},

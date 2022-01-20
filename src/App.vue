@@ -10,6 +10,7 @@
 import TopBar from '@/components/TopBar'
 import MiddleBar from '@/components/MiddleBar'
 import BottomBar from '@/components/BottomBar'
+import { ipcRenderer } from 'electron'
 
 import 'normalize.css'
 
@@ -18,16 +19,26 @@ export default {
     TopBar,
     BottomBar,
     MiddleBar
+  },
+  mounted() {
+    ipcRenderer.on('main_msg', (event, message) => {
+      console.log(message)
+    })
   }
 }
 </script>
 <style lang="scss">
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 #app {
   display: flex;
   flex-direction: column;
   height: 100vh;
   color: #464a52;
-  font-size: 14px;
+  font-size: 13px;
   /* 设置滚动条的样式 */
   ::-webkit-scrollbar {
     width: 6px;
