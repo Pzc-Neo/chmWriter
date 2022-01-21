@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid'
 
-export const ChapterGroupFactory = function (title, pid) {
+export const ChapterGroupFactory = function (title, pid, sort) {
   const date = Date.now()
   return {
     tableName: 'chapter_groups',
@@ -11,12 +11,12 @@ export const ChapterGroupFactory = function (title, pid) {
       is_export: 1,
       created: date,
       updated: date,
-      sort: 0
+      sort: sort
     }
   }
 }
 
-export const ChapterFactory = function (title, groupId) {
+export const ChapterFactory = function (title, groupId, sort) {
   const date = Date.now()
   return {
     tableName: 'chapters',
@@ -38,7 +38,7 @@ export const ChapterFactory = function (title, groupId) {
       rate: 0,
       sign: '',
       other: '',
-      sort: 0
+      sort: sort
     }
   }
 }

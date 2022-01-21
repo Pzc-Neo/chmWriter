@@ -18,30 +18,36 @@
 
 <script>
 import { codemirror } from 'vue-codemirror'
-
 // import base style
 import 'codemirror/lib/codemirror.css'
-
 // import language js
 import 'codemirror/mode/markdown/markdown'
-
 // import theme style
 import 'codemirror/theme/base16-dark.css'
 import 'codemirror/theme/base16-light.css'
 import 'codemirror/theme/mdn-like.css'
 import 'codemirror/theme/eclipse.css'
-
 // vim mode
-import 'codemirror/keymap/vim'
+/**
+ * Changed:
+ *  1.Add some code to `charIdxInLine`,
+ *    Let vim's f commmand suport Chiness.
+ *  2.Delete some shortcutkey that conflct with chmWriter.
+ *  Note: If you don't need that changed. Please import the original vim.js
+ *  By Pzc_Neo
+ */
+import './keyMap/vim.js'
+// import 'codemirror/keymap/vim'
+
 import 'codemirror/addon/dialog/dialog.js'
 import 'codemirror/addon/dialog/dialog.css'
-
+// fold
 import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/addon/fold/foldgutter'
 // import 'codemirror/addon/fold/foldcode'
 import 'codemirror/addon/fold/brace-fold'
 import 'codemirror/addon/fold/markdown-fold'
-
+// others
 import 'codemirror/addon/edit/closebrackets'
 import 'codemirror/addon/edit/closetag'
 import 'codemirror/addon/edit/continuelist'
@@ -50,7 +56,6 @@ import 'codemirror/addon/edit/matchbrackets'
 import 'codemirror/addon/edit/matchtags'
 
 import 'codemirror/addon/edit/trailingspace'
-
 // Need to set the shortcutkey on opttion->extraKeys to toggle comment
 import 'codemirror/addon/comment/comment'
 // Hightlight active line
@@ -58,6 +63,9 @@ import 'codemirror/addon/selection/active-line'
 
 // Autorefresh can solve the content hidden problem
 import 'codemirror/addon/display/autorefresh'
+
+import { countWords } from '@/util/text'
+import { debounce } from '@/util/base'
 
 export default {
   props: {
@@ -71,6 +79,7 @@ export default {
   },
   data() {
     return {
+      isSaved: true,
       content: '',
       cmOptions: {
         tabSize: 4,
@@ -130,10 +139,14 @@ export default {
           },
           'Ctrl-S': cm => {
             this.$bus.$emit(
-              'writing.editor:save_content',
+              'writing.cmEditor:save_content',
               cm.getValue(),
               this.item.id
             )
+            // cm.foldCode(cm.getCursor())
+          },
+          'Ctrl-W': cm => {
+            this.$bus.$emit('writing.cmEditor:close_current_tab')
             // cm.foldCode(cm.getCursor())
           }
         }
@@ -149,17 +162,32 @@ export default {
   methods: {
     onCmReady(cm) {},
     onCmFocus(cm) {},
-    onCmCodeChange(newCode) {
-      this.content = newCode
+    wordCounter: debounce(countWords, 1000, result => {
+      console.log(result)
+    }),
+    onCmCodeChange(newContent) {
+      this.content = newContent
+      this.wordCounter(newContent, 0)
+      this.isSaved = false
     },
     onKeyHandled(cm, name, event) {
-      console.log(cm, name, event)
+      // console.log(cm, name, event)
     }
   },
   computed: {
     codemirror() {
       return this.$refs.cmEditor.codemirror
     }
+  },
+  mounted() {
+    this.$bus.$on('writing:save_content', () => {
+      this.$bus.$emit(
+        'writing.cmEditor:save_content',
+        this.content,
+        this.item.id
+      )
+      this.isSaved = true
+    })
   }
 }
 </script>

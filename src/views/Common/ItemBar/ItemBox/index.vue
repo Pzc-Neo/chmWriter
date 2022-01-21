@@ -2,24 +2,18 @@
   <div v-if="$store.state.isSimpleMode" class="simple_mode">
     {{ item.title }}
   </div>
-  <div v-else class="item">
+  <div v-else class="item_box">
     <div class="col top">
-      <div class="left">
-        {{ status[item.status] }}
-      </div>
-      <div class="right">
-        <span class="left">{{ item.words }}</span>
-        <span class="right">{{ item.rate }}%</span>
-      </div>
-    </div>
-    <div class="col middle">
       {{ item.title }}
     </div>
     <div class="col bottom">
       <div class="left">
-        <el-tag :type="tagTypes[item.type]">{{ types[item.type] }}</el-tag>
+        <!-- <el-tag :type="tagTypes[item.type]">{{ types[item.type] }}</el-tag> -->
+        <el-tag>{{ item.source }}</el-tag>
       </div>
-      <div class="right">{{ item.updated }}</div>
+      <div class="right">
+        {{ item.updated }}
+      </div>
     </div>
   </div>
 </template>
@@ -60,9 +54,9 @@ export default {
 
 <style lang="scss" scoped>
 .simple_mode {
-  padding: 5px 8px;
+  padding: 4px 8px;
 }
-.item {
+.item_box {
   display: flex;
   flex-direction: column;
   padding: 5px 6px;
@@ -91,25 +85,28 @@ export default {
       }
     }
   }
-  .middle {
-    margin-top: 2px;
-    margin-bottom: 7px;
-  }
   .bottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
+    margin-top: 6px;
     .left {
       .el-tag {
         height: 20px;
+        max-width: 54px;
         line-height: 20px;
         padding: 0px 5px;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
+      // margin-left: $dtb-margin;
+      // align-self: flex-end;
     }
     .right {
       flex: 1;
-      margin-left: $dtb-margin;
       text-align: right;
     }
   }

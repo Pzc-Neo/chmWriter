@@ -3,7 +3,7 @@
     <DialogBar />
     <GroupBar
       :itemList="groupList"
-      :currentGroupId="currentGroupId"
+      :currentGroup="currentGroup"
       :menuList="menuListGroup"
       @changeTo="changeToGroup"
       @changePid="changeItemGroupId"
@@ -71,7 +71,8 @@ import ContentBar from '@/views/Common/ContentBar'
 import DetailBar from '@/views/Common/DetailBar'
 import InfoBox from '@/views/Common/DetailBar/InfoBox'
 import DialogBar from '@/views/Common/DialogBar'
-import TextareaBox from '@/views/WritingPanel/components/TextareaBox'
+import TextareaBox from '@/views/Common/DetailBar/TextareaBox'
+
 import RelationChart from './components/RelationChart'
 import CharacterItem from './components/characterItem'
 import AttrBox from './components/AttrBox'
@@ -142,7 +143,7 @@ export default {
           title: '删除',
           icon: 'el-icon-delete',
           func: targetItem => {
-            this.removeChapter(targetItem)
+            this.deleteItem(targetItem)
           }
         },
         {
@@ -151,13 +152,12 @@ export default {
           icon: 'el-icon-info',
           func: targetItem => {
             console.log(targetItem)
-            // this.removeChapter(targetItem)
+            // this.deleteItem(targetItem)
           }
         }
       ],
       groupList: [],
       itemList: [],
-      currentGroupId: '',
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
@@ -194,7 +194,6 @@ export default {
       this.itemList = this.$db.getItems(this.itemTableName, groupId)
       this.relationData = convertToRelationData(this.itemList)
 
-      this.currentGroupId = groupId
       this.currentGroup = group
       this.$db.setConfig('last_chapter_group_id', group.id)
       const index = this.editableTabs.findIndex(_item => {
@@ -223,7 +222,7 @@ export default {
       this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
     },
     getRelation() {},
-    removeChapter(targetItem) {
+    deleteItem(targetItem) {
       this.$confirm(
         `此操作将永久删除章节：[${targetItem.title}], 是否继续?`,
         '提示',

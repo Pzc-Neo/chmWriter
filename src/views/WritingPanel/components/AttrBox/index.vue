@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     updateAttr(column, value) {
-      this.$bus.$emit('attrBar:updateAttr', column, value, this.item)
+      this.$bus.$emit('writing.attrBox:updateAttr', column, value, this.item)
     },
     changeEditorWidth(width) {
       this.$bus.$emit('attrBar:changeEditorWidth', width)

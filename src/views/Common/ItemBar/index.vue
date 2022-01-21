@@ -1,5 +1,5 @@
 <template>
-  <div class="item_bar" v-show="isShow">
+  <div class="item_bar" v-show="isShow" @contextmenu="showBarMenu">
     <div
       shadow="hover"
       v-for="(item, index) in itemList"
@@ -7,7 +7,7 @@
       :index="index"
       @click="changeTo(item)"
       :class="{ item, active: isActive(item) }"
-      @contextmenu="showContextmenu($event, item)"
+      @contextmenu.stop="showContextmenu($event, item)"
       draggable="true"
       @dragstart="dragStart($event, item, index)"
       @dragover="handleDragover($event)"
@@ -28,13 +28,19 @@ export default {
         return []
       }
     },
+    menuListBar: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     menuList: {
       type: Array,
       default() {
         return []
       }
     },
-    activeItem: {
+    currentItem: {
       type: Object,
       default() {
         return {}
@@ -107,11 +113,19 @@ export default {
       }
     },
     changeTo(item) {
-      this.$emit('changeTo', item)
-      // this.activeItem = item
+      this.$emit('changeTo', item.id)
+      // this.currentItem = item
     },
     isActive(item) {
-      return this.activeItem && this.activeItem.id === item.id
+      return this.currentItem && this.currentItem.id === item.id
+    },
+    showBarMenu(event) {
+      const param = {
+        event,
+        targetItem: {},
+        menuList: this.menuListBar
+      }
+      this.$store.commit('SHOW_CONTEXTMENU', param)
     },
     showContextmenu(event, targetItem) {
       const param = {

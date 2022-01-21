@@ -34,9 +34,16 @@ export default new Vuex.Store({
     CHANGE_CURRENT_PANEL(state, panel) {
       state.currentPanel = panel
       console.log(state.currentPanel)
+    },
+    TOGGLE_SIMPLE_MODE(state) {
+      state.isSimpleMode = !state.isSimpleMode
     }
   },
-  actions: {},
+  actions: {
+    changeCurrentPanel({ commit }) {
+      console.log(this.$db)
+    }
+  },
   modules: {
     writing
   }

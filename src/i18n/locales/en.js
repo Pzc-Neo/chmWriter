@@ -23,7 +23,8 @@ export default {
     expand: 'Expand',
     group: 'Group',
     item: 'Item',
-    detail: 'Detail'
+    detail: 'Detail',
+    simple: 'Simple'
   },
   detailBar: {
     attribute: 'Attribute',

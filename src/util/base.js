@@ -1,3 +1,25 @@
+export const debounceSync = function (func, time) {
+  let timer = null
+  return function () {
+    if (timer !== null) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      func.apply(this, arguments)
+    }, time)
+  }
+}
+export const debounce = function (func, time, callback) {
+  let timer = null
+  return function () {
+    if (timer !== null) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      callback(func.apply(this, arguments))
+    }, time)
+  }
+}
 /**
  * Rename an item.
  * @param {Function} callback Callback function will take the result value
@@ -140,4 +162,16 @@ export const listToTree = (list, root, parentId) => {
     }
   })
   return result
+}
+
+/**
+ * unfinished
+ * @param {*} list
+ * @param {*} itemId
+ */
+export const removeItem = function (list, itemId) {
+  const index = list.findIndex(item => {
+    return item.id === itemId
+  })
+  console.log(index)
 }

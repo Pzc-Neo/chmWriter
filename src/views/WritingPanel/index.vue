@@ -3,16 +3,18 @@
     <DialogBar />
     <GroupBar
       :itemList="groupList"
-      :currentGroupId="currentGroupId"
+      :currentGroup="currentGroup"
       :menuList="menuListGroup"
       :menuListBar="menuListGroupBar"
       @changeTo="changeToGroup"
-      @changePid="changeItemGroupId"
+      @changeItemGroupId="changeItemGroupId"
       @updateSorts="updateGroupSorts"
     />
     <ItemBar
       :itemList="itemList"
-      :menuList="menuListChapter"
+      :currentItem="currentItem"
+      :menuListBar="menuListItemBar"
+      :menuList="menuListItem"
       @changeTo="changeToItem"
       @updateSorts="updateItemSorts"
     >
@@ -67,21 +69,18 @@ import ContentBar from '@/views/Common/ContentBar'
 import DetailBar from '@/views/Common/DetailBar'
 import InfoBox from '@/views/Common/DetailBar/InfoBox'
 import DialogBar from '@/views/Common/DialogBar'
+import TextareaBox from '@/views/Common/DetailBar/TextareaBox'
+import CmEditor from '@/views/Common/CmEditor'
 
 import AttrBox from './components/AttrBox'
-import TextareaBox from './components/TextareaBox'
-import CmEditor from './components/CmEditor'
 import ChapterItem from './components/ChapterItem'
+
+import { menuListGroupBarFactory, menuListGroupFactory } from './menuList/group'
+import { menuListItemBarFactory, menuListItemFactory } from './menuList/item'
 
 import { getItemFactory } from '@/db/module/itemFactory'
 
-import {
-  getInput,
-  getConfirm,
-  listToTree,
-  rename,
-  deleteGroup
-} from '@/util/base'
+import { listToTree } from '@/util/base'
 
 export default {
   components: {
@@ -103,83 +102,14 @@ export default {
       // Item table's name on datebase
       itemTableName: 'chapters',
 
-      currentTabId: '2',
+      currentTabId: '',
       tabList: [],
-      menuListGroupBar: [
-        {
-          id: 'new',
-          title: '新建',
-          icon: 'el-icon-new',
-          func: targetItem => {
-            // console.log('Create new group (Not finished)')
-            this.newGroup('root')
-          }
-        }
-      ],
-      menuListGroup: [
-        {
-          id: 'rename',
-          title: '重命名',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            rename.call(this, this.groupTableName, targetItem)
-          }
-        },
-        {
-          id: 'delect',
-          title: '删除',
-          icon: 'el-icon-delete',
-          func: targetItem => {
-            deleteGroup.call(this, targetItem)
-          }
-        }
-      ],
-      menuListChapter: [
-        {
-          id: 'new',
-          title: '新建',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            this.newItem()
-          }
-        },
-        {
-          id: 'rename',
-          title: '重命名',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            rename.call(this, this.itemTableName, targetItem)
-          }
-        },
-        {
-          id: 'other',
-          title: '其他',
-          // icon: 'el-icon-delete',
-          func: targetItem => {
-            // this.removeTab(targetItem.id)
-          }
-        },
-        {
-          id: 'delect',
-          title: '删除',
-          icon: 'el-icon-delete',
-          func: targetItem => {
-            this.removeChapter(targetItem)
-          }
-        },
-        {
-          id: 'info',
-          title: '信息',
-          icon: 'el-icon-info',
-          func: targetItem => {
-            console.log(targetItem)
-            // this.removeChapter(targetItem)
-          }
-        }
-      ],
+      menuListGroupBar: menuListGroupBarFactory.call(this),
+      menuListGroup: menuListGroupFactory.call(this),
+      menuListItem: menuListItemFactory.call(this),
+      menuListItemBar: menuListItemBarFactory.call(this),
       groupList: [],
       itemList: [],
-      currentGroupId: '',
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%'
@@ -190,27 +120,50 @@ export default {
       const temp = this.$db.getGroups(this.groupTableName)
       return listToTree(temp)
     },
-    getGroup(groupId) {
+    getGroupFromDb(groupId) {
       return this.$db.getGroup(this.groupTableName, groupId)
+    },
+    getGroupFromLocal(groupId) {
+      const index = this.groupList.findIndex(group => {
+        return group.id === groupId
+      })
+      if (index !== -1) {
+        return this.groupList[index]
+      } else {
+        return this.getGroupFromDb(groupId)
+      }
     },
     getItems(groupId) {
       return this.$db.getItems(this.itemTableName, groupId)
     },
+    getItemFromDb(itemId) {
+      return this.$db.getItem(this.itemTableName, itemId)
+    },
+    getItemFromLocal(itemId) {
+      const index = this.itemList.findIndex(item => {
+        return item.id === itemId
+      })
+      if (index !== -1) {
+        return this.itemList[index]
+      } else {
+        return this.getItemFromDb(itemId)
+      }
+    },
     changeToGroup(groupId) {
       this.itemList = this.getItems(groupId)
-      const group = this.getGroup(groupId)
-      this.currentGroupId = groupId
+      const group = this.getGroupFromLocal(groupId)
       this.currentGroup = group
       this.$db.setConfig('last_chapter_group_id', groupId)
+      this.$store.commit('HIDE_CONTEXTMENU')
     },
     /**
      * @param {String | Object} item item object or item's id
      */
-    changeToItem(item) {
-      const temp = Object.prototype.toString.call(item)
-      // If true means item is id
-      if (temp === '[object String]') {
-        item = this.$db.getItem(this.itemTableName, item)
+    changeToItem(itemId) {
+      const item = this.getItemFromLocal(itemId)
+      if (item === undefined) {
+        this.$alert('item is undefined. id: ' + itemId)
+        return
       }
       this.$store.state.writing.chapter.current = item
 
@@ -225,7 +178,7 @@ export default {
     },
     updateItemSorts(paramData) {
       this.$db.updateItemSorts(this.itemTableName, paramData)
-      this.changeToGroup(this.currentGroupId)
+      this.changeToGroup(this.currentGroup.id)
     },
     updateGroupSorts(paramData) {
       this.$db.updateGroupSorts(this.groupTableName, paramData)
@@ -233,52 +186,33 @@ export default {
     updateAttr(column, value, item) {
       this.$db.update(this.itemTableName, column, value, item.id)
       item[column] = value
-
-      this.$message({
-        showClose: true,
-        duration: 1000,
-        message: `updata ${column} success`,
-        type: 'success'
-      })
+      this.$message(`update ${column} success`)
     },
     changeItemGroupId(groupId, itemId) {
       this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
+      this.refreshItemList()
     },
-    removeChapter(targetItem) {
-      getConfirm.call(
-        this,
-        () => {
-          this.$db.deleteById(this.itemTableName, targetItem.id)
-          this.removeTab(targetItem.id)
-          this.changeToGroup(this.currentGroup.id)
-        },
-        targetItem
-      )
-      // this.$confirm(
-      //   `此操作将永久删除章节：[${targetItem.title}], 是否继续?`,
-      //   '提示',
-      //   {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }
-      // )
-      //   .then(() => {
-      //     this.$db.deleteById(this.itemTableName, targetItem.id)
-      //     this.removeTab(targetItem.id)
-      //     this.$message({
-      //       type: 'success',
-      //       message: '删除成功!'
-      //     })
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   })
+    refreshGroupList() {
+      this.groupList = this.getGroups()
+    },
+    refreshItemList() {
+      this.changeToGroup(this.currentGroup.id)
+    },
+    deleteGroup(targetItem) {
+      this.$confirm(() => {
+        this.$db.deleteById(this.groupTableName, targetItem.id)
+        this.refreshGroupList()
+      }, targetItem)
+    },
+    deleteItem(targetItem) {
+      this.$confirm(() => {
+        this.$db.deleteById(this.itemTableName, targetItem.id)
+        this.removeTab(targetItem.id)
+        this.changeToGroup(this.currentGroup.id)
+      }, targetItem)
     },
     removeTab(targetId) {
+      targetId = targetId || this.currentTabId
       const tabs = this.tabList
       let activeId = this.currentTabId
       if (activeId === targetId) {
@@ -296,45 +230,34 @@ export default {
       this.tabList = tabs.filter(tab => tab.id !== targetId)
     },
     handleTabClick(tab) {
-      this.changeToItem(tab.name)
+      const itemId = tab.name
+      this.changeToItem(itemId)
     },
-    newGroup(pid) {
-      getInput.call(this, title => {
+    newGroup(pid, sort) {
+      this.$prompt(title => {
         const Factory = getItemFactory(this.groupTableName)
-        const item = new Factory(title, pid)
+        const item = new Factory(title, pid, sort)
         this.$db.insert(item)
+        this.refreshGroupList()
       })
     },
-    newItem() {
-      getInput.call(this, title => {
+    newItem(sort) {
+      this.$prompt(title => {
         const Factory = getItemFactory(this.itemTableName)
-        const item = new Factory(title, this.currentGroupId)
+        const item = new Factory(title, this.currentGroup.id, sort)
         this.$db.insert(item)
-        this.changeToGroup(this.currentGroupId)
+        this.refreshItemList()
       })
     },
     saveChapter(content, itemId) {
       if (content === undefined || itemId === undefined) {
-        const info = `content:${content} itemId: ${itemId}`
-        this.$alert(info, this.$t('result.warning'), {
-          confirmButtonText: this.$t('message.confirm'),
-          callback: action => {
-            this.$message({
-              type: 'warning',
-              message: `action: ${action}`
-            })
-          }
-        })
+        // this.$bus.$emit('writing:save_content')
+        this.$alert(`content: ${content}; itemId: ${itemId}`, 'error')
         return
       }
       this.$db.update(this.itemTableName, 'content', content, itemId)
 
-      this.$message({
-        showClose: true,
-        duration: 1000,
-        message: this.$t('writing.saved'),
-        type: 'success'
-      })
+      this.$message(this.$t('writing.saved'))
 
       const index = this.itemList.findIndex(item => {
         return item.id === itemId
@@ -348,22 +271,45 @@ export default {
     const config = this.$db.getConfig('last_chapter_group_id')
     this.changeToGroup(config.value)
 
-    this.$bus.$on('writing.editor:save_content', (content, itemId) => {
+    this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
       this.saveChapter(content, itemId)
+    })
+    this.$bus.$on('writing.cmEditor:close_current_tab', () => {
+      this.removeTab()
     })
 
     this.$bus.$on('attrBar:changeEditorWidth', value => {
       this.editorWidth = value + '%'
     })
 
-    this.$bus.$on('attrBar:updateAttr', (column, value, itemId) => {
+    this.$bus.$on('writing.attrBox:updateAttr', (column, value, itemId) => {
+      this.updateAttr(column, value, itemId)
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off('writing.cmEditor:save_content', (content, itemId) => {
+      this.saveChapter(content, itemId)
+    })
+
+    this.$bus.$off('attrBar:changeEditorWidth', value => {
+      this.editorWidth = value + '%'
+    })
+
+    this.$bus.$off('writing.attrBox:updateAttr', (column, value, itemId) => {
       this.updateAttr(column, value, itemId)
     })
   },
   computed: {
     keymap() {
       return {
-        'ctrl+s': this.saveChapter
+        // 'ctrl+s': {
+        //   keyup: this.saveChapter
+        // },
+        // 'ctrl+w': {
+        //   keyup: e => {
+        //     this.removeTab()
+        //   }
+        // }
       }
     }
   }

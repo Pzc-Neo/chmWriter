@@ -11,7 +11,7 @@
       :expand-on-click-node="false"
       default-expand-all
       :highlight-current="true"
-      :current-node-key="currentGroupId"
+      :current-node-key="currentGroup.id"
       @node-drag-start="handleDragStart"
       @node-drag-enter="handleDragEnter"
       @node-drag-leave="handleDragLeave"
@@ -29,7 +29,7 @@
         class="group_tree_node"
         slot-scope="{ data }"
         :title="data.title"
-        @drop="drop($event, data)"
+        @drop="handleItemDrop($event, data)"
       >
         {{ data.title }}
       </span>
@@ -63,9 +63,11 @@ export default {
       type: String,
       default: '170px'
     },
-    currentGroupId: {
-      type: String,
-      default: ''
+    currentGroup: {
+      type: Object,
+      default() {
+        return {}
+      }
     }
   },
   mounted() {},
@@ -74,7 +76,7 @@ export default {
   },
   methods: {
     changeTo(data, clickedNode) {
-      this.currentGroup = data
+      // this.currentGroup = data
       this.$emit('changeTo', data.id)
     },
     handleDragStart(node, ev) {
@@ -156,9 +158,9 @@ export default {
       // draggingNode.data.label.indexOf('三级 3-2-2') === -1
       return 1
     },
-    drop(ev, data) {
+    handleItemDrop(ev, data) {
       const itemId = ev.dataTransfer.getData('itemId')
-      this.$emit('changePid', data.id, itemId)
+      this.$emit('changeItemGroupId', data.id, itemId)
     },
     showBarMenu(event) {
       const param = {

@@ -46,7 +46,8 @@ class Db {
    * @param {String} id column's id
    */
   update(tableName, column, value, id) {
-    const query = `UPDATE ${tableName} SET ${column} = ?  WHERE id = ? `
+    const date = Date.now()
+    const query = `UPDATE ${tableName} SET ${column} = ? , updated= ${date}  WHERE id = ? `
     this.db.prepare(query).run([value, id])
   }
 
@@ -63,9 +64,8 @@ class Db {
   }
 
   getGroups(tableName, isOrder = true) {
-    const query = `SELECT * FROM ${tableName} ${
-      isOrder ? 'order by sort ASC' : ''
-    }`
+    const query = `SELECT * FROM ${tableName} 
+    ${isOrder ? 'order by sort ASC' : ''}`
     const stmt = this.db.prepare(query)
     return stmt.all()
   }

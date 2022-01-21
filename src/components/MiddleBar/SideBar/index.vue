@@ -66,6 +66,16 @@
           {{ $t('sideBar.detail') }}
         </el-button>
       </div>
+      <div class="btn_group">
+        <el-button
+          plain
+          :type="isSimpleMode ? 'primary' : ''"
+          size="mini"
+          @click="toggleSimpleMode()"
+        >
+          {{ $t('sideBar.simple') }}
+        </el-button>
+      </div>
     </el-menu>
   </div>
 </template>
@@ -75,9 +85,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
-      isCollapse: true,
-      barList: ['group', 'item', 'detail'],
-      barGroup: []
+      isCollapse: true
     }
   },
   methods: {
@@ -90,9 +98,13 @@ export default {
     changePanel(panelPath) {
       this.$router.push(panelPath)
       this.$store.commit('CHANGE_CURRENT_PANEL', panelPath)
+      // this.$store.dispatch('changeCurrentPanel', panelPath)
     },
     toggleBarVisible(bar) {
       this.$store.commit('TOGGLE_BAR_VISIBILITY', bar)
+    },
+    toggleSimpleMode() {
+      this.$store.commit('TOGGLE_SIMPLE_MODE')
     }
   },
   computed: {
@@ -102,7 +114,8 @@ export default {
         : this.$t('sideBar.collapse')
     },
     ...mapState({
-      barVisible: state => state.barVisible
+      barVisible: state => state.barVisible,
+      isSimpleMode: state => state.isSimpleMode
     })
   },
   watch: {
@@ -154,6 +167,7 @@ export default {
   .btn_group {
     display: flex;
     flex-direction: column;
+    margin-bottom: 7px;
   }
 }
 </style>

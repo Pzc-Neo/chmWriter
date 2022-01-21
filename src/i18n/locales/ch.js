@@ -23,7 +23,8 @@ export default {
     expand: '展开',
     group: '分组',
     item: '项目',
-    detail: '细节'
+    detail: '细节',
+    simple: '简单'
   },
   detailBar: {
     attribute: '属性',
