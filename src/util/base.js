@@ -1,14 +1,10 @@
-export const debounceSync = function (func, time) {
-  let timer = null
-  return function () {
-    if (timer !== null) {
-      clearTimeout(timer)
-    }
-    timer = setTimeout(() => {
-      func.apply(this, arguments)
-    }, time)
-  }
-}
+/**
+ *
+ * @param {Function} func Target Function
+ * @param {Number} time Debounce time
+ * @param {Function} callback If you need VC's this, Do not use Arrow Function
+ * @returns {Function}
+ */
 export const debounce = function (func, time, callback) {
   let timer = null
   return function () {
@@ -16,7 +12,7 @@ export const debounce = function (func, time, callback) {
       clearTimeout(timer)
     }
     timer = setTimeout(() => {
-      callback(func.apply(this, arguments))
+      callback.call(this, func.apply(this, arguments))
     }, time)
   }
 }

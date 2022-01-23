@@ -19,7 +19,7 @@
       <div class="left">
         <el-tag :type="tagTypes[item.type]">{{ types[item.type] }}</el-tag>
       </div>
-      <div class="right">{{ item.updated }}</div>
+      <div class="right">{{ $formatTime(item.updated) }}</div>
     </div>
   </div>
 </template>
@@ -103,7 +103,7 @@ export default {
     .left {
       .el-tag {
         height: 20px;
-        line-height: 20px;
+        line-height: 18px;
         padding: 0px 5px;
       }
     }

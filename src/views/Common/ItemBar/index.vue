@@ -4,6 +4,7 @@
       shadow="hover"
       v-for="(item, index) in itemList"
       :key="item.id"
+      :id="item.id"
       :index="index"
       @click="changeTo(item)"
       :class="{ item, active: isActive(item) }"

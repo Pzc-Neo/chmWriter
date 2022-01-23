@@ -83,12 +83,12 @@
     <!-- created -->
     <div class="one_row">
       <el-tag class="text">{{ $t('writing.created') }}</el-tag>
-      <span class="date">{{ item.created }}</span>
+      <span class="date">{{ $formatTime(item.created) }}</span>
     </div>
     <!-- updated -->
     <div class="one_row">
       <el-tag class="text">{{ $t('writing.updated') }}</el-tag>
-      <span class="date">{{ item.updated }}</span>
+      <span class="date">{{ $formatTime(item.updated) }}</span>
     </div>
     <!-- editor width -->
     <div class="one_row">
@@ -119,11 +119,12 @@ export default {
   },
   methods: {
     updateAttr(column, value) {
-      this.$bus.$emit('writing.attrBox:updateAttr', column, value, this.item)
+      this.$emit('updateAttr', column, value, this.item)
     },
     changeEditorWidth(width) {
-      this.$bus.$emit('attrBar:changeEditorWidth', width)
-    }
+      this.$emit('changeEditorWidth', width)
+    },
+    formateTime(timeStamp) {}
   }
 }
 </script>

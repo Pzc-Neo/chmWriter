@@ -1,7 +1,7 @@
 /**
  * title: Use i18n's string.
  */
-export const menuListItemBarFactory = function () {
+export const menuListTabBarFactory = function () {
   return [
     {
       id: 'new',
@@ -9,15 +9,38 @@ export const menuListItemBarFactory = function () {
       icon: 'el-icon-document-add',
       func: targetItem => {
         const sort = this.itemList[this.itemList.length - 1]?.sort + 1 || 0
-        console.log(sort)
         this.newItem(sort)
       }
     }
   ]
 }
 
-export const menuListItemFactory = function () {
+export const menuListTabFactory = function () {
   return [
+    {
+      id: 'close',
+      title: 'contextMenuBar.close',
+      icon: 'el-icon-circle-close',
+      func: targetItem => {
+        this.removeTab(targetItem.id)
+      }
+    },
+    {
+      id: 'closeOthers',
+      title: 'contextMenuBar.closeOthers',
+      icon: 'el-icon-circle-close',
+      func: targetItem => {
+        this.removeOtherTabs(targetItem.id)
+      }
+    },
+    {
+      id: 'reveal',
+      title: 'contextMenuBar.reveal',
+      icon: 'el-icon-position',
+      func: targetItem => {
+        this.revealItem(targetItem)
+      }
+    },
     {
       id: 'new',
       title: 'contextMenuBar.new',

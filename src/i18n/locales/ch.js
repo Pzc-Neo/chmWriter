@@ -12,6 +12,17 @@ export default {
     ch: '中文',
     en: '英文'
   },
+  contextMenuBar: {
+    new: '新建',
+    newSilbling: '新建同级',
+    newChild: '新建子级',
+    rename: '重命名',
+    detail: '详细信息',
+    delete: '删除',
+    close: '关闭',
+    closeOthers: '关闭其他',
+    reveal: '在侧栏显示'
+  },
   sideBar: {
     data: '资料',
     writing: '写作',
@@ -50,7 +61,8 @@ export default {
     rate: '进度',
     is_export: '导出',
     words: '字数',
-    saved: '已保存'
+    saved: '已保存',
+    foreshadowing: '伏笔'
   },
   character: {
     name: '姓名',

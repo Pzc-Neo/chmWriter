@@ -1,8 +1,11 @@
+/**
+ * title: Use i18n's string.
+ */
 export const menuListGroupBarFactory = function () {
   return [
     {
       id: 'new',
-      title: '新建',
+      title: 'contextMenuBar.new',
       icon: 'el-icon-folder-add',
       func: () => {
         let sort = 0
@@ -18,8 +21,8 @@ export const menuListGroupBarFactory = function () {
 export const menuListGroupFactory = function () {
   return [
     {
-      id: 'newChild',
-      title: '新建同级',
+      id: 'newSilbling',
+      title: 'contextMenuBar.newSilbling',
       icon: 'el-icon-folder-add',
       func: targetItem => {
         const targetId = targetItem.pid === 'root' ? 'root' : targetItem.pid
@@ -27,8 +30,8 @@ export const menuListGroupFactory = function () {
       }
     },
     {
-      id: 'newSilbling',
-      title: '新建子级',
+      id: 'newChild',
+      title: 'contextMenuBar.newChild',
       icon: 'el-icon-folder-add',
       func: targetItem => {
         let sort = 0
@@ -41,7 +44,7 @@ export const menuListGroupFactory = function () {
     },
     {
       id: 'rename',
-      title: '重命名',
+      title: 'contextMenuBar.rename',
       icon: 'el-icon-edit',
       func: targetItem => {
         this.$prompt(newTitle => {
@@ -52,7 +55,7 @@ export const menuListGroupFactory = function () {
     },
     {
       id: 'delect',
-      title: '删除',
+      title: 'contextMenuBar.delete',
       icon: 'el-icon-delete',
       func: targetItem => {
         this.deleteGroup(targetItem)

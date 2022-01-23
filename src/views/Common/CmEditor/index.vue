@@ -11,7 +11,11 @@
     :options="cmOptions"
     @ready="onCmReady"
     @focus="onCmFocus"
-    @input="onCmCodeChange"
+    @input="
+      newContent => {
+        onCmCodeChange(newContent, item)
+      }
+    "
     @keyHandled="onKeyHandled"
   />
 </template>
@@ -72,6 +76,10 @@ export default {
     item: {
       type: Object,
       require: true
+    },
+    isCountWord: {
+      type: Boolean,
+      default: true
     }
   },
   components: {
@@ -79,8 +87,7 @@ export default {
   },
   data() {
     return {
-      isSaved: true,
-      content: '',
+      isChanged: false,
       cmOptions: {
         tabSize: 4,
         mode: 'markdown',
@@ -91,6 +98,7 @@ export default {
         lineWrapping: true,
         continueComments: 'Enter',
         keyMap: 'vim',
+        autofocus: true,
         // highlightFormatting: true,
         foldGutter: true,
         gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
@@ -131,9 +139,7 @@ export default {
           Enter: 'newlineAndIndentContinueMarkdownList',
 
           //  toggle注释
-          // 'Cmd-.': 'toggleComment',
           'Ctrl-/': 'toggleComment',
-
           'Ctrl-E': function (cm) {
             cm.foldCode(cm.getCursor())
           },
@@ -162,32 +168,23 @@ export default {
   methods: {
     onCmReady(cm) {},
     onCmFocus(cm) {},
-    wordCounter: debounce(countWords, 1000, result => {
-      console.log(result)
+    wordCounter: debounce(countWords, 1000, function (words) {
+      this.$emit('countWord', words)
     }),
-    onCmCodeChange(newContent) {
-      this.content = newContent
-      this.wordCounter(newContent, 0)
-      this.isSaved = false
+    onCmCodeChange(newContent, item) {
+      if (this.isCountWord) {
+        this.wordCounter(newContent, item.language)
+      }
+      this.$emit('change', item, newContent)
     },
     onKeyHandled(cm, name, event) {
-      // console.log(cm, name, event)
+      console.log(cm, name, event)
     }
   },
   computed: {
     codemirror() {
       return this.$refs.cmEditor.codemirror
     }
-  },
-  mounted() {
-    this.$bus.$on('writing:save_content', () => {
-      this.$bus.$emit(
-        'writing.cmEditor:save_content',
-        this.content,
-        this.item.id
-      )
-      this.isSaved = true
-    })
   }
 }
 </script>

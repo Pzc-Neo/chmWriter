@@ -1,6 +1,6 @@
 <template>
   <div v-show="isShow" class="contextmenu_bar" :style="styleMenu">
-    <el-menu>
+    <el-menu menu-trigger="hover">
       <el-menu-item
         :index="menu.id"
         v-for="menu in menuList"
@@ -9,7 +9,7 @@
       >
         <i v-if="menu.icon" :class="menu.icon"></i>
         <i v-else class="el-icon-cloudy"></i>
-        <span slot="title">{{ menu.title }}</span>
+        <span slot="title">{{ $t(menu.title) }}</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -18,10 +18,27 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  data() {
-    return {
-      activeIndex: '1'
+  // data() {
+  //   return {
+  //     activeIndex: '1'
+  //   }
+  // },
+  methods: {
+    handleClick(menu) {
+      menu.func(this.targetItem)
+      this.$store.commit('HIDE_CONTEXTMENU')
     }
+    // handleSelect(key, keyPath) {
+    //   console.log(key, keyPath)
+    //   if (keyPath[0] === 'help') {
+    //     if (keyPath[1] === 'language') {
+    //       this.changeLocale(key)
+    //     }
+    //   }
+    // },
+    // changeLocale(local) {
+    //   this.$i18n.locale = local
+    // }
   },
   computed: {
     ...mapState({
@@ -30,6 +47,9 @@ export default {
       event: state => state.contextmenu.prama.event,
       targetItem: state => state.contextmenu.prama.targetItem
     }),
+    /**
+     * The style of ContextMenuBar about position
+     */
     styleMenu() {
       const x = this.event?.pageX
       let y = this.event?.pageY
@@ -50,23 +70,6 @@ export default {
         left: x + 'px'
       }
       return menuStyle
-    }
-  },
-  methods: {
-    handleClick(menu) {
-      menu.func(this.targetItem)
-      this.$store.commit('HIDE_CONTEXTMENU')
-    },
-    handleSelect(key, keyPath) {
-      console.log(key, keyPath)
-      if (keyPath[0] === 'help') {
-        if (keyPath[1] === 'language') {
-          this.changeLocale(key)
-        }
-      }
-    },
-    changeLocale(local) {
-      this.$i18n.locale = local
     }
   }
 }

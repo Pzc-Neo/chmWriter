@@ -8,7 +8,6 @@
     </div>
     <div class="col bottom">
       <div class="left">
-        <!-- <el-tag :type="tagTypes[item.type]">{{ types[item.type] }}</el-tag> -->
         <el-tag>{{ item.source }}</el-tag>
       </div>
       <div class="right">
@@ -31,22 +30,6 @@ export default {
   data() {
     return {
       tagTypes: ['', 'success', 'danger', 'warning']
-    }
-  },
-  computed: {
-    types() {
-      return [
-        this.$t('writing.type.normal'),
-        this.$t('writing.type.transition').substr(0, 5),
-        this.$t('writing.type.important')
-      ]
-    },
-    status() {
-      return [
-        this.$t('writing.status.first'),
-        this.$t('writing.status.second'),
-        this.$t('writing.status.final')
-      ]
     }
   }
 }

@@ -1,7 +1,8 @@
 <template>
   <div class="info_box">
     <div class="header" @click="isShowContent = !isShowContent">
-      {{ title }}
+      <span>{{ title }}</span>
+      <i v-if="!isEmpty" class="el-icon-tickets"></i>
     </div>
     <div class="content" v-show="isShowContent">
       <slot></slot>
@@ -15,6 +16,10 @@ export default {
     title: {
       type: String,
       default: 'Info'
+    },
+    isEmpty: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -35,6 +40,9 @@ export default {
     line-height: $dtb-line-height;
     text-align: center;
     user-select: none;
+    i {
+      margin-left: $dtb-margin;
+    }
   }
   .content {
     padding: 2px 6px;

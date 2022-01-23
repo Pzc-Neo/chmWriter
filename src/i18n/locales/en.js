@@ -12,6 +12,17 @@ export default {
     ch: 'Chiness',
     en: 'English'
   },
+  contextMenuBar: {
+    new: 'New',
+    newSilbling: 'New Silbling',
+    newChild: 'New Child',
+    rename: 'Rename',
+    detail: 'Detail',
+    delete: 'Delete',
+    close: 'Close',
+    closeOthers: 'Close Others',
+    reveal: 'Reveal in Side Bar'
+  },
   sideBar: {
     data: 'Data',
     writing: 'Writing',
@@ -55,7 +66,8 @@ export default {
     rate: 'Rate',
     is_export: 'Export',
     words: 'Words',
-    saved: 'Saved'
+    saved: 'Saved',
+    foreshadowing: 'Foreshadowing'
   },
   character: {
     name: 'Name',

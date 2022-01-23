@@ -3,9 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import i18n from './i18n'
-import Db from './db'
-import './plugins/element'
 import * as echarts from 'echarts'
+
+import Db from './db'
+import './plugins/elementUI'
+import '@/prototype/base'
+import '@/prototype/elementUI'
 
 import VueHotkey from 'v-hotkey'
 Vue.use(VueHotkey)

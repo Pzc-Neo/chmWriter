@@ -1,3 +1,9 @@
+/**
+ * Count words
+ * @param {String} content text content
+ * @param {Number} languageMode 0: Chiness, 1: English, 2: Japanese
+ * @returns
+ */
 export const countWords = function (content, languageMode) {
   // 匹配的值数组
   let matchWords = []

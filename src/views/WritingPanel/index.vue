@@ -30,8 +30,8 @@
         style="height: 100%"
       ></el-empty>
       <el-tabs
-        closable
         v-else
+        closable
         v-model="currentTabId"
         type="card"
         class="tab_bar"
@@ -44,19 +44,63 @@
           :label="item.title"
           :name="item.id"
           class="editor_container"
-          @dblclick="removeTab(item.id)"
           :style="{ width: editorWidth }"
         >
-          <CmEditor :item="item" />
+          <span
+            slot="label"
+            @dblclick="removeTab(item.id)"
+            @contextmenu.prevent="showTabContextMenu($event, item)"
+          >
+            <!-- <i v-show="item.isChanged" class="el-icon-date"></i> -->
+            <span v-show="item.isChanged">*</span>
+            {{ item.title }}
+          </span>
+          <CmEditor
+            :item="item"
+            @change="handleEditorChange"
+            @countWord="
+              words => {
+                updateAttr('words', words, item, false)
+              }
+            "
+          />
         </el-tab-pane>
       </el-tabs>
     </ContentBar>
     <DetailBar :item="currentItem">
       <InfoBox :title="$t('detailBar.attribute')">
-        <AttrBox :item="currentItem" />
+        <AttrBox
+          :item="currentItem"
+          @updateAttr="updateAttr"
+          @changeEditorWidth="
+            width => {
+              this.editorWidth = width + '%'
+            }
+          "
+        />
       </InfoBox>
-      <InfoBox :title="$t('detailBar.note')">
-        <TextareaBox :content="currentItem.note" />
+      <InfoBox :title="$t('detailBar.note')" :isEmpty="!currentItem.note">
+        <TextareaBox
+          :content.sync="currentItem.note"
+          @change="
+            newContent => {
+              updateAttr('note', newContent, currentItem)
+            }
+          "
+        />
+      </InfoBox>
+      <InfoBox
+        :title="$t('writing.foreshadowing')"
+        :isEmpty="!currentItem.foreshadowing"
+      >
+        <TextareaBox
+          :content.sync="currentItem.foreshadowing"
+          @change="
+            newContent => {
+              updateAttr('foreshadowing', newContent, currentItem)
+            }
+          "
+        />
       </InfoBox>
     </DetailBar>
   </div>
@@ -77,11 +121,13 @@ import ChapterItem from './components/ChapterItem'
 
 import { menuListGroupBarFactory, menuListGroupFactory } from './menuList/group'
 import { menuListItemBarFactory, menuListItemFactory } from './menuList/item'
+import { menuListTabFactory } from './menuList/tab'
 
 import { getItemFactory } from '@/db/module/itemFactory'
 
 import { listToTree } from '@/util/base'
 
+import { scrollToView } from '@/util/dom'
 export default {
   components: {
     GroupBar,
@@ -108,6 +154,7 @@ export default {
       menuListGroup: menuListGroupFactory.call(this),
       menuListItem: menuListItemFactory.call(this),
       menuListItemBar: menuListItemBarFactory.call(this),
+      menuListTab: menuListTabFactory.call(this),
       groupList: [],
       itemList: [],
       currentGroup: {},
@@ -116,6 +163,15 @@ export default {
     }
   },
   methods: {
+    init() {
+      this.groupList = this.getGroups()
+
+      const config = this.$db.getConfig('last_chapter_group_id')
+      this.changeToGroup(config.value)
+    },
+    handleEditorChange(item, newContent) {
+      item.isChanged = true
+    },
     getGroups() {
       const temp = this.$db.getGroups(this.groupTableName)
       return listToTree(temp)
@@ -151,7 +207,12 @@ export default {
     },
     changeToGroup(groupId) {
       this.itemList = this.getItems(groupId)
-      const group = this.getGroupFromLocal(groupId)
+      const group = this.getGroupFromDb(groupId)
+      if (group === undefined) {
+        this.$alert('group: ', group)
+        return
+      }
+
       this.currentGroup = group
       this.$db.setConfig('last_chapter_group_id', groupId)
       this.$store.commit('HIDE_CONTEXTMENU')
@@ -160,11 +221,16 @@ export default {
      * @param {String | Object} item item object or item's id
      */
     changeToItem(itemId) {
-      const item = this.getItemFromLocal(itemId)
+      if (this.currentTabId === itemId) return
+
+      const item = this.getItemFromDb(itemId)
       if (item === undefined) {
         this.$alert('item is undefined. id: ' + itemId)
         return
       }
+
+      this.$set(item, 'isChanged', false)
+
       this.$store.state.writing.chapter.current = item
 
       this.currentItem = item
@@ -176,6 +242,11 @@ export default {
       }
       this.currentTabId = item.id
     },
+    revealItem(item) {
+      this.changeToGroup(item.group_id)
+      // this.changeToItem(item.id)
+      scrollToView('#' + item.id)
+    },
     updateItemSorts(paramData) {
       this.$db.updateItemSorts(this.itemTableName, paramData)
       this.changeToGroup(this.currentGroup.id)
@@ -183,10 +254,16 @@ export default {
     updateGroupSorts(paramData) {
       this.$db.updateGroupSorts(this.groupTableName, paramData)
     },
-    updateAttr(column, value, item) {
+    updateAttr(column, value, item, isShowMessage = true) {
+      // If item is an empty object then do nothing
+      if (Object.keys(item).length === 0) return
+
       this.$db.update(this.itemTableName, column, value, item.id)
       item[column] = value
-      this.$message(`update ${column} success`)
+      item.updated = Date.now()
+      if (isShowMessage) {
+        this.$message(`update ${column} success`)
+      }
     },
     changeItemGroupId(groupId, itemId) {
       this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
@@ -211,6 +288,18 @@ export default {
         this.changeToGroup(this.currentGroup.id)
       }, targetItem)
     },
+    // unfinished
+    handleRemoveTab(targetId) {
+      const index = this.itemList.findIndex(item => {
+        return item.id === targetId
+      })
+      if (index !== -1) {
+        if (this.itemList[index].isChanged === true) {
+          this.$confirm(() => {})
+        }
+      }
+    },
+    // targetId is item's id
     removeTab(targetId) {
       targetId = targetId || this.currentTabId
       const tabs = this.tabList
@@ -221,6 +310,7 @@ export default {
             const nextTab = tabs[index + 1] || tabs[index - 1]
             if (nextTab) {
               activeId = nextTab.id
+              this.changeToItem(activeId)
             }
           }
         })
@@ -228,10 +318,30 @@ export default {
 
       this.currentTabId = activeId
       this.tabList = tabs.filter(tab => tab.id !== targetId)
+      if (this.tabList.length === 0) {
+        this.currentItem = {}
+      }
+    },
+    removeOtherTabs(tabId) {
+      this.tabList = this.tabList.filter(tab => tab.id === tabId)
+      this.changeToItem(tabId)
     },
     handleTabClick(tab) {
       const itemId = tab.name
       this.changeToItem(itemId)
+    },
+    showTabContextMenu(event, targetItem) {
+      // //  Event.srcElement.id: tab-ZwyPpPUkPT2aZPPFfGINn,
+      // //  Remove 'tab-' will get item's id.
+      // const itemId = event.srcElement.id.substr(4)
+      // if (itemId === '') return
+
+      const param = {
+        event,
+        targetItem,
+        menuList: this.menuListTab
+      }
+      this.$store.commit('SHOW_CONTEXTMENU', param)
     },
     newGroup(pid, sort) {
       this.$prompt(title => {
@@ -251,7 +361,6 @@ export default {
     },
     saveChapter(content, itemId) {
       if (content === undefined || itemId === undefined) {
-        // this.$bus.$emit('writing:save_content')
         this.$alert(`content: ${content}; itemId: ${itemId}`, 'error')
         return
       }
@@ -263,13 +372,11 @@ export default {
         return item.id === itemId
       })
       this.itemList[index].content = content
+      this.itemList[index].isChanged = false
     }
   },
   mounted() {
-    this.groupList = this.getGroups()
-
-    const config = this.$db.getConfig('last_chapter_group_id')
-    this.changeToGroup(config.value)
+    this.init()
 
     this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
       this.saveChapter(content, itemId)
@@ -277,26 +384,10 @@ export default {
     this.$bus.$on('writing.cmEditor:close_current_tab', () => {
       this.removeTab()
     })
-
-    this.$bus.$on('attrBar:changeEditorWidth', value => {
-      this.editorWidth = value + '%'
-    })
-
-    this.$bus.$on('writing.attrBox:updateAttr', (column, value, itemId) => {
-      this.updateAttr(column, value, itemId)
-    })
   },
   beforeDestroy() {
     this.$bus.$off('writing.cmEditor:save_content', (content, itemId) => {
       this.saveChapter(content, itemId)
-    })
-
-    this.$bus.$off('attrBar:changeEditorWidth', value => {
-      this.editorWidth = value + '%'
-    })
-
-    this.$bus.$off('writing.attrBox:updateAttr', (column, value, itemId) => {
-      this.updateAttr(column, value, itemId)
     })
   },
   computed: {
@@ -306,7 +397,7 @@ export default {
         //   keyup: this.saveChapter
         // },
         // 'ctrl+w': {
-        //   keyup: e => {
+        //   keyup: event => {
         //     this.removeTab()
         //   }
         // }
