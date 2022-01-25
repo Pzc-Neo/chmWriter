@@ -18,27 +18,11 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-  // data() {
-  //   return {
-  //     activeIndex: '1'
-  //   }
-  // },
   methods: {
     handleClick(menu) {
       menu.func(this.targetItem)
       this.$store.commit('HIDE_CONTEXTMENU')
     }
-    // handleSelect(key, keyPath) {
-    //   console.log(key, keyPath)
-    //   if (keyPath[0] === 'help') {
-    //     if (keyPath[1] === 'language') {
-    //       this.changeLocale(key)
-    //     }
-    //   }
-    // },
-    // changeLocale(local) {
-    //   this.$i18n.locale = local
-    // }
   },
   computed: {
     ...mapState({

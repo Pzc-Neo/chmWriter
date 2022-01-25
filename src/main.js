@@ -6,7 +6,7 @@ import i18n from './i18n'
 import * as echarts from 'echarts'
 
 import Db from './db'
-import './plugins/elementUI'
+import '@/plugins/elementUI'
 import '@/prototype/base'
 import '@/prototype/elementUI'
 
@@ -30,6 +30,6 @@ new Vue({
   },
   mounted() {
     const locale = this.$db.getConfig('locale')
-    this.$i18n.locale = locale.value
+    this.$i18n.locale = locale
   }
 }).$mount('#app')

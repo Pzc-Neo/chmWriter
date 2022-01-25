@@ -1,10 +1,15 @@
 // import Vue from 'vue'
 import Database from 'better-sqlite3'
 import { tableChapter } from './module/tables'
+import fs from 'fs'
 class Db {
   constructor(dbPath, option) {
-    this.db = this.connect(dbPath, option)
     this.dbPath = dbPath
+    this.defaultDbPath = 'D:\\data\\default_datebase.db'
+    this.defaultOption = {
+      // verbose: console.log
+    }
+    this.db = this.connect(dbPath, option)
   }
 
   /**
@@ -14,13 +19,13 @@ class Db {
    * @returns database reference
    */
   connect(dbPath, option) {
-    dbPath = dbPath || 'D:\\data\\default_datebase.db'
+    const isExist = fs.existsSync(dbPath)
+    if (!isExist) {
+      dbPath = this.defaultDbPath
+    }
+
     this.dbPath = dbPath
-    option =
-      option ||
-      {
-        // verbose: console.log
-      }
+    option = option || this.defaultOption
     const db = new Database(dbPath, option)
     return db
   }
@@ -54,7 +59,7 @@ class Db {
   getConfig(property) {
     const query = 'SELECT * FROM configs WHERE property=?'
     const stmt = this.db.prepare(query)
-    return stmt.all([property])[0]
+    return stmt.all([property])[0]?.value
   }
 
   setConfig(property, value) {
@@ -86,6 +91,30 @@ class Db {
     const query = `SELECT * FROM ${tableName} WHERE id=?`
     const stmt = this.db.prepare(query)
     return stmt.all([itemId])[0]
+  }
+
+  /**
+   * Get items that doesn't belong to anygroup
+   * @param {String} groupTableName
+   * @param {String} itemTableName
+   * @returns
+   */
+  getItemsNoGroup(groupTableName, itemTableName) {
+    const query = `SELECT * FROM ${itemTableName} WHERE group_id NOT IN (SELECT id FROM ${groupTableName})`
+    const stmt = this.db.prepare(query)
+    return stmt.all()
+  }
+
+  setItemsGroupIdToDefault(groupTableName, itemTableName) {
+    const itemList = this.getItemsNoGroup(groupTableName, itemTableName)
+
+    const date = Date.now()
+    const query = `UPDATE ${itemTableName} SET group_id = ?, updated = ?  WHERE id = ? `
+    const stmt = this.db.prepare(query)
+
+    itemList.forEach(item => {
+      stmt.run(['default', date, item.id])
+    })
   }
 
   deleteById(tableName, itemId) {
@@ -149,6 +178,22 @@ class Db {
       values
     }
     return temp
+  }
+
+  reorganizeSort(itemList) {
+    const list = []
+    list.unshift(itemList)
+
+    while (list.length > 0) {
+      const tempList = list.pop()
+      tempList.forEach((item, index) => {
+        console.log(index, item.sort)
+        if (item.children) {
+          list.push(item.children)
+        }
+      })
+      console.log('---------------------')
+    }
   }
 }
 export default Db

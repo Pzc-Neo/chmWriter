@@ -50,7 +50,7 @@ export const menuListGroupFactory = function () {
         this.$prompt(newTitle => {
           this.$db.update(this.groupTableName, 'title', newTitle, targetItem.id)
           targetItem.title = newTitle
-        }, targetItem)
+        }, targetItem.title)
       }
     },
     {

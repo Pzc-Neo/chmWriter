@@ -1,3 +1,14 @@
+import { nanoid } from 'nanoid'
+/**
+ * I don't use nanoid directly,
+ * because sometime I will use the random string as dom's id
+ * which can't start with number
+ * @param {String} preFix
+ * @returns
+ */
+export const randomStr = function (preFix = 'id') {
+  return preFix + nanoid()
+}
 /**
  *
  * @param {Function} func Target Function
@@ -15,118 +26,6 @@ export const debounce = function (func, time, callback) {
       callback.call(this, func.apply(this, arguments))
     }, time)
   }
-}
-/**
- * Rename an item.
- * @param {Function} callback Callback function will take the result value
- * @param {Object} targetItem The item that you want to rename
- */
-export const getInput = function (callback, targetItem) {
-  this.$prompt(this.$t('message.pleaseInput'), this.$t('action.getInput'), {
-    inputValue: targetItem?.title || '',
-    confirmButtonText: this.$t('message.confirm'),
-    cancelButtonText: this.$t('message.cancel'),
-    inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/, // nonempty
-    inputErrorMessage: this.$t('message.nonempty')
-  })
-    .then(({ value }) => {
-      callback(value.trim())
-      this.$message({
-        type: 'success',
-        message: this.$t('message.rename') + ' ' + this.$t('result.success')
-      })
-    })
-    .catch(() => {
-      this.$message({
-        type: 'info',
-        message: this.$t('message.cancel')
-      })
-    })
-}
-
-export const getConfirm = function (callback, targetItem) {
-  this.$confirm(
-    `${this.$t('action.delete')} ${targetItem?.title}?`,
-    this.$t('result.warning'),
-    {
-      confirmButtonText: this.$t('message.confirm'),
-      cancelButtonText: this.$t('message.cancel'),
-      type: 'warning'
-    }
-  )
-    .then(() => {
-      callback()
-      this.$message({
-        type: 'success',
-        message: this.$t('message.success')
-      })
-    })
-    .catch(() => {
-      this.$message({
-        type: 'info',
-        message: this.$t('message.cancel')
-      })
-    })
-}
-/**
- * Rename an item.
- * @param {String} tableName The Table's name of database which you want to modify
- * @param {Object} targetItem The item that you want to rename
- * @param {String} column The column of table (optional, default is 'title')
- */
-export const rename = function (tableName, targetItem, column = 'title') {
-  this.$prompt(this.$t('message.pleaseInput'), this.$t('message.rename'), {
-    inputValue: targetItem.title,
-    confirmButtonText: this.$t('message.confirm'),
-    cancelButtonText: this.$t('message.cancel'),
-    inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/, // nonempty
-    inputErrorMessage: this.$t('message.nonempty')
-  })
-    .then(({ value }) => {
-      if (value.trim() === targetItem.title) {
-        this.$message({
-          type: 'warning',
-          message: this.$t('result.noChange')
-        })
-      } else {
-        targetItem.title = value.trim()
-        this.$db.update(tableName, column, targetItem.title, targetItem.id)
-        this.$message({
-          type: 'success',
-          message: this.$t('message.rename') + ' ' + this.$t('result.success')
-        })
-      }
-    })
-    .catch(() => {
-      this.$message({
-        type: 'info',
-        message: this.$t('message.cancel')
-      })
-    })
-}
-
-export const deleteGroup = function (targetItem) {
-  this.$confirm(
-    `此操作将永久删除章节：[${targetItem.title}], 是否继续?`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  )
-    .then(() => {
-      this.$message({
-        type: 'success',
-        message: '删除成功!'
-      })
-    })
-    .catch(() => {
-      this.$message({
-        type: 'info',
-        message: '已取消删除'
-      })
-    })
 }
 
 /**
@@ -150,24 +49,16 @@ export const listToTree = (list, root, parentId) => {
     if (item[parentId] === root) {
       result.push(item)
     } else {
-      if (item[parentId] in map) {
-        const parent = map[item[parentId]]
-        parent.children = parent.children || []
-        parent.children.push(item)
+      // Item's parentId not in map means item's parent may be delete,
+      // so set item's parentId to 'default',
+      // every group table from db have a colum that id and title's value is `default`
+      if (!(item[parentId] in map)) {
+        item[parentId] = 'default'
       }
+      const parent = map[item[parentId]]
+      parent.children = parent.children || []
+      parent.children.push(item)
     }
   })
   return result
-}
-
-/**
- * unfinished
- * @param {*} list
- * @param {*} itemId
- */
-export const removeItem = function (list, itemId) {
-  const index = list.findIndex(item => {
-    return item.id === itemId
-  })
-  console.log(index)
 }

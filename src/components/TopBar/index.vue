@@ -74,6 +74,7 @@ export default {
       height: 30px;
       line-height: 30px;
       padding: 0px 7px;
+      cursor: pointer;
     }
     .icon:hover {
       background-color: #56aaff;

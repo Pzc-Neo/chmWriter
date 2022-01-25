@@ -1,10 +1,10 @@
 <template>
   <div class="info_box">
-    <div class="header" @click="isShowContent = !isShowContent">
+    <div class="header" @click="handleClick">
       <span>{{ title }}</span>
       <i v-if="!isEmpty" class="el-icon-tickets"></i>
     </div>
-    <div class="content" v-show="isShowContent">
+    <div class="content" v-show="!isCollapse">
       <slot></slot>
     </div>
   </div>
@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'InfoBox',
   props: {
     title: {
       type: String,
@@ -20,11 +21,15 @@ export default {
     isEmpty: {
       type: Boolean,
       default: true
+    },
+    isCollapse: {
+      type: Boolean,
+      default: false
     }
   },
-  data() {
-    return {
-      isShowContent: true
+  methods: {
+    handleClick() {
+      this.$emit('update:isCollapse', !this.isCollapse)
     }
   }
 }
@@ -40,6 +45,7 @@ export default {
     line-height: $dtb-line-height;
     text-align: center;
     user-select: none;
+    cursor: pointer;
     i {
       margin-left: $dtb-margin;
     }

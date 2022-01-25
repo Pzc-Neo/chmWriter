@@ -5,7 +5,7 @@ Vue.prototype.$ELconfirm = MessageBox.confirm
 Vue.prototype.$ELprompt = MessageBox.prompt
 Vue.prototype.$ELalert = MessageBox.alert
 
-Vue.prototype.$message = function (message, duration = 1000, type = 'success') {
+Vue.prototype.$message = function (message, type = 'success', duration = 1000) {
   this.$ELmessage({
     showClose: true,
     duration,
@@ -14,12 +14,12 @@ Vue.prototype.$message = function (message, duration = 1000, type = 'success') {
   })
 }
 
-Vue.prototype.$prompt = function (callback, targetItem) {
+Vue.prototype.$prompt = function (callback, defaultValue = '') {
   MessageBox.prompt(
     this.$t('message.pleaseInput'),
     this.$t('action.getInput'),
     {
-      inputValue: targetItem?.title || '',
+      inputValue: defaultValue,
       confirmButtonText: this.$t('message.confirm'),
       cancelButtonText: this.$t('message.cancel'),
       inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/, // nonempty
@@ -28,7 +28,7 @@ Vue.prototype.$prompt = function (callback, targetItem) {
   )
     .then(({ value }) => {
       try {
-        callback(value.trim())
+        callback(value)
         Message({
           type: 'success',
           message: this.$t('result.success')
@@ -48,23 +48,52 @@ Vue.prototype.$prompt = function (callback, targetItem) {
     })
 }
 
-Vue.prototype.$confirm = function (callback, targetItem) {
+Vue.prototype.$confirmSync = function (
+  defaultValue = '',
+  type = 'delete',
+  confirmButtonText,
+  cancelButtonText
+) {
+  console.log('confirmSync')
+  return new Promise((resolve, reject) => {
+    MessageBox.confirm(
+      `${this.$t('action.' + type)} ${defaultValue}?`,
+      this.$t('result.warning'),
+      {
+        distinguishCancelAndClose: true,
+        confirmButtonText: confirmButtonText || this.$t('message.confirm'),
+        cancelButtonText: cancelButtonText || this.$t('message.cancel'),
+        type: 'warning'
+      }
+    )
+      .then(confirm => {
+        resolve(confirm)
+      })
+      .catch(action => {
+        resolve(action)
+      })
+  })
+}
+Vue.prototype.$confirm = function (
+  callback,
+  defaultValue = '',
+  type = 'delete',
+  confirmButtonText,
+  cancelButtonText
+) {
   MessageBox.confirm(
-    `${this.$t('action.delete')} ${targetItem?.title}?`,
+    `${this.$t('action.' + type)} ${defaultValue}?`,
     this.$t('result.warning'),
     {
-      confirmButtonText: this.$t('message.confirm'),
-      cancelButtonText: this.$t('message.cancel'),
+      distinguishCancelAndClose: true,
+      confirmButtonText: confirmButtonText || this.$t('message.confirm'),
+      cancelButtonText: cancelButtonText || this.$t('message.cancel'),
       type: 'warning'
     }
   )
-    .then(() => {
+    .then(confirm => {
       try {
-        callback()
-        Message({
-          type: 'success',
-          message: this.$t('result.success')
-        })
+        callback(confirm)
       } catch (e) {
         Message({
           type: 'error',
@@ -72,22 +101,20 @@ Vue.prototype.$confirm = function (callback, targetItem) {
         })
       }
     })
-    .catch(() => {
-      Message({
-        type: 'info',
-        message: this.$t('result.cancel')
-      })
+    .catch(action => {
+      callback(action)
     })
 }
 
 Vue.prototype.$alert = function (info, type = 'warning') {
   MessageBox.alert(info, this.$t(`result.${type}`), {
-    confirmButtonText: this.$t('message.confirm')
-    // callback: action => {
-    //   Message({
-    //     type: 'warning',
-    //     message: `action: ${action}`
-    //   })
-    // }
+    confirmButtonText: this.$t('message.confirm'),
+    callback: action => {
+      console.log(action)
+      // Message({
+      //   type: 'warning',
+      //   message: `action: ${action}`
+      // })
+    }
   })
 }

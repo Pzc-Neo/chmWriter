@@ -4,28 +4,29 @@
   </div>
   <div v-else class="item">
     <div class="col top">
-      <div class="left">
+      <span class="left">
         {{ status[item.status] }}
-      </div>
-      <div class="right">
+      </span>
+      <span class="right">
         <span class="left">{{ item.words }}</span>
         <span class="right">{{ item.rate }}%</span>
-      </div>
+      </span>
     </div>
     <div class="col middle">
       {{ item.title }}
     </div>
     <div class="col bottom">
-      <div class="left">
+      <span class="left">
         <el-tag :type="tagTypes[item.type]">{{ types[item.type] }}</el-tag>
-      </div>
-      <div class="right">{{ $formatTime(item.updated) }}</div>
+      </span>
+      <span class="right">{{ $formatTime(item.updated) }}</span>
     </div>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'ChapterItem',
   props: {
     item: {
       type: Object,
@@ -42,16 +43,16 @@ export default {
   computed: {
     types() {
       return [
-        this.$t('writing.type.normal'),
-        this.$t('writing.type.transition').substr(0, 5),
-        this.$t('writing.type.important')
+        this.$t('writing.types.normal'),
+        this.$t('writing.types.transition').substr(0, 5),
+        this.$t('writing.types.important')
       ]
     },
     status() {
       return [
-        this.$t('writing.status.first'),
-        this.$t('writing.status.second'),
-        this.$t('writing.status.final')
+        this.$t('writing.statuss.first'),
+        this.$t('writing.statuss.second'),
+        this.$t('writing.statuss.final')
       ]
     }
   }

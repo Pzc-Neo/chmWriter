@@ -1,11 +1,11 @@
-import { nanoid } from 'nanoid'
+import { randomStr } from '@/util/base'
 
 export const ChapterGroupFactory = function (title, pid, sort) {
   const date = Date.now()
   return {
     tableName: 'chapter_groups',
     data: {
-      id: nanoid(),
+      id: randomStr(),
       title: title,
       pid: pid || 'root',
       is_export: 1,
@@ -21,7 +21,7 @@ export const ChapterFactory = function (title, groupId, sort) {
   return {
     tableName: 'chapters',
     data: {
-      id: nanoid(),
+      id: randomStr(),
       group_id: groupId,
       title: title,
       created: date,

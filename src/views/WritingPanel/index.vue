@@ -3,6 +3,7 @@
     <DialogBar />
     <GroupBar
       :itemList="groupList"
+      @updateAttr="updateAttrGroup"
       :currentGroup="currentGroup"
       :menuList="menuListGroup"
       :menuListBar="menuListGroupBar"
@@ -35,7 +36,7 @@
         v-model="currentTabId"
         type="card"
         class="tab_bar"
-        @tab-remove="removeTab"
+        @tab-remove="handleRemoveTab"
         @tab-click="handleTabClick"
       >
         <el-tab-pane
@@ -48,19 +49,18 @@
         >
           <span
             slot="label"
-            @dblclick="removeTab(item.id)"
+            @dblclick="handleRemoveTab(item.id)"
             @contextmenu.prevent="showTabContextMenu($event, item)"
           >
-            <!-- <i v-show="item.isChanged" class="el-icon-date"></i> -->
             <span v-show="item.isChanged">*</span>
             {{ item.title }}
           </span>
           <CmEditor
             :item="item"
-            @change="handleEditorChange"
+            @change="handleEditorContentChange"
             @countWord="
               words => {
-                updateAttr('words', words, item, false)
+                updateAttrItem('words', words, item, false)
               }
             "
           />
@@ -68,10 +68,13 @@
       </el-tabs>
     </ContentBar>
     <DetailBar :item="currentItem">
-      <InfoBox :title="$t('detailBar.attribute')">
+      <InfoBox
+        :title="$t('detailBar.attribute')"
+        :isCollapse.sync="infoBoxCollapse.attribute"
+      >
         <AttrBox
           :item="currentItem"
-          @updateAttr="updateAttr"
+          @updateAttr="updateAttrItem"
           @changeEditorWidth="
             width => {
               this.editorWidth = width + '%'
@@ -79,12 +82,16 @@
           "
         />
       </InfoBox>
-      <InfoBox :title="$t('detailBar.note')" :isEmpty="!currentItem.note">
+      <InfoBox
+        :title="$t('detailBar.note')"
+        :isEmpty="!currentItem.note"
+        :isCollapse.sync="infoBoxCollapse.note"
+      >
         <TextareaBox
           :content.sync="currentItem.note"
           @change="
             newContent => {
-              updateAttr('note', newContent, currentItem)
+              updateAttrItem('note', newContent, currentItem)
             }
           "
         />
@@ -92,12 +99,13 @@
       <InfoBox
         :title="$t('writing.foreshadowing')"
         :isEmpty="!currentItem.foreshadowing"
+        :isCollapse.sync="infoBoxCollapse.foreshadowing"
       >
         <TextareaBox
           :content.sync="currentItem.foreshadowing"
           @change="
             newContent => {
-              updateAttr('foreshadowing', newContent, currentItem)
+              updateAttrItem('foreshadowing', newContent, currentItem)
             }
           "
         />
@@ -107,6 +115,8 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron'
+
 import GroupBar from '@/views/Common/GroupBar'
 import ItemBar from '@/views/Common/ItemBar'
 import ContentBar from '@/views/Common/ContentBar'
@@ -124,11 +134,11 @@ import { menuListItemBarFactory, menuListItemFactory } from './menuList/item'
 import { menuListTabFactory } from './menuList/tab'
 
 import { getItemFactory } from '@/db/module/itemFactory'
-
 import { listToTree } from '@/util/base'
-
 import { scrollToView } from '@/util/dom'
+
 export default {
+  name: 'WritingPanel',
   components: {
     GroupBar,
     ItemBar,
@@ -159,22 +169,32 @@ export default {
       itemList: [],
       currentGroup: {},
       currentItem: {},
-      editorWidth: '100%'
+      editorWidth: '100%',
+      infoBoxCollapse: {
+        attribute: false,
+        note: false,
+        foreshadowing: false
+      }
     }
   },
   methods: {
+    /**
+     * Get groupList, ItemList and change to last one
+     */
     init() {
       this.groupList = this.getGroups()
+      const lastGroupId = this.$db.getConfig(this.last_id_group)
+      this.changeToGroup(lastGroupId)
 
-      const config = this.$db.getConfig('last_chapter_group_id')
-      this.changeToGroup(config.value)
-    },
-    handleEditorChange(item, newContent) {
-      item.isChanged = true
+      const lastItemId = this.$db.getConfig(this.last_id_item)
+      this.changeToItem(lastItemId)
+
+      const jsonStr = this.$db.getConfig('info_box_collapse_writing')
+      this.infoBoxCollapse = JSON.parse(jsonStr)
     },
     getGroups() {
-      const temp = this.$db.getGroups(this.groupTableName)
-      return listToTree(temp)
+      const groups = this.$db.getGroups(this.groupTableName)
+      return listToTree(groups)
     },
     getGroupFromDb(groupId) {
       return this.$db.getGroup(this.groupTableName, groupId)
@@ -206,97 +226,178 @@ export default {
       }
     },
     changeToGroup(groupId) {
-      this.itemList = this.getItems(groupId)
-      const group = this.getGroupFromDb(groupId)
+      if (this.currentGroup.id === groupId) return
+
+      let group = this.getGroupFromLocal(groupId)
       if (group === undefined) {
-        this.$alert('group: ', group)
+        group = this.getGroupFromLocal('default')
+        if (group !== undefined) {
+          this.changeToGroup('default')
+        } else {
+          this.$alert(this.$t('info.notExist'))
+        }
         return
       }
 
+      this.itemList = this.getItems(groupId)
       this.currentGroup = group
-      this.$db.setConfig('last_chapter_group_id', groupId)
+      this.$db.setConfig(this.last_id_group, groupId)
       this.$store.commit('HIDE_CONTEXTMENU')
     },
-    /**
-     * @param {String | Object} item item object or item's id
-     */
     changeToItem(itemId) {
-      if (this.currentTabId === itemId) return
+      if (this.currentItem.id === itemId) return
 
-      const item = this.getItemFromDb(itemId)
+      const item = this.getItemFromLocal(itemId)
       if (item === undefined) {
         this.$alert('item is undefined. id: ' + itemId)
         return
       }
 
       this.$set(item, 'isChanged', false)
+      // Will update when editor content change
+      this.$set(item, 'newContent', item.content)
 
-      this.$store.state.writing.chapter.current = item
-
-      this.currentItem = item
+      // Add to tabList
       const index = this.tabList.findIndex(_item => {
         return _item.id === item.id
       })
       if (index === -1) {
         this.tabList.push(item)
       }
+
+      this.currentItem = item
+      this.$db.setConfig(this.last_id_item, item.id)
       this.currentTabId = item.id
+      this.$store.state.writing.chapter.current = item
     },
     revealItem(item) {
       this.changeToGroup(item.group_id)
-      // this.changeToItem(item.id)
       scrollToView('#' + item.id)
     },
-    updateItemSorts(paramData) {
-      this.$db.updateItemSorts(this.itemTableName, paramData)
+    updateItemSorts(diffData) {
+      this.$db.updateItemSorts(this.itemTableName, diffData)
       this.changeToGroup(this.currentGroup.id)
     },
-    updateGroupSorts(paramData) {
-      this.$db.updateGroupSorts(this.groupTableName, paramData)
+    updateGroupSorts(diffData) {
+      this.$db.updateGroupSorts(this.groupTableName, diffData)
     },
-    updateAttr(column, value, item, isShowMessage = true) {
+    updateAttrGroup(column, value, group, isShowMessage = true) {
+      // If item is an empty object then do nothing
+      if (Object.keys(group).length === 0) return
+
+      // Update db
+      this.$db.update(this.groupTableName, column, value, group.id)
+      // Update local
+      group[column] = value
+      group.updated = Date.now()
+
+      if (isShowMessage) {
+        this.$message(
+          `${this.$t('action.update')} ${this.$t(
+            'writing.' + column
+          )} ${this.$t('result.success')}`
+        )
+      }
+    },
+    updateAttrItem(column, value, item, isShowMessage = true) {
       // If item is an empty object then do nothing
       if (Object.keys(item).length === 0) return
 
+      // Update db
       this.$db.update(this.itemTableName, column, value, item.id)
+      // Update local
       item[column] = value
       item.updated = Date.now()
+
+      if (column === 'words' || column === 'target_words') {
+        const rate = Math.floor((item.words / item.target_words) * 100)
+        this.updateAttrItem('rate', rate, item, false)
+      }
       if (isShowMessage) {
-        this.$message(`update ${column} success`)
+        this.$message(
+          `${this.$t('action.update')} ${this.$t(
+            'writing.' + column
+          )} ${this.$t('result.success')}`
+        )
       }
     },
     changeItemGroupId(groupId, itemId) {
+      // Get item's max sort num of target group
+      const query = `select max(sort) from ${this.itemTableName} where group_id=?`
+
+      const stmt = this.$db.db.prepare(query)
+      let sort = stmt.all([groupId])[0]['max(sort)']
+      if (sort === null) {
+        sort = 0
+      }
+
       this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
+      this.$db.update(this.itemTableName, 'sort', sort + 1, itemId)
+
       this.refreshItemList()
     },
     refreshGroupList() {
       this.groupList = this.getGroups()
     },
     refreshItemList() {
-      this.changeToGroup(this.currentGroup.id)
+      // this.changeToGroup(this.currentGroup.id)
+      this.itemList = this.getItems(this.currentGroup.id)
     },
-    deleteGroup(targetItem) {
-      this.$confirm(() => {
+    async deleteGroup(targetItem) {
+      if (targetItem.id === 'default') {
+        this.$alert(this.$t('info.canNotDelete'))
+        return
+      }
+      const result = await this.$confirmSync(targetItem.title)
+      if (result === 'confirm') {
         this.$db.deleteById(this.groupTableName, targetItem.id)
+        this.$db.setItemsGroupIdToDefault(
+          this.groupTableName,
+          this.itemTableName
+        )
         this.refreshGroupList()
-      }, targetItem)
+      }
     },
-    deleteItem(targetItem) {
-      this.$confirm(() => {
+    async deleteItem(targetItem) {
+      const result = await this.$confirmSync(targetItem.title)
+      if (result === 'confirm') {
         this.$db.deleteById(this.itemTableName, targetItem.id)
         this.removeTab(targetItem.id)
         this.changeToGroup(this.currentGroup.id)
-      }, targetItem)
+      }
     },
-    // unfinished
-    handleRemoveTab(targetId) {
-      const index = this.itemList.findIndex(item => {
-        return item.id === targetId
-      })
-      if (index !== -1) {
-        if (this.itemList[index].isChanged === true) {
-          this.$confirm(() => {})
+    handleEditorContentChange(item, newContent) {
+      item.newContent = newContent
+      item.isChanged = true
+    },
+    async handleRemoveTab(targetId) {
+      const item = this.getItemFromLocal(targetId)
+      if (item.isChanged === true) {
+        const result = await this.$confirmSync(
+          item.title,
+          'save',
+          this.$t('action.save'),
+          this.$t('action.notSave')
+        )
+        switch (result) {
+          // save
+          case 'confirm':
+            this.saveContent(item.newContent, item.id)
+            this.removeTab(targetId)
+            break
+          // not save
+          case 'cancel':
+            this.$message(this.$t('action.notSave'), 'info')
+            this.removeTab(targetId)
+            break
+          // close MessageBox and cancel
+          case 'close':
+            this.$message(this.$t('message.cancel'), 'info')
+            break
+          default:
         }
+      } else {
+        this.removeTab(targetId)
       }
     },
     // targetId is item's id
@@ -304,26 +405,34 @@ export default {
       targetId = targetId || this.currentTabId
       const tabs = this.tabList
       let activeId = this.currentTabId
+
       if (activeId === targetId) {
         tabs.forEach((tab, index) => {
           if (tab.id === targetId) {
             const nextTab = tabs[index + 1] || tabs[index - 1]
             if (nextTab) {
               activeId = nextTab.id
-              this.changeToItem(activeId)
+              // this.changeToItem(activeId)
             }
           }
         })
       }
-
       this.currentTabId = activeId
       this.tabList = tabs.filter(tab => tab.id !== targetId)
+
       if (this.tabList.length === 0) {
         this.currentItem = {}
       }
     },
     removeOtherTabs(tabId) {
-      this.tabList = this.tabList.filter(tab => tab.id === tabId)
+      for (let i = 0; i < this.tabList.length; i++) {
+        const tab = this.tabList[i]
+        // this.tabList.forEach(async tab => {
+        if (tab.id !== tabId) {
+          this.handleRemoveTab(tab.id)
+        }
+        // })
+      }
       this.changeToItem(tabId)
     },
     handleTabClick(tab) {
@@ -349,6 +458,7 @@ export default {
         const item = new Factory(title, pid, sort)
         this.$db.insert(item)
         this.refreshGroupList()
+        this.$db.reorganizeSort(this.groupList)
       })
     },
     newItem(sort) {
@@ -359,43 +469,47 @@ export default {
         this.refreshItemList()
       })
     },
-    saveChapter(content, itemId) {
-      if (content === undefined || itemId === undefined) {
-        this.$alert(`content: ${content}; itemId: ${itemId}`, 'error')
-        return
+    saveContent(content, itemId) {
+      console.log(new Error())
+      let item = {}
+      if (itemId === undefined) {
+        item = this.currentItem
+      } else {
+        item = this.getItemFromLocal(itemId)
       }
-      this.$db.update(this.itemTableName, 'content', content, itemId)
 
-      this.$message(this.$t('writing.saved'))
+      if (content === undefined) {
+        content = item.newContent
+      }
 
-      const index = this.itemList.findIndex(item => {
-        return item.id === itemId
-      })
-      this.itemList[index].content = content
-      this.itemList[index].isChanged = false
+      this.updateAttrItem('content', content, item)
+      item.isChanged = false
     }
   },
-  mounted() {
-    this.init()
-
-    this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
-      this.saveChapter(content, itemId)
-    })
-    this.$bus.$on('writing.cmEditor:close_current_tab', () => {
-      this.removeTab()
-    })
-  },
-  beforeDestroy() {
-    this.$bus.$off('writing.cmEditor:save_content', (content, itemId) => {
-      this.saveChapter(content, itemId)
-    })
-  },
   computed: {
+    last_id_group() {
+      return (
+        'last_id_' +
+        this.groupTableName.substring(0, this.groupTableName.length - 1)
+      )
+    },
+    last_id_item() {
+      return (
+        'last_id_' +
+        this.itemTableName.substring(0, this.itemTableName.length - 1)
+      )
+    },
     keymap() {
       return {
-        // 'ctrl+s': {
-        //   keyup: this.saveChapter
-        // },
+        'ctrl+s': {
+          keyup: () => {
+            if (this.$store.state.currentPanel === '/writing') {
+              this.saveContent()
+            } else {
+              console.log(this.$store.state.currentPanel)
+            }
+          }
+        }
         // 'ctrl+w': {
         //   keyup: event => {
         //     this.removeTab()
@@ -403,6 +517,45 @@ export default {
         // }
       }
     }
+  },
+  watch: {
+    shortcutKey(newValue) {
+      console.log(newValue)
+    },
+    infoBoxCollapse: {
+      deep: true,
+      handler(newData) {
+        try {
+          const jsonStr = JSON.stringify(newData)
+          this.$db.setConfig('info_box_collapse_writing', jsonStr)
+        } catch (e) {
+          this.$alert(e)
+        }
+      }
+    }
+  },
+  mounted() {
+    this.init()
+
+    this.$bus.$on('writing:saveContent', (content, item) => {
+      this.saveContent(content, item)
+    })
+    // this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
+    //   this.saveContent(content, itemId)
+    // })
+    // this.$bus.$on('writing.cmEditor:close_current_tab', () => {
+    //   this.removeTab()
+    // })
+    ipcRenderer.on('save', (event, message) => {
+      console.log(this.$store.state.currentPanel)
+      console.log(this.$store.state.currentPanel === '/writing')
+      console.log('save')
+    })
+  },
+  beforeDestroy() {
+    // this.$bus.$off('writing.cmEditor:save_content', (content, itemId) => {
+    //   this.saveContent(content, itemId)
+    // })
   }
 }
 </script>
@@ -415,6 +568,7 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
+    user-select: none;
     /deep/.el-tabs__header {
       margin: 0px;
       .el-tabs__item {

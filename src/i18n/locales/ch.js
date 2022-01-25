@@ -1,6 +1,32 @@
 export default {
   info: {
-    app_name: '城墨写作'
+    app_name: '城墨写作',
+    default: '默认',
+    canNotDelete: '不能删除',
+    notExist: '不存在'
+  },
+  action: {
+    update: '更新',
+    delete: '删除',
+    save: '保存',
+    notSave: '不保存',
+    getInput: '获取输入',
+    modify: '修改'
+  },
+  message: {
+    confirm: '确定',
+    cancel: '取消',
+    nonempty: '不能为空',
+    empty: '空',
+    rename: '重命名',
+    pleaseInput: '请输入内容'
+  },
+  result: {
+    success: '成功',
+    error: '错误',
+    warning: '警告',
+    info: '信息',
+    noChange: '没有任何改变'
   },
   menuBar: {
     file: '文件',
@@ -47,20 +73,24 @@ export default {
   },
   writing: {
     nothingOpen: '什么都没有打开',
-    type: {
-      name: '类别',
+    title: '标题',
+    content: '内容',
+    type: '类别',
+    types: {
       normal: '普通',
       important: '重点',
       transition: '过渡'
     },
     language: '语言',
-    status: { name: '状态', first: '初稿', second: '二稿', final: '终稿' },
+    status: '状态',
+    statuss: { first: '初稿', second: '二稿', final: '终稿' },
     created: '创建',
     updated: '修改',
     width: '宽度',
     rate: '进度',
     is_export: '导出',
     words: '字数',
+    targetWords: '目标字数',
     saved: '已保存',
     foreshadowing: '伏笔'
   },
@@ -74,25 +104,5 @@ export default {
     birthday: '生日',
     hobby: '爱好',
     description: '描述'
-  },
-  action: {
-    update: '更新',
-    delete: '删除',
-    save: '保存',
-    getInput: '获取输入'
-  },
-  message: {
-    confirm: '确定',
-    cancel: '取消',
-    nonempty: '不能为空',
-    rename: '重命名',
-    pleaseInput: '请输入内容'
-  },
-  result: {
-    success: '成功',
-    error: '错误',
-    warning: '警告',
-    info: '信息',
-    noChange: '没有任何改变'
   }
 }

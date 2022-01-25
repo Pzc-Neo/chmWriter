@@ -5,18 +5,22 @@
     :style="{ width }"
     @contextmenu="showBarMenu"
   >
+    <el-empty
+      v-if="itemList.length === 0"
+      :image-size="120"
+      :description="$t('message.empty')"
+      style="height: 100%"
+    ></el-empty>
     <el-tree
+      ref="tree"
       :data="itemList"
       node-key="id"
       :expand-on-click-node="false"
-      default-expand-all
+      :default-expanded-keys="expandedKeys"
       :highlight-current="true"
       :current-node-key="currentGroup.id"
-      @node-drag-start="handleDragStart"
-      @node-drag-enter="handleDragEnter"
-      @node-drag-leave="handleDragLeave"
-      @node-drag-over="handleDragOver"
-      @node-drag-end="handleDragEnd"
+      @node-expand="handleNodeExpand"
+      @node-collapse="handleNodeCollapse"
       @node-drop="handleDrop"
       @node-click="changeTo"
       @node-contextmenu="showContextmenu"
@@ -31,7 +35,11 @@
         :title="data.title"
         @drop="handleItemDrop($event, data)"
       >
-        {{ data.title }}
+        <template v-if="data.id === 'default'">
+          <i class="el-icon-folder"></i>
+          <span>{{ $t('info.' + data.title) }}</span>
+        </template>
+        <template v-else>{{ data.title }}</template>
       </span>
     </el-tree>
   </div>
@@ -40,6 +48,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  name: 'GroupBar',
   props: {
     itemList: {
       type: Array,
@@ -70,50 +79,30 @@ export default {
       }
     }
   },
-  mounted() {},
   data() {
     return {}
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.$refs.tree.setCurrentKey(this.currentGroup.id)
+    })
+  },
+  watch: {
+    currentGroup() {
+      this.$refs.tree.setCurrentKey(this.currentGroup.id)
+    }
+  },
   methods: {
     changeTo(data, clickedNode) {
-      // this.currentGroup = data
       this.$emit('changeTo', data.id)
     },
-    handleDragStart(node, ev) {
-      console.log('drag start', node)
-    },
-    handleDragEnter(draggingNode, dropNode, ev) {
-      console.log('tree drag enter: ', dropNode.label)
-    },
-    handleDragLeave(draggingNode, dropNode, ev) {
-      console.log('tree drag leave: ', dropNode.label)
-    },
-    handleDragOver(draggingNode, dropNode, ev) {
-      console.log('tree drag over: ', dropNode.label)
-    },
-    handleDragEnd(draggingNode, dropNode, dropType, ev) {
-      console.log('tree drag end: ', dropNode && dropNode.label, dropType)
-    },
-    handleDrop1(draggingNode, dropNode, dropType, ev) {
-      console.log('tree drop: ', draggingNode, dropNode, dropType)
-      console.log(this.itemList)
-      switch (dropType) {
-        case 'before':
-          break
-        case 'after':
-          break
-        case 'inner':
-          break
-        default:
-      }
-    },
+
     // 拖拽事件 参数依次为：被拖拽节点对应的 Node、结束拖拽时最后进入的节点、被拖拽节点的放置位置（before、after、inner）、event
     handleDrop: function (draggingNode, dropNode, dropType, ev) {
-      var paramData = []
+      var diffData = []
       // 当拖拽类型不为inner,说明只是同级或者跨级排序，只需要寻找目标节点的父ID，获取其对象以及所有的子节点，并为子节点设置当前对象的ID为父ID即可
       // 当拖拽类型为inner，说明拖拽节点成为了目标节点的子节点，只需要获取目标节点对象即可
       var data = dropType !== 'inner' ? dropNode.parent.data : dropNode.data
-      console.log(data)
       var nodeData =
         dropNode.level === 1 && dropType !== 'inner' ? data : data.children
       // 设置父ID,当level为1说明在第一级，pid为空
@@ -127,36 +116,20 @@ export default {
           pid: element.pid,
           sort: i
         }
-        paramData.push(dept)
+        diffData.push(dept)
       })
-      console.log(paramData)
-      this.$emit('updateSorts', paramData)
-      // for (let index = 0; index < paramData.length; index++) {
-      //   const item = paramData[index]
-      //   console.log(item)
-      //   console.log('this', this)
-      //   updateDb.call(this, 'chapter_groups', 'sort', item.sort, item.targetId)
-      //   updateDb.call(this, 'chapter_groups', 'pid', item.pid, item.targetId)
-      // }
-
+      this.$emit('updateSorts', diffData)
       this.loading = true
-      // 得到这次操作需要变更的数据范围，请求后台批量处理即可...
-      // DeptAPI.updateDeptTreeOrder(JSON.stringify(paramData)).then(res => {
-      //   console.log(res)
-      //   // 自行逻辑，可以加提示框message
-      //   this.loading = false
-      // })
     },
     allowDrop(draggingNode, dropNode, type) {
-      if (dropNode.data.label === '二级 3-1') {
-        return type !== 'inner'
+      return true
+    },
+    allowDrag(draggingNode) {
+      if (draggingNode.data.id === 'default') {
+        return false
       } else {
         return true
       }
-    },
-    allowDrag(draggingNode) {
-      // draggingNode.data.label.indexOf('三级 3-2-2') === -1
-      return 1
     },
     handleItemDrop(ev, data) {
       const itemId = ev.dataTransfer.getData('itemId')
@@ -177,23 +150,59 @@ export default {
         menuList: this.menuList
       }
       this.$store.commit('SHOW_CONTEXTMENU', param)
+    },
+    handleNodeExpand(data) {
+      this.$emit('updateAttr', 'is_expand', 1, data, false)
+    },
+    handleNodeCollapse(data) {
+      this.$emit('updateAttr', 'is_expand', 0, data, false)
     }
   },
   computed: {
     ...mapState({
       isShow: state => state.barVisible.groupBar
-    })
+    }),
+    expandedKeys() {
+      const keyList = []
+      this.itemList.forEach(item => {
+        if (item?.is_expand) {
+          keyList.push(item.id)
+        }
+      })
+      return keyList
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
 .group_bar {
+  flex-direction: column;
   position: relative;
   border-right: solid 1px #e6e6e6;
-  /deep/.group_tree_node {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+
+  /deep/.el-tree {
+    overflow: auto;
+    .group_tree_node {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      i {
+        margin-right: 3px;
+      }
+    }
   }
+  // .default {
+  //   padding: 10px 23px 6px 23px;
+  //   cursor: pointer;
+  //   span {
+  //     margin-left: 3px;
+  //   }
+  // }
+  // .default:hover {
+  //   background-color: #f5f7fa;
+  // }
+  // .default.active {
+  //   background-color: #f0f7ff;
+  // }
 }
 </style>

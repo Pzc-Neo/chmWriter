@@ -1,6 +1,32 @@
 export default {
   info: {
-    app_name: 'chmWriter'
+    app_name: 'chmWriter',
+    default: 'Default',
+    canNotDelete: 'Can not delete',
+    notExist: 'Not exist'
+  },
+  action: {
+    update: 'Update',
+    delete: 'Delete',
+    save: 'Save',
+    notSave: 'Not save',
+    getInput: 'Get input',
+    modify: 'Modify'
+  },
+  message: {
+    confirm: 'Confirm',
+    cancel: 'Cancel',
+    nonempty: "Can't be empty",
+    empty: 'Empty',
+    rename: 'Rename',
+    pleaseInput: 'Please input content'
+  },
+  result: {
+    success: 'Success',
+    error: 'Error',
+    warning: 'Warning',
+    info: 'Info',
+    noChange: 'Nothing change'
   },
   menuBar: {
     file: 'File',
@@ -14,14 +40,14 @@ export default {
   },
   contextMenuBar: {
     new: 'New',
-    newSilbling: 'New Silbling',
+    newSilbling: 'New silbling',
     newChild: 'New Child',
     rename: 'Rename',
     detail: 'Detail',
     delete: 'Delete',
     close: 'Close',
-    closeOthers: 'Close Others',
-    reveal: 'Reveal in Side Bar'
+    closeOthers: 'Close others',
+    reveal: 'Reveal in side bar'
   },
   sideBar: {
     data: 'Data',
@@ -47,14 +73,17 @@ export default {
   },
   writing: {
     nothingOpen: 'Nothing open',
-    type: {
-      name: 'Type',
+    title: 'Title',
+    content: 'Content',
+    type: 'Type',
+    types: {
       normal: 'Plain',
       important: 'Main',
       transition: 'Transition'
     },
     language: 'Language',
-    status: {
+    status: 'Status',
+    statuss: {
       name: 'Status',
       first: 'First',
       second: 'Second',
@@ -66,6 +95,7 @@ export default {
     rate: 'Rate',
     is_export: 'Export',
     words: 'Words',
+    targetWords: 'Target words',
     saved: 'Saved',
     foreshadowing: 'Foreshadowing'
   },
@@ -79,26 +109,5 @@ export default {
     birthday: 'Birthday',
     hobby: 'Hobby',
     description: 'Description'
-  },
-  action: {
-    update: 'Update',
-    delete: 'Delete',
-    save: 'Save',
-    getInput: 'Get Input'
-  },
-  message: {
-    hello: 'Hello World',
-    nonempty: "Can't be empty",
-    rename: 'Rename',
-    pleaseInput: 'Please input content',
-    confirm: 'Confirm',
-    cancel: 'Cancel'
-  },
-  result: {
-    success: 'Success',
-    error: 'Error',
-    warning: 'Warning',
-    info: 'Info',
-    noChange: 'Nothing change'
   }
 }

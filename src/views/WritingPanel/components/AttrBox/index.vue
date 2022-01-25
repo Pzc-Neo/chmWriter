@@ -3,30 +3,33 @@
     <div class="one_row">
       <!-- type -->
       <el-tag class="chmST_sidbar_btn">
-        {{ $t('writing.type.name') }}
+        {{ $t('writing.type') }}
       </el-tag>
       <el-select
         :value="item.type"
         @change="value => updateAttr('type', value)"
       >
-        <el-option :label="$t('writing.type.normal')" :value="0"></el-option>
+        <el-option :label="$t('writing.types.normal')" :value="0"></el-option>
         <el-option
-          :label="$t('writing.type.transition')"
+          :label="$t('writing.types.transition')"
           :value="1"
         ></el-option>
-        <el-option :label="$t('writing.type.important')" :value="2"></el-option>
+        <el-option
+          :label="$t('writing.types.important')"
+          :value="2"
+        ></el-option>
       </el-select>
     </div>
     <!-- status -->
     <div class="one_row">
-      <el-tag>{{ $t('writing.status.name') }}</el-tag>
+      <el-tag>{{ $t('writing.status') }}</el-tag>
       <el-select
         :value="item.status"
         @change="value => updateAttr('status', value)"
       >
-        <el-option :label="$t('writing.status.first')" :value="0"></el-option>
-        <el-option :label="$t('writing.status.second')" :value="1"></el-option>
-        <el-option :label="$t('writing.status.final')" :value="2"></el-option>
+        <el-option :label="$t('writing.statuss.first')" :value="0"></el-option>
+        <el-option :label="$t('writing.statuss.second')" :value="1"></el-option>
+        <el-option :label="$t('writing.statuss.final')" :value="2"></el-option>
       </el-select>
     </div>
     <!-- language -->
@@ -59,7 +62,7 @@
       <el-tooltip
         class="item"
         effect="dark"
-        content="修改目标字数"
+        :content="targetWordsBtnInfo"
         placement="bottom-start"
       >
         <el-button
@@ -68,6 +71,7 @@
           icon="el-icon-edit"
           size="mini"
           circle
+          @click="getWords"
         ></el-button>
       </el-tooltip>
     </div>
@@ -104,6 +108,7 @@
 </template>
 <script>
 export default {
+  name: 'AttrBox',
   props: {
     item: {
       type: Object,
@@ -121,10 +126,31 @@ export default {
     updateAttr(column, value) {
       this.$emit('updateAttr', column, value, this.item)
     },
+    getWords() {
+      this.$prompt(value => {
+        value = parseInt(value)
+        if (isNaN(value)) {
+          this.$alert('NaN')
+          throw new Error()
+        }
+        this.$emit('updateAttr', 'target_words', value, this.item)
+      }, this.item.target_words)
+    },
     changeEditorWidth(width) {
       this.$emit('changeEditorWidth', width)
     },
     formateTime(timeStamp) {}
+  },
+  computed: {
+    targetWordsBtnInfo() {
+      return (
+        this.$t('action.modify') +
+        ' ' +
+        this.$t('writing.targetWords') +
+        ': ' +
+        this.item.target_words
+      )
+    }
   }
 }
 </script>
@@ -135,7 +161,7 @@ export default {
     .date {
       font-size: 11px;
       height: $dtb-height;
-      line-height: 12px;
+      line-height: $dtb-line-height;
       // line-height: $dtb-line-height;
       margin-left: $dtb-margin;
     }

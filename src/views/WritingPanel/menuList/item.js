@@ -34,7 +34,7 @@ export const menuListItemFactory = function () {
         this.$prompt(newTitle => {
           this.$db.update(this.itemTableName, 'title', newTitle, targetItem.id)
           targetItem.title = newTitle
-        }, targetItem)
+        }, targetItem.title)
       }
     },
     {

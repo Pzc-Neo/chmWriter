@@ -72,6 +72,7 @@ import { countWords } from '@/util/text'
 import { debounce } from '@/util/base'
 
 export default {
+  name: 'CmEditor',
   props: {
     item: {
       type: Object,
@@ -143,14 +144,10 @@ export default {
           'Ctrl-E': function (cm) {
             cm.foldCode(cm.getCursor())
           },
-          'Ctrl-S': cm => {
-            this.$bus.$emit(
-              'writing.cmEditor:save_content',
-              cm.getValue(),
-              this.item.id
-            )
-            // cm.foldCode(cm.getCursor())
-          },
+          // 'Ctrl-S': cm => {
+          //   this.$bus.$emit('update:content', cm.getValue(), this.item.id)
+          //   // cm.foldCode(cm.getCursor())
+          // },
           'Ctrl-W': cm => {
             this.$bus.$emit('writing.cmEditor:close_current_tab')
             // cm.foldCode(cm.getCursor())
@@ -178,8 +175,11 @@ export default {
       this.$emit('change', item, newContent)
     },
     onKeyHandled(cm, name, event) {
-      console.log(cm, name, event)
+      // console.log(cm, name, event)
     }
+  },
+  mounted() {
+    this.wordCounter(this.item.content, this.item.language)
   },
   computed: {
     codemirror() {

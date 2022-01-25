@@ -1,27 +1,38 @@
 <template>
-  <div class="item_bar" v-show="isShow" @contextmenu="showBarMenu">
-    <div
+  <ul
+    class="item_bar"
+    ref="itemBar"
+    v-show="isShow"
+    @contextmenu="showContextmenu"
+    @click="handleClick"
+  >
+    <el-empty
+      v-if="itemList.length === 0"
+      :image-size="120"
+      :description="$t('message.empty')"
+      style="height: 100%"
+    ></el-empty>
+    <li
       shadow="hover"
       v-for="(item, index) in itemList"
       :key="item.id"
       :id="item.id"
       :index="index"
-      @click="changeTo(item)"
-      :class="{ item, active: isActive(item) }"
-      @contextmenu.stop="showContextmenu($event, item)"
+      :class="{ item, active: currentItem.id === item.id }"
       draggable="true"
       @dragstart="dragStart($event, item, index)"
       @dragover="handleDragover($event)"
       @drop="handleDrop($event, index)"
     >
       <slot :item="item"></slot>
-    </div>
-  </div>
+    </li>
+  </ul>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
+  name: 'ItemBar',
   props: {
     itemList: {
       type: Array,
@@ -52,6 +63,22 @@ export default {
     return {}
   },
   methods: {
+    /**
+     * Change to item.
+     * Use Event Delegation to find the actual click li(which have item's id)
+     * emit `changeTo` event.
+     */
+    handleClick(event) {
+      const rootDom = this.$refs.itemBar
+      let target = event.target
+      while (target !== rootDom) {
+        if (target.tagName.toLowerCase() === 'li') {
+          this.$emit('changeTo', target.id)
+          break
+        }
+        target = target.parentNode
+      }
+    },
     dragStart: function (event, item, index) {
       // const drapIndex = event.target.attributes.index.nodeValue
       // event.dataTransfer.setData('drapIndex', drapIndex)
@@ -72,7 +99,7 @@ export default {
 
       if (drapIndex === dropIndex) {
       } else {
-        const diffData = []
+        let diffData = []
         // drag down
         if (drapIndex < dropIndex) {
           const dropSort = this.itemList[dropIndex].sort
@@ -110,15 +137,33 @@ export default {
             diffData.push(diff)
           }
         }
+        console.log(diffData)
+        let startSort = diffData[0].sort
+        diffData = diffData.map(data => {
+          data.sort = startSort
+          startSort++
+          return data
+        })
+        console.log(diffData)
         this.$emit('updateSorts', diffData)
       }
     },
     changeTo(item) {
       this.$emit('changeTo', item.id)
-      // this.currentItem = item
     },
-    isActive(item) {
-      return this.currentItem && this.currentItem.id === item.id
+    showContextmenu(event) {
+      let target = event.target
+      if (target === this.$refs.itemBar) {
+        this.showBarMenu(event)
+      } else {
+        while (target !== this.$refs.itemBar) {
+          if (target.tagName.toLowerCase() === 'li') {
+            this.showItemMenu(event, target.id)
+            break
+          }
+          target = target.parentNode
+        }
+      }
     },
     showBarMenu(event) {
       const param = {
@@ -128,13 +173,15 @@ export default {
       }
       this.$store.commit('SHOW_CONTEXTMENU', param)
     },
-    showContextmenu(event, targetItem) {
+    showItemMenu(event, targetItemId) {
+      const index = this.itemList.findIndex(item => {
+        return item.id === targetItemId
+      })
       const param = {
         event,
-        targetItem,
+        targetItem: this.itemList[index],
         menuList: this.menuList
       }
-
       this.$store.commit('SHOW_CONTEXTMENU', param)
     }
   },

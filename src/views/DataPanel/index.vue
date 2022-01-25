@@ -382,7 +382,7 @@ export default {
     this.groupList = this.getGroups()
 
     const config = this.$db.getConfig('last_chapter_group_id')
-    this.changeToGroup(config.value)
+    this.changeToGroup(config)
 
     this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
       this.saveChapter(content, itemId)

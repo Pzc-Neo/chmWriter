@@ -10,9 +10,9 @@
                 "src/assets/styles/*"
             ]
         },
-        "target": "ES6",
-        "module": "commonjs",
-        "allowSyntheticDefaultImports": true
+        // "target": "ES6",
+        // "module": "commonjs",
+        // "allowSyntheticDefaultImports": true
     },
     "include": [
         "src/**/*"

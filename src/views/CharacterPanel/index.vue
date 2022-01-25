@@ -1,5 +1,5 @@
 <template>
-  <div class="writing_panel" v-hotkey="keymap">
+  <div class="writing_panel">
     <DialogBar />
     <GroupBar
       :itemList="groupList"
@@ -65,6 +65,7 @@
 </template>
 
 <script>
+import { ipcRenderer } from 'electron'
 import GroupBar from '@/views/Common/GroupBar'
 import ItemBar from '@/views/Common/ItemBar'
 import ContentBar from '@/views/Common/ContentBar'
@@ -283,10 +284,18 @@ export default {
     }
   },
   mounted() {
+    ipcRenderer.on('save', (event, message) => {
+      console.log(this.$store.state.currentPanel)
+      console.log(this.$store.state.currentPanel === '/character')
+      console.log('save')
+    })
     this.groupList = this.$db.getGroups(this.groupTableName)
     this.groupList = listToTree(this.groupList)
 
-    const config = this.$db.getConfig('last_chapter_group_id')
+    const config = this.$db.getConfig(
+      'last_id_' +
+        this.groupTableName.substring(0, this.groupTableName.length - 1)
+    )
     this.changeToGroup(config.value)
 
     // Registry event
@@ -305,13 +314,6 @@ export default {
     this.$bus.$on('RelationChart:changeToItem', itemId => {
       this.changeToItem(itemId)
     })
-  },
-  computed: {
-    keymap() {
-      return {
-        'ctrl+s': this.saveChapter
-      }
-    }
   }
 }
 </script>

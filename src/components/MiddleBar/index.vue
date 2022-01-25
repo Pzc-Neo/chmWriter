@@ -1,10 +1,10 @@
 <template>
   <div class="middle_bar">
+    <ContextMenuBar />
     <SideBar />
     <keep-alive>
       <router-view></router-view>
     </keep-alive>
-    <ContextMenuBar />
   </div>
 </template>
 
@@ -15,7 +15,6 @@ export default {
   components: {
     SideBar,
     ContextMenuBar
-    // MainBar
   }
 }
 </script>

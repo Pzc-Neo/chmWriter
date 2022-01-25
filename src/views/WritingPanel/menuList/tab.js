@@ -22,7 +22,7 @@ export const menuListTabFactory = function () {
       title: 'contextMenuBar.close',
       icon: 'el-icon-circle-close',
       func: targetItem => {
-        this.removeTab(targetItem.id)
+        this.handleRemoveTab(targetItem.id)
       }
     },
     {
@@ -57,7 +57,7 @@ export const menuListTabFactory = function () {
         this.$prompt(newTitle => {
           this.$db.update(this.itemTableName, 'title', newTitle, targetItem.id)
           targetItem.title = newTitle
-        }, targetItem)
+        }, targetItem.title)
       }
     },
     {
