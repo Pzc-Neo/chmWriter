@@ -24,6 +24,7 @@ export const debounce = function (func, time, callback) {
     }
     timer = setTimeout(() => {
       callback.call(this, func.apply(this, arguments))
+      timer = null
     }, time)
   }
 }

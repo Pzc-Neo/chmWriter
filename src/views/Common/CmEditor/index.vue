@@ -4,7 +4,7 @@
 
   <!-- Or manually control the data synchronization -->
   <codemirror
-    class="editor"
+    class="cm_editor"
     ref="cmEditor"
     :style="styleEditorContent"
     :value="item.content"
@@ -190,7 +190,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.editor {
+.cm_editor {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   border-right: 1px solid #e6e6e6;
   /deep/.vue-codemirror {

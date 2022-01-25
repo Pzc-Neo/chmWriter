@@ -2,7 +2,8 @@ import path from 'path'
 import { app, nativeImage, Tray, Menu, BrowserWindow } from 'electron'
 const createTray = function (win) {
   // const iconUrl = process.env.NODE_ENV === 'development' ? path.join(__dirname, './favicon.ico') : path.join(__dirname, './favicon.ico')
-  const iconUrl = path.join(__dirname, './assets/favicon.ico')
+
+  const iconUrl = path.join(__dirname, '../public/favicon.ico')
   console.log(iconUrl)
   console.log(__dirname)
 

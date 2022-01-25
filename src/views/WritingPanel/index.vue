@@ -196,8 +196,14 @@ export default {
       const groups = this.$db.getGroups(this.groupTableName)
       return listToTree(groups)
     },
+    getItems(groupId) {
+      return this.$db.getItems(this.itemTableName, groupId)
+    },
     getGroupFromDb(groupId) {
       return this.$db.getGroup(this.groupTableName, groupId)
+    },
+    getItemFromDb(itemId) {
+      return this.$db.getItem(this.itemTableName, itemId)
     },
     getGroupFromLocal(groupId) {
       const index = this.groupList.findIndex(group => {
@@ -208,12 +214,6 @@ export default {
       } else {
         return this.getGroupFromDb(groupId)
       }
-    },
-    getItems(groupId) {
-      return this.$db.getItems(this.itemTableName, groupId)
-    },
-    getItemFromDb(itemId) {
-      return this.$db.getItem(this.itemTableName, itemId)
     },
     getItemFromLocal(itemId) {
       const index = this.itemList.findIndex(item => {
@@ -343,6 +343,23 @@ export default {
       // this.changeToGroup(this.currentGroup.id)
       this.itemList = this.getItems(this.currentGroup.id)
     },
+    newGroup(pid, sort) {
+      this.$prompt(title => {
+        const Factory = getItemFactory(this.groupTableName)
+        const item = new Factory(title, pid, sort)
+        this.$db.insert(item)
+        this.refreshGroupList()
+        this.$db.reorganizeSort(this.groupList)
+      })
+    },
+    newItem(sort) {
+      this.$prompt(title => {
+        const Factory = getItemFactory(this.itemTableName)
+        const item = new Factory(title, this.currentGroup.id, sort)
+        this.$db.insert(item)
+        this.refreshItemList()
+      })
+    },
     async deleteGroup(targetItem) {
       if (targetItem.id === 'default') {
         this.$alert(this.$t('info.canNotDelete'))
@@ -370,35 +387,57 @@ export default {
       item.newContent = newContent
       item.isChanged = true
     },
-    async handleRemoveTab(targetId) {
-      const item = this.getItemFromLocal(targetId)
-      if (item.isChanged === true) {
-        const result = await this.$confirmSync(
-          item.title,
-          'save',
-          this.$t('action.save'),
-          this.$t('action.notSave')
-        )
-        switch (result) {
-          // save
-          case 'confirm':
-            this.saveContent(item.newContent, item.id)
-            this.removeTab(targetId)
-            break
-          // not save
-          case 'cancel':
-            this.$message(this.$t('action.notSave'), 'info')
-            this.removeTab(targetId)
-            break
-          // close MessageBox and cancel
-          case 'close':
-            this.$message(this.$t('message.cancel'), 'info')
-            break
-          default:
-        }
+    saveContent(content, itemId) {
+      let item = {}
+      if (itemId === undefined) {
+        item = this.currentItem
       } else {
-        this.removeTab(targetId)
+        item = this.getItemFromLocal(itemId)
       }
+
+      if (content === undefined) {
+        content = item.newContent
+      }
+
+      this.updateAttrItem('content', content, item)
+      item.isChanged = false
+    },
+    handleRemoveTab(targetId) {
+      return new Promise((resolve, reject) => {
+        const item = this.getItemFromLocal(targetId)
+        if (item.isChanged === true) {
+          this.changeToItem(item.id)
+          ;(async function () {
+            const result = await this.$confirmSync(
+              item.title,
+              'save',
+              this.$t('action.save'),
+              this.$t('action.notSave')
+            )
+            switch (result) {
+              // save
+              case 'confirm':
+                this.saveContent(item.newContent, item.id)
+                this.removeTab(targetId)
+                break
+              // not save
+              case 'cancel':
+                this.$message(this.$t('action.notSave'), 'info')
+                this.removeTab(targetId)
+                break
+              // close MessageBox and cancel
+              case 'close':
+                this.$message(this.$t('message.cancel'), 'info')
+                break
+              default:
+            }
+            resolve()
+          }.call(this))
+        } else {
+          this.removeTab(targetId)
+          resolve()
+        }
+      })
     },
     // targetId is item's id
     removeTab(targetId) {
@@ -424,14 +463,11 @@ export default {
         this.currentItem = {}
       }
     },
-    removeOtherTabs(tabId) {
-      for (let i = 0; i < this.tabList.length; i++) {
-        const tab = this.tabList[i]
-        // this.tabList.forEach(async tab => {
-        if (tab.id !== tabId) {
-          this.handleRemoveTab(tab.id)
-        }
-        // })
+    async removeOtherTabs(tabId) {
+      const tabsNeedToRemove = this.tabList.filter(tab => tab.id !== tabId)
+      for (let i = 0; i < tabsNeedToRemove.length; i++) {
+        const tab = tabsNeedToRemove[i]
+        await this.handleRemoveTab(tab.id)
       }
       this.changeToItem(tabId)
     },
@@ -451,39 +487,6 @@ export default {
         menuList: this.menuListTab
       }
       this.$store.commit('SHOW_CONTEXTMENU', param)
-    },
-    newGroup(pid, sort) {
-      this.$prompt(title => {
-        const Factory = getItemFactory(this.groupTableName)
-        const item = new Factory(title, pid, sort)
-        this.$db.insert(item)
-        this.refreshGroupList()
-        this.$db.reorganizeSort(this.groupList)
-      })
-    },
-    newItem(sort) {
-      this.$prompt(title => {
-        const Factory = getItemFactory(this.itemTableName)
-        const item = new Factory(title, this.currentGroup.id, sort)
-        this.$db.insert(item)
-        this.refreshItemList()
-      })
-    },
-    saveContent(content, itemId) {
-      console.log(new Error())
-      let item = {}
-      if (itemId === undefined) {
-        item = this.currentItem
-      } else {
-        item = this.getItemFromLocal(itemId)
-      }
-
-      if (content === undefined) {
-        content = item.newContent
-      }
-
-      this.updateAttrItem('content', content, item)
-      item.isChanged = false
     }
   },
   computed: {
@@ -564,6 +567,7 @@ export default {
 .writing_panel {
   flex: 1;
   display: flex;
+  overflow: hidden;
   .tab_bar {
     display: flex;
     flex-direction: column;

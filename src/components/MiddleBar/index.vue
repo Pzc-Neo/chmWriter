@@ -2,9 +2,12 @@
   <div class="middle_bar">
     <ContextMenuBar />
     <SideBar />
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <div class="right">
+      <div class="main_tool_bar">123123</div>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
+    </div>
   </div>
 </template>
 
@@ -24,5 +27,14 @@ export default {
   display: flex;
   flex: 1;
   overflow: hidden;
+  .right {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    .main_tool_bar {
+      flex: 0 0 30px;
+      border-bottom: 1px solid #eee;
+    }
+  }
 }
 </style>
