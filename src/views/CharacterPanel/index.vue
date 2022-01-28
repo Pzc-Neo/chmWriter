@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import { ipcRenderer } from 'electron'
 import GroupBar from '@/views/Common/GroupBar'
 import ItemBar from '@/views/Common/ItemBar'
 import ContentBar from '@/views/Common/ContentBar'
@@ -284,11 +283,6 @@ export default {
     }
   },
   mounted() {
-    ipcRenderer.on('save', (event, message) => {
-      console.log(this.$store.state.currentPanel)
-      console.log(this.$store.state.currentPanel === '/character')
-      console.log('save')
-    })
     this.groupList = this.$db.getGroups(this.groupTableName)
     this.groupList = listToTree(this.groupList)
 

@@ -105,6 +105,17 @@ class Db {
     return stmt.all()
   }
 
+  getMaxSort(tableName, column, id) {
+    const query = `select max(sort) from ${tableName} where ${column}=?`
+
+    const stmt = this.db.prepare(query)
+    let sort = stmt.all([id])[0]['max(sort)']
+    if (sort === null) {
+      sort = 0
+    }
+    return sort
+  }
+
   setItemsGroupIdToDefault(groupTableName, itemTableName) {
     const itemList = this.getItemsNoGroup(groupTableName, itemTableName)
 

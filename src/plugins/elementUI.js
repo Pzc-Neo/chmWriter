@@ -39,7 +39,8 @@ import {
   Tooltip,
   Checkbox,
   CheckboxGroup,
-  CheckboxButton
+  CheckboxButton,
+  Divider
 } from 'element-ui'
 
 Vue.use(Button)
@@ -82,3 +83,4 @@ Vue.use(Button)
   .use(Checkbox)
   .use(CheckboxGroup)
   .use(CheckboxButton)
+  .use(Divider)

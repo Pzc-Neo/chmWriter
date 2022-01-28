@@ -1,5 +1,5 @@
 <template>
-  <div class="writing_panel" v-hotkey="keymap">
+  <div class="writing_panel">
     <DialogBar />
     <GroupBar
       :itemList="groupList"
@@ -58,6 +58,9 @@
           <CmEditor
             :item="item"
             @change="handleEditorContentChange"
+            @update:content="saveContent"
+            @switch:tab="isNext => switchTab(isNext)"
+            @close="removeTab"
             @countWord="
               words => {
                 updateAttrItem('words', words, item, false)
@@ -115,8 +118,6 @@
 </template>
 
 <script>
-import { ipcRenderer } from 'electron'
-
 import GroupBar from '@/views/Common/GroupBar'
 import ItemBar from '@/views/Common/ItemBar'
 import ContentBar from '@/views/Common/ContentBar'
@@ -132,6 +133,7 @@ import ChapterItem from './components/ChapterItem'
 import { menuListGroupBarFactory, menuListGroupFactory } from './menuList/group'
 import { menuListItemBarFactory, menuListItemFactory } from './menuList/item'
 import { menuListTabFactory } from './menuList/tab'
+import { getToolList } from './toolList'
 
 import { getItemFactory } from '@/db/module/itemFactory'
 import { listToTree } from '@/util/base'
@@ -165,6 +167,7 @@ export default {
       menuListItem: menuListItemFactory.call(this),
       menuListItemBar: menuListItemBarFactory.call(this),
       menuListTab: menuListTabFactory.call(this),
+      toolList: getToolList.call(this),
       groupList: [],
       itemList: [],
       currentGroup: {},
@@ -253,9 +256,13 @@ export default {
         return
       }
 
-      this.$set(item, 'isChanged', false)
-      // Will update when editor content change
-      this.$set(item, 'newContent', item.content)
+      if (!Object.hasOwnProperty.call(item, 'isChanged')) {
+        this.$set(item, 'isChanged', false)
+      }
+      if (!Object.hasOwnProperty.call(item, 'newContent')) {
+        // Will update when editor content change
+        this.$set(item, 'newContent', item.content)
+      }
 
       // Add to tabList
       const index = this.tabList.findIndex(_item => {
@@ -317,19 +324,15 @@ export default {
         this.$message(
           `${this.$t('action.update')} ${this.$t(
             'writing.' + column
-          )} ${this.$t('result.success')}`
+          )} ${this.$t('result.success')} （${item.title}）`
         )
       }
     },
     changeItemGroupId(groupId, itemId) {
       // Get item's max sort num of target group
-      const query = `select max(sort) from ${this.itemTableName} where group_id=?`
+      // const query = `select max(sort) from ${this.itemTableName} where group_id=?`
 
-      const stmt = this.$db.db.prepare(query)
-      let sort = stmt.all([groupId])[0]['max(sort)']
-      if (sort === null) {
-        sort = 0
-      }
+      const sort = this.$db.getMaxSort(this.itemTableName, 'group_id', groupId)
 
       this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
       this.$db.update(this.itemTableName, 'sort', sort + 1, itemId)
@@ -340,21 +343,32 @@ export default {
       this.groupList = this.getGroups()
     },
     refreshItemList() {
-      // this.changeToGroup(this.currentGroup.id)
       this.itemList = this.getItems(this.currentGroup.id)
     },
     newGroup(pid, sort) {
       this.$prompt(title => {
         const Factory = getItemFactory(this.groupTableName)
+        if (pid === undefined) {
+          pid = 'root'
+        }
+        if (sort === undefined) {
+          sort = this.$db.getMaxSort(this.groupTableName, 'pid', 'root')
+        }
         const item = new Factory(title, pid, sort)
         this.$db.insert(item)
         this.refreshGroupList()
-        this.$db.reorganizeSort(this.groupList)
       })
     },
     newItem(sort) {
       this.$prompt(title => {
         const Factory = getItemFactory(this.itemTableName)
+        if (sort === undefined) {
+          sort = this.$db.getMaxSort(
+            this.itemTableName,
+            'group_id',
+            this.currentGroup.id
+          )
+        }
         const item = new Factory(title, this.currentGroup.id, sort)
         this.$db.insert(item)
         this.refreshItemList()
@@ -451,7 +465,7 @@ export default {
             const nextTab = tabs[index + 1] || tabs[index - 1]
             if (nextTab) {
               activeId = nextTab.id
-              // this.changeToItem(activeId)
+              this.changeToItem(activeId)
             }
           }
         })
@@ -471,8 +485,23 @@ export default {
       }
       this.changeToItem(tabId)
     },
+    switchTab(isNext = true) {
+      const index = this.tabList.findIndex(tab => tab.id === this.currentTabId)
+      let nextTab
+      if (isNext) {
+        nextTab = this.tabList[index + 1] || this.tabList[0]
+      } else {
+        nextTab =
+          this.tabList[index - 1] || this.tabList[this.tabList.length - 1]
+      }
+      if (nextTab) {
+        const activeId = nextTab.id
+        this.changeToItem(activeId)
+      }
+    },
     handleTabClick(tab) {
       const itemId = tab.name
+      // this.handleRemoveTab(itemId)
       this.changeToItem(itemId)
     },
     showTabContextMenu(event, targetItem) {
@@ -501,30 +530,9 @@ export default {
         'last_id_' +
         this.itemTableName.substring(0, this.itemTableName.length - 1)
       )
-    },
-    keymap() {
-      return {
-        'ctrl+s': {
-          keyup: () => {
-            if (this.$store.state.currentPanel === '/writing') {
-              this.saveContent()
-            } else {
-              console.log(this.$store.state.currentPanel)
-            }
-          }
-        }
-        // 'ctrl+w': {
-        //   keyup: event => {
-        //     this.removeTab()
-        //   }
-        // }
-      }
     }
   },
   watch: {
-    shortcutKey(newValue) {
-      console.log(newValue)
-    },
     infoBoxCollapse: {
       deep: true,
       handler(newData) {
@@ -537,28 +545,47 @@ export default {
       }
     }
   },
+  beforeRouteEnter(to, from, next) {
+    next(vc => {
+      vc.$store.commit('SET_PANEL_TOOL_LIST', vc.toolList)
+    })
+  },
   mounted() {
     this.init()
 
-    this.$bus.$on('writing:saveContent', (content, item) => {
-      this.saveContent(content, item)
+    this.$bus.$on('writing:new-group', () => {
+      this.newGroup()
     })
-    // this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
-    //   this.saveContent(content, itemId)
-    // })
-    // this.$bus.$on('writing.cmEditor:close_current_tab', () => {
-    //   this.removeTab()
-    // })
-    ipcRenderer.on('save', (event, message) => {
-      console.log(this.$store.state.currentPanel)
-      console.log(this.$store.state.currentPanel === '/writing')
-      console.log('save')
+    this.$bus.$on('writing:new-item', () => {
+      this.newItem()
+    })
+
+    this.$bus.$on('writing:change-to-group', targetItem => {
+      this.changeToGroup(targetItem.id)
+    })
+    this.$bus.$on('writing:change-to-item', targetItem => {
+      this.changeToItem(targetItem.id)
+      this.revealItem(targetItem)
+    })
+
+    this.$bus.$on('writing:save-content', () => {
+      this.saveContent()
+    })
+    this.$bus.$on('writing:switch-tab', isNext => {
+      this.switchTab(isNext)
+    })
+    this.$bus.$on('writing:remove-tab', () => {
+      this.removeTab()
     })
   },
   beforeDestroy() {
-    // this.$bus.$off('writing.cmEditor:save_content', (content, itemId) => {
-    //   this.saveContent(content, itemId)
-    // })
+    this.$bus.$off('writing:new-group')
+    this.$bus.$off('writing:new-item')
+    this.$bus.$off('writing:change-to-group')
+    this.$bus.$off('writing:change-to-item')
+    this.$bus.$off('writing:save-content')
+    this.$bus.$off('writing:switch-tab')
+    this.$bus.$off('writing:remove-tab')
   }
 }
 </script>

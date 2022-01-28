@@ -34,10 +34,13 @@ import 'codemirror/theme/eclipse.css'
 // vim mode
 /**
  * Changed:
- *  1.Add some code to `charIdxInLine`,
- *    Let vim's f commmand suport Chiness.
+ *  1.Add some code to `charIdxInLine` function,
+ *    let vim's `f` commmand suport Chiness.
+ *    such as 城(cheng)：c; 墨(mo)：m.
+ *    use `fc` jump to 城.
+ *    use `fm` jump to 墨.
  *  2.Delete some shortcutkey that conflct with chmWriter.
- *  Note: If you don't need that changed. Please import the original vim.js
+ *  Note: If you don't need those changed. Please import the original vim.js.
  *  By Pzc_Neo
  */
 import './keyMap/vim.js'
@@ -144,13 +147,24 @@ export default {
           'Ctrl-E': function (cm) {
             cm.foldCode(cm.getCursor())
           },
-          // 'Ctrl-S': cm => {
-          //   this.$bus.$emit('update:content', cm.getValue(), this.item.id)
-          //   // cm.foldCode(cm.getCursor())
-          // },
-          'Ctrl-W': cm => {
-            this.$bus.$emit('writing.cmEditor:close_current_tab')
+          'Ctrl-S': (cm, a, b) => {
+            this.$emit('update:content', cm.getValue(), this.item.id)
             // cm.foldCode(cm.getCursor())
+          },
+          'Ctrl-W': cm => {
+            this.$emit('close')
+          },
+          'Ctrl-Tab': cm => {
+            this.$emit('switch:tab')
+          },
+          'Shift-Ctrl-Tab': cm => {
+            this.$emit('switch:tab', false)
+          },
+          'Ctrl-P': cm => {
+            this.$store.commit('SHOW_COMMANDBOX', 'search')
+          },
+          'Shift-Ctrl-P': cm => {
+            this.$store.commit('SHOW_COMMANDBOX', 'command')
           }
         }
       },

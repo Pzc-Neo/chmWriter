@@ -1,4 +1,12 @@
 import Vue from 'vue'
+
+Vue.prototype.$changePanel = function (panelPath) {
+  this.$router.push(panelPath)
+  this.$store.commit(
+    'CHANGE_CURRENT_PANEL',
+    panelPath.substring(1, panelPath.length)
+  )
+}
 /**
  * Format time
  * @param {Number|String} timestamp timestamp or string which can parse by `new Date()`

@@ -1,5 +1,5 @@
 <template>
-  <div class="writing_panel" v-hotkey="keymap">
+  <div class="writing_panel">
     <DialogBar />
     <GroupBar
       :itemList="groupList"
@@ -96,7 +96,7 @@ export default {
       // Group table's name on datebase
       groupTableName: 'data_groups',
       // Item table's name on datebase
-      itemTableName: 'data_items',
+      itemTableName: 'datas',
 
       currentTabId: '2',
       tabList: [],
@@ -396,13 +396,7 @@ export default {
       this.updateAttr(column, value, itemId)
     })
   },
-  computed: {
-    keymap() {
-      return {
-        'ctrl+s': this.saveChapter
-      }
-    }
-  }
+  computed: {}
 }
 </script>
 

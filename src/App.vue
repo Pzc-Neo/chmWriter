@@ -1,5 +1,11 @@
 <template>
-  <div id="app" @click="$store.commit('HIDE_CONTEXTMENU')">
+  <div id="app" @click="hideStuffByClick" @keyup.esc="hideStuffByEsc">
+    <!-- <PopupBox>
+      <template slot="title">快捷键设置</template> -->
+    <PopupBox title="快捷键设置">
+      <HotKey />
+    </PopupBox>
+
     <TopBar />
     <MiddleBar />
     <BottomBar />
@@ -7,22 +13,96 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import hotkeys from 'hotkeys-js'
+import 'normalize.css'
+// import './hotkeys-js'
+// import { ipcRenderer } from 'electron'
+
 import TopBar from '@/components/TopBar'
 import MiddleBar from '@/components/MiddleBar'
 import BottomBar from '@/components/BottomBar'
-import { ipcRenderer } from 'electron'
-
-import 'normalize.css'
+import PopupBox from '@/components/PopupBox'
+import HotKey from '@/components/HotKey'
 
 export default {
   components: {
     TopBar,
     BottomBar,
-    MiddleBar
+    MiddleBar,
+    HotKey,
+    PopupBox
+  },
+  data() {
+    return {
+      keyMap: {
+        showCommandSearch: 'ctrl+p',
+        showCommandCommand: 'shift+ctrl+p',
+        save: 'ctrl+s',
+        removeTab: 'ctrl+w'
+      },
+      hotKeyList: [
+        {
+          id: 'showCommandBoxSearch',
+          key: 'ctrl+p',
+          funcName: 'showCommandBox',
+          prama: ['search']
+        },
+        {
+          id: 'showCommandBoxCommand',
+          key: 'shift+ctrl+p',
+          funcName: 'showCommandBox',
+          prama: ['command']
+        },
+        {
+          id: 'swtichTab',
+          key: 'ctrl+tab',
+          funcName: 'switchTab',
+          prama: []
+        },
+        {
+          id: 'swtichTab',
+          key: 'shift+ctrl+tab',
+          funcName: 'switchTab',
+          prama: [false]
+        }
+      ]
+    }
+  },
+  methods: {
+    hideStuffByClick() {
+      this.$store.commit('HIDE_CONTEXTMENU')
+      this.$store.commit('HIDE_COMMANDBOX')
+    },
+    hideStuffByEsc() {
+      this.$store.commit('HIDE_CONTEXTMENU')
+      this.$store.commit('HIDE_COMMANDBOX')
+    },
+    showCommandBox(type) {
+      this.$store.commit('SHOW_COMMANDBOX', type)
+    },
+    switchTab(isNext) {
+      this.$bus.$emit(this.currentPanel + ':switch-tab', isNext)
+    }
   },
   mounted() {
-    ipcRenderer.on('main_msg', (event, message) => {
-      console.log(message)
+    // const { showCommandSearch, showCommandCommand, save, removeTab } =
+    //   this.keyMap
+
+    this.hotKeyList.forEach(key => {
+      hotkeys(key.key, () => {
+        this[key.funcName](...key.prama)
+      })
+    })
+
+    hotkeys('ctrl+r', () => {
+      alert('stopped reload!')
+      return false
+    })
+  },
+  computed: {
+    ...mapState({
+      currentPanel: state => state.currentPanel
     })
   }
 }
@@ -56,31 +136,39 @@ export default {
   }
 
   /* 元素获取焦点时，外框风格-start */
-  textarea,
-  input,
-  button,
-  select,
-  canvas,
-  .vis-network {
-    outline: none;
-  }
+  // textarea,
+  // input,
+  // button,
+  // select,
+  // canvas,
+  // .vis-network {
+  //   outline: none;
+  // }
 
-  textarea:focus,
-  input:focus,
-  button:focus,
-  select:focus,
-  canvas:focus,
-  .vis-network:focus {
-    /* outline: 1px solid #3068ad; */
-    outline: 1px solid var(--main_btn_bg_color_hover);
-  }
+  // textarea:focus,
+  // input:focus,
+  // button:focus,
+  // select:focus,
+  // canvas:focus {
+  //   /* outline: 1px solid #3068ad; */
+  //   outline: 1px solid var(--main_btn_bg_color_hover);
+  // }
 
-  ul {
-    margin: 0px;
-    padding: 0px;
-    li {
-      list-style: none;
-    }
+  // This sytle is the same as: .el-menu-item [class^=el-icon-]
+  // Let Font Awesome display like elementUI's icon on `el-menu-item`
+  .el-menu-item .fa {
+    margin-right: 5px;
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+}
+ul {
+  margin: 0px;
+  padding: 0px;
+  li {
+    list-style: none;
   }
 }
 </style>

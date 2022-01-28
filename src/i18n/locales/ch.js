@@ -1,6 +1,7 @@
 export default {
   info: {
     app_name: '城墨写作',
+    description: '开始创造世界吧！',
     default: '默认',
     canNotDelete: '不能删除',
     notExist: '不存在'
@@ -11,7 +12,8 @@ export default {
     save: '保存',
     notSave: '不保存',
     getInput: '获取输入',
-    modify: '修改'
+    modify: '修改',
+    search: '搜索'
   },
   message: {
     confirm: '确定',
@@ -26,7 +28,8 @@ export default {
     error: '错误',
     warning: '警告',
     info: '信息',
-    noChange: '没有任何改变'
+    noChange: '没有任何改变',
+    noResult: '没有结果'
   },
   menuBar: {
     file: '文件',
@@ -40,6 +43,7 @@ export default {
   },
   contextMenuBar: {
     new: '新建',
+    newGroup: '新建分组',
     newSilbling: '新建同级',
     newChild: '新建子级',
     rename: '重命名',
@@ -104,5 +108,17 @@ export default {
     birthday: '生日',
     hobby: '爱好',
     description: '描述'
+  },
+  tables: {
+    datas: '资料',
+    data_groups: '资料分组',
+    chapters: '章节',
+    chapter_groups: '章节分组',
+    world_items: '世界项目',
+    world_groups: '世界分组',
+    characters: '角色',
+    character_groups: '角色分组',
+    plots: '情节',
+    plot_groups: '情节分组'
   }
 }

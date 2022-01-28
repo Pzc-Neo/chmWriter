@@ -1,6 +1,7 @@
 export default {
   info: {
     app_name: 'chmWriter',
+    description: 'Create Your World!',
     default: 'Default',
     canNotDelete: 'Can not delete',
     notExist: 'Not exist'
@@ -11,7 +12,8 @@ export default {
     save: 'Save',
     notSave: 'Not save',
     getInput: 'Get input',
-    modify: 'Modify'
+    modify: 'Modify',
+    search: 'Search'
   },
   message: {
     confirm: 'Confirm',
@@ -26,7 +28,8 @@ export default {
     error: 'Error',
     warning: 'Warning',
     info: 'Info',
-    noChange: 'Nothing change'
+    noChange: 'Nothing change',
+    noResult: 'No result'
   },
   menuBar: {
     file: 'File',
@@ -40,6 +43,7 @@ export default {
   },
   contextMenuBar: {
     new: 'New',
+    newGroup: 'New gruop',
     newSilbling: 'New silbling',
     newChild: 'New Child',
     rename: 'Rename',
@@ -109,5 +113,17 @@ export default {
     birthday: 'Birthday',
     hobby: 'Hobby',
     description: 'Description'
+  },
+  tables: {
+    datas: 'Datas',
+    data_groups: 'Data_groups',
+    chapters: 'Chapters',
+    chapter_groups: 'Chapter_groups',
+    world_items: 'World_items',
+    world_groups: 'World_groups',
+    characters: 'Characters',
+    character_groups: 'Character_groups',
+    plots: 'Plots',
+    plot_groups: 'Plot_groups'
   }
 }

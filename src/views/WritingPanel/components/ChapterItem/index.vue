@@ -1,5 +1,5 @@
 <template>
-  <div v-if="$store.state.isSimpleMode" class="simple_mode">
+  <div v-if="$store.state.isSimpleMode" class="simple_mode_item">
     {{ item.title }}
   </div>
   <div v-else class="item">
@@ -60,8 +60,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.simple_mode {
-  padding: 5px 8px;
+.simple_mode_item {
+  padding: 7px 8px;
+  border-bottom: 1px solid #f3f3f3;
 }
 .item {
   display: flex;
@@ -93,8 +94,8 @@ export default {
     }
   }
   .middle {
-    margin-top: 2px;
-    margin-bottom: 7px;
+    margin-bottom: 4px;
+    line-height: 1.4em;
   }
   .bottom {
     display: flex;

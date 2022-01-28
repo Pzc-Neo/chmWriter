@@ -27,11 +27,6 @@ export default {
       default: '150px'
     }
   },
-  data() {
-    return {
-      myContent: this.content
-    }
-  },
   methods: {
     handleChange(newContent) {
       this.$emit('change', newContent)

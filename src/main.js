@@ -10,8 +10,7 @@ import '@/plugins/elementUI'
 import '@/prototype/base'
 import '@/prototype/elementUI'
 
-import VueHotkey from 'v-hotkey'
-Vue.use(VueHotkey)
+import 'font-awesome/css/font-awesome.min.css'
 
 Vue.prototype.$db = new Db()
 Vue.prototype.$echarts = echarts

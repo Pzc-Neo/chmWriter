@@ -4895,13 +4895,13 @@
       // new_line：转换后的文本
       let new_line = ''
 
-      // 循环读取line，并且把每个字符根据字典【vim_f_commend_dict】转换成英文字母或半角符号
-      for (let i = 0; i < line.length; i++) {
-        let neo_character = line[i]
-        if (dictForVimFCommand[neo_character] != undefined) {
-          new_line += dictForVimFCommand[neo_character]
+      // 循环读取line，并且把每个字符根据map对象【dictForVimFCommand】转换成英文字母或半角符号
+      for (var i = 0; i < line.length; i++) {
+        var key = line[i]
+        if (dictForVimFCommand[key] != undefined) {
+          new_line += dictForVimFCommand[key]
         } else {
-          new_line += neo_character
+          new_line += key
         }
       }
       line = new_line

@@ -1,9 +1,10 @@
 <template>
   <div class="middle_bar">
     <ContextMenuBar />
+    <CommandBox />
     <SideBar />
     <div class="right">
-      <div class="main_tool_bar">123123</div>
+      <ToolBar />
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -14,10 +15,14 @@
 <script>
 import SideBar from '@/components/MiddleBar/SideBar'
 import ContextMenuBar from '@/components/MiddleBar/ContextMenuBar'
+import ToolBar from '@/components/MiddleBar/ToolBar'
+import CommandBox from '@/components/CommandBox'
 export default {
   components: {
     SideBar,
-    ContextMenuBar
+    ContextMenuBar,
+    ToolBar,
+    CommandBox
   }
 }
 </script>
@@ -31,10 +36,6 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: column;
-    .main_tool_bar {
-      flex: 0 0 30px;
-      border-bottom: 1px solid #eee;
-    }
   }
 }
 </style>

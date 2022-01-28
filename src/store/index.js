@@ -11,14 +11,24 @@ export default new Vuex.Store({
       type: null,
       prama: {}
     },
-    currentPanel: '/writing',
+
+    // route
+    currentPanel: 'writing',
+    panelToolList: [],
+
     barVisible: {
       groupBar: true,
       itemBar: true,
       detailBar: true
     },
     isShowIndex: false,
-    isSimpleMode: false
+    isSimpleMode: false,
+
+    commandBox: {
+      isShow: false,
+      type: 'search',
+      param: {}
+    }
   },
   mutations: {
     SHOW_CONTEXTMENU(state, prama) {
@@ -28,22 +38,28 @@ export default new Vuex.Store({
     HIDE_CONTEXTMENU(state) {
       state.contextmenu.isShow = false
     },
+    SHOW_COMMANDBOX(state, type) {
+      state.commandBox.isShow = true
+      state.commandBox.type = type
+      // state.commandBox.prama = prama
+    },
+    HIDE_COMMANDBOX(state) {
+      state.commandBox.isShow = false
+    },
     TOGGLE_BAR_VISIBILITY(state, bar) {
       state.barVisible[bar] = !state.barVisible[bar]
     },
-    CHANGE_CURRENT_PANEL(state, panel) {
-      state.currentPanel = panel
-      console.log(state.currentPanel)
+    CHANGE_CURRENT_PANEL(state, panelPath) {
+      state.currentPanel = panelPath
     },
     TOGGLE_SIMPLE_MODE(state) {
       state.isSimpleMode = !state.isSimpleMode
+    },
+    SET_PANEL_TOOL_LIST(state, panelToolList) {
+      state.panelToolList = panelToolList
     }
   },
-  actions: {
-    changeCurrentPanel({ commit }) {
-      console.log(this.$db)
-    }
-  },
+  actions: {},
   modules: {
     writing
   }

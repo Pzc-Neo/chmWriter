@@ -3,11 +3,11 @@
 
 1.作用：让vim里面的 ‘f‘ 命令能支持中文和其他语言。
 
-2.本文件的【dict_for_vim_f_command】字典，是给codemirror的vim.js插件里面的【charIdxInLine】函数(大约在3731行)调用的。
+2.本文件的【dict_for_vim_f_command】字典，是给codemirror的vim.js插件里面的【charIdxInLine】函数调用的。
 
-3.多音字问题：因为字典不能用重复项(有重复项的话，在取值的时候只会取第一项)，所以不支持多音字。
-    比如说：“重”的读音有 chong 和 zhong，在【dict_for_vim_f_command】字典里面只会存一个。
-    本字典里面存的是 c(也就是chong这个读音)，所以用‘f‘命令的时候，只能用 ‘fc’，而不能用 ‘fz'。
+3.多音字问题：
+    比如说：“重”的读音有 chong 和 zhong，在【dictForVimFCommand】对象里面只会存一个。(因为key不能重复)
+    这里存的是 c(也就是chong这个读音)，所以用‘f‘命令的时候，只能用 ‘fc’，而不能用 ‘fz'。
 */
 export const dictForVimFCommand = {
   '，': ',',

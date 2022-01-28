@@ -23,7 +23,25 @@ export const debounce = function (func, time, callback) {
       clearTimeout(timer)
     }
     timer = setTimeout(() => {
-      callback.call(this, func.apply(this, arguments))
+      const result = func.apply(this, arguments)
+      if (callback) {
+        callback.call(this, result)
+      }
+      timer = null
+    }, time)
+  }
+}
+export const debounceVue = function (funcName, time, callback) {
+  let timer = null
+  return function () {
+    if (timer !== null) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      const result = this[funcName].apply(this, arguments)
+      if (callback) {
+        callback.call(this, result)
+      }
       timer = null
     }, time)
   }

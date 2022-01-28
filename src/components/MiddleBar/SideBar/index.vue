@@ -2,45 +2,46 @@
   <div class="side_bar">
     <el-menu
       :default-active="$route.path"
-      class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
+      class="el-menu-vertical"
+      @select="handleSelect"
       :collapse="isCollapse"
     >
-      <el-menu-item index="/data" @click="changePanel('/data')">
-        <!-- <i class="el-icon-document"></i> -->
+      <!-- data -->
+      <el-menu-item index="/data">
         <i class="el-icon-notebook-2"></i>
         <span slot="title">{{ $t('sideBar.data') }}</span>
       </el-menu-item>
-      <el-menu-item index="/writing" @click="changePanel('/writing')">
+      <!-- writing -->
+      <el-menu-item index="/writing">
         <i class="el-icon-edit"></i>
         <span slot="title">{{ $t('sideBar.writing') }}</span>
       </el-menu-item>
-      <el-menu-item index="/world" @click="changePanel('/world')">
-        <!-- <i class="el-icon-office-building"></i> -->
+      <!-- world -->
+      <el-menu-item index="/world">
         <i class="el-icon-map-location"></i>
         <span slot="title">{{ $t('sideBar.world') }}</span>
       </el-menu-item>
-      <el-menu-item index="/character" @click="changePanel('/character')">
+      <!-- character -->
+      <el-menu-item index="/character">
         <i class="el-icon-user"></i>
         <span slot="title">{{ $t('sideBar.character') }}</span>
       </el-menu-item>
-      <el-menu-item index="6">
+      <!-- plot -->
+      <el-menu-item index="/plot">
         <el-badge :value="200" :max="99" class="badge">
           <i class="el-icon-chat-line-round"></i>
         </el-badge>
         <span slot="title">{{ $t('sideBar.plot') }}</span>
       </el-menu-item>
-      <el-menu-item index="7">
+      <!-- analysis -->
+      <el-menu-item index="/analysis">
         <i class="el-icon-s-data"></i>
         <span slot="title">{{ $t('sideBar.analysis') }}</span>
       </el-menu-item>
-
-      <el-menu-item class="collapse_btn" @click="isCollapse = !isCollapse">
-        <i :class="'el-icon-d-arrow-' + (isCollapse ? 'right' : 'left')"></i>
-        <span slot="title">{{ collapseText }}</span>
-      </el-menu-item>
+    </el-menu>
+    <div class="other_command">
       <div class="btn_group">
+        <!-- toggle group bar -->
         <el-button
           plain
           :type="barVisible.groupBar ? 'primary' : ''"
@@ -49,6 +50,7 @@
         >
           {{ $t('sideBar.group') }}
         </el-button>
+        <!-- toggle item bar -->
         <el-button
           plain
           :type="barVisible.itemBar ? 'primary' : ''"
@@ -57,6 +59,7 @@
         >
           {{ $t('sideBar.item') }}
         </el-button>
+        <!-- toggle detail bar -->
         <el-button
           plain
           :type="barVisible.detailBar ? 'primary' : ''"
@@ -67,6 +70,7 @@
         </el-button>
       </div>
       <div class="btn_group">
+        <!-- toggle simple mode -->
         <el-button
           plain
           :type="isSimpleMode ? 'primary' : ''"
@@ -75,8 +79,30 @@
         >
           {{ $t('sideBar.simple') }}
         </el-button>
+        <!-- toggle collapse sidebar -->
+        <el-tooltip
+          class="item"
+          effect="dark"
+          :content="collapseText"
+          placement="right"
+        >
+          <el-button
+            plain
+            :type="!isCollapse ? 'primary' : ''"
+            size="mini"
+            @click="isCollapse = !isCollapse"
+            :title="collapseText"
+          >
+            <i
+              :class="
+                isCollapse ? 'el-icon-d-arrow-right' : 'el-icon-d-arrow-left'
+              "
+            ></i>
+            <!-- {{ collapseText }} -->
+          </el-button>
+        </el-tooltip>
       </div>
-    </el-menu>
+    </div>
   </div>
 </template>
 
@@ -89,16 +115,9 @@ export default {
     }
   },
   methods: {
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    changePanel(panelPath) {
-      this.$router.push(panelPath)
-      this.$store.commit('CHANGE_CURRENT_PANEL', panelPath)
-      // this.$store.dispatch('changeCurrentPanel', panelPath)
+    // index: route
+    handleSelect(index) {
+      this.$changePanel(index)
     },
     toggleBarVisible(bar) {
       this.$store.commit('TOGGLE_BAR_VISIBILITY', bar)
@@ -117,18 +136,18 @@ export default {
       barVisible: state => state.barVisible,
       isSimpleMode: state => state.isSimpleMode
     })
-  },
-  watch: {
-    barVisible(a) {
-      console.log(a)
-    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .side_bar {
-  .el-menu-vertical-demo {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  border-right: solid 1px #e6e6e6;
+  .el-menu-vertical {
+    border-right: 0;
     height: 100%;
     .el-menu-item {
       .badge {
@@ -139,7 +158,7 @@ export default {
       }
     }
   }
-  .el-menu-vertical-demo:not(.el-menu--collapse) {
+  .el-menu-vertical:not(.el-menu--collapse) {
     width: 138px;
     height: 100%;
     .el-menu-item {
