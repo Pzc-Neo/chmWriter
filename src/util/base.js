@@ -75,7 +75,7 @@ export const listToTree = (list, root, parentId) => {
         item[parentId] = 'default'
       }
       const parent = map[item[parentId]]
-      parent.children = parent.children || []
+      parent.children = parent?.children || []
       parent.children.push(item)
     }
   })

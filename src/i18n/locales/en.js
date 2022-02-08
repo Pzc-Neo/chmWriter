@@ -13,7 +13,11 @@ export default {
     notSave: 'Not save',
     getInput: 'Get input',
     modify: 'Modify',
-    search: 'Search'
+    search: 'Search',
+    command: 'Command',
+    copy: 'Copy',
+    copyPure: 'CopyPure',
+    paste: 'Paste'
   },
   message: {
     confirm: 'Confirm',

@@ -72,7 +72,7 @@ export default {
   methods: {
     hideStuffByClick() {
       this.$store.commit('HIDE_CONTEXTMENU')
-      this.$store.commit('HIDE_COMMANDBOX')
+      // this.$store.commit('HIDE_COMMANDBOX')
     },
     hideStuffByEsc() {
       this.$store.commit('HIDE_CONTEXTMENU')

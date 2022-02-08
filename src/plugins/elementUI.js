@@ -40,7 +40,8 @@ import {
   Checkbox,
   CheckboxGroup,
   CheckboxButton,
-  Divider
+  Divider,
+  Drawer
 } from 'element-ui'
 
 Vue.use(Button)
@@ -84,3 +85,4 @@ Vue.use(Button)
   .use(CheckboxGroup)
   .use(CheckboxButton)
   .use(Divider)
+  .use(Drawer)

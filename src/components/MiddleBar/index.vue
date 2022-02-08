@@ -2,6 +2,9 @@
   <div class="middle_bar">
     <ContextMenuBar />
     <CommandBox />
+    <el-drawer title="我是标题" :visible.sync="drawer" direction="ltr">
+      <span>我来啦!</span>
+    </el-drawer>
     <SideBar />
     <div class="right">
       <ToolBar />
@@ -23,6 +26,11 @@ export default {
     ContextMenuBar,
     ToolBar,
     CommandBox
+  },
+  data() {
+    return {
+      drawer: false
+    }
   }
 }
 </script>

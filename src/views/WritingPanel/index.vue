@@ -1,5 +1,5 @@
 <template>
-  <div class="writing_panel">
+  <div :class="panelName + '_panel'">
     <DialogBar />
     <GroupBar
       :itemList="groupList"
@@ -26,7 +26,7 @@
     <ContentBar>
       <el-empty
         :image-size="200"
-        :description="$t('writing.nothingOpen')"
+        :description="$t(panelName + '.nothingOpen')"
         v-if="tabList.length === 0"
         style="height: 100%"
       ></el-empty>
@@ -100,7 +100,7 @@
         />
       </InfoBox>
       <InfoBox
-        :title="$t('writing.foreshadowing')"
+        :title="$t(panelName + '.foreshadowing')"
         :isEmpty="!currentItem.foreshadowing"
         :isCollapse.sync="infoBoxCollapse.foreshadowing"
       >
@@ -159,6 +159,7 @@ export default {
       groupTableName: 'chapter_groups',
       // Item table's name on datebase
       itemTableName: 'chapters',
+      panelName: 'writing',
 
       currentTabId: '',
       tabList: [],
@@ -192,7 +193,7 @@ export default {
       const lastItemId = this.$db.getConfig(this.last_id_item)
       this.changeToItem(lastItemId)
 
-      const jsonStr = this.$db.getConfig('info_box_collapse_writing')
+      const jsonStr = this.$db.getConfig('info_box_collapse_' + this.panelName)
       this.infoBoxCollapse = JSON.parse(jsonStr)
     },
     getGroups() {
@@ -275,7 +276,6 @@ export default {
       this.currentItem = item
       this.$db.setConfig(this.last_id_item, item.id)
       this.currentTabId = item.id
-      this.$store.state.writing.chapter.current = item
     },
     revealItem(item) {
       this.changeToGroup(item.group_id)
@@ -301,7 +301,7 @@ export default {
       if (isShowMessage) {
         this.$message(
           `${this.$t('action.update')} ${this.$t(
-            'writing.' + column
+            this.panelName + '.' + column
           )} ${this.$t('result.success')}`
         )
       }
@@ -323,7 +323,7 @@ export default {
       if (isShowMessage) {
         this.$message(
           `${this.$t('action.update')} ${this.$t(
-            'writing.' + column
+            this.panelName + '.' + column
           )} ${this.$t('result.success')} （${item.title}）`
         )
       }
@@ -538,7 +538,7 @@ export default {
       handler(newData) {
         try {
           const jsonStr = JSON.stringify(newData)
-          this.$db.setConfig('info_box_collapse_writing', jsonStr)
+          this.$db.setConfig('info_box_collapse_' + this.panelName, jsonStr)
         } catch (e) {
           this.$alert(e)
         }
@@ -546,46 +546,46 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    next(vc => {
-      vc.$store.commit('SET_PANEL_TOOL_LIST', vc.toolList)
+    next(_this => {
+      _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
     })
   },
   mounted() {
     this.init()
 
-    this.$bus.$on('writing:new-group', () => {
+    this.$bus.$on(this.panelName + ':new-group', () => {
       this.newGroup()
     })
-    this.$bus.$on('writing:new-item', () => {
+    this.$bus.$on(this.panelName + ':new-item', () => {
       this.newItem()
     })
 
-    this.$bus.$on('writing:change-to-group', targetItem => {
+    this.$bus.$on(this.panelName + ':change-to-group', targetItem => {
       this.changeToGroup(targetItem.id)
     })
-    this.$bus.$on('writing:change-to-item', targetItem => {
+    this.$bus.$on(this.panelName + ':change-to-item', targetItem => {
       this.changeToItem(targetItem.id)
       this.revealItem(targetItem)
     })
 
-    this.$bus.$on('writing:save-content', () => {
+    this.$bus.$on(this.panelName + ':save-content', () => {
       this.saveContent()
     })
-    this.$bus.$on('writing:switch-tab', isNext => {
+    this.$bus.$on(this.panelName + ':switch-tab', isNext => {
       this.switchTab(isNext)
     })
-    this.$bus.$on('writing:remove-tab', () => {
+    this.$bus.$on(this.panelName + ':remove-tab', () => {
       this.removeTab()
     })
   },
   beforeDestroy() {
-    this.$bus.$off('writing:new-group')
-    this.$bus.$off('writing:new-item')
-    this.$bus.$off('writing:change-to-group')
-    this.$bus.$off('writing:change-to-item')
-    this.$bus.$off('writing:save-content')
-    this.$bus.$off('writing:switch-tab')
-    this.$bus.$off('writing:remove-tab')
+    this.$bus.$off(this.panelName + ':new-group')
+    this.$bus.$off(this.panelName + ':new-item')
+    this.$bus.$off(this.panelName + ':change-to-group')
+    this.$bus.$off(this.panelName + ':change-to-item')
+    this.$bus.$off(this.panelName + ':save-content')
+    this.$bus.$off(this.panelName + ':switch-tab')
+    this.$bus.$off(this.panelName + ':remove-tab')
   }
 }
 </script>

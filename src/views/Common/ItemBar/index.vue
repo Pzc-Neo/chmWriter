@@ -12,6 +12,7 @@
       :description="$t('message.empty')"
       style="height: 100%"
     ></el-empty>
+    <!-- li's id willl use by `scrollToView` method  -->
     <li
       shadow="hover"
       v-for="(item, index) in itemList"
@@ -59,9 +60,6 @@ export default {
       }
     }
   },
-  data() {
-    return {}
-  },
   methods: {
     /**
      * Change to item.
@@ -80,8 +78,6 @@ export default {
       }
     },
     dragStart: function (event, item, index) {
-      // const drapIndex = event.target.attributes.index.nodeValue
-      // event.dataTransfer.setData('drapIndex', drapIndex)
       event.dataTransfer.setData('drapIndex', index)
 
       // Will use it when drop to group tree
@@ -93,7 +89,6 @@ export default {
     handleDrop(event, index) {
       let drapIndex = event.dataTransfer.getData('drapIndex')
       let dropIndex = index
-      // let dropIndex = event.target.attributes.index.nodeValue
       drapIndex = parseInt(drapIndex)
       dropIndex = parseInt(dropIndex)
 
@@ -137,14 +132,12 @@ export default {
             diffData.push(diff)
           }
         }
-        console.log(diffData)
         let startSort = diffData[0].sort
         diffData = diffData.map(data => {
           data.sort = startSort
           startSort++
           return data
         })
-        console.log(diffData)
         this.$emit('updateSorts', diffData)
       }
     },
@@ -199,7 +192,6 @@ export default {
   border-right: solid 1px #e6e6e6;
   overflow: auto;
   .item {
-    // padding: 5px 10px;
     cursor: pointer;
   }
   .item:hover {

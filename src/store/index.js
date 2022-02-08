@@ -52,11 +52,16 @@ export default new Vuex.Store({
     CHANGE_CURRENT_PANEL(state, panelPath) {
       state.currentPanel = panelPath
     },
+    SET_PANEL_TOOL_LIST(state, panelToolList) {
+      state.panelToolList = panelToolList
+    },
     TOGGLE_SIMPLE_MODE(state) {
       state.isSimpleMode = !state.isSimpleMode
     },
-    SET_PANEL_TOOL_LIST(state, panelToolList) {
-      state.panelToolList = panelToolList
+    TOGGLE_EXPAND(state) {
+      state.barVisible.groupBar = !state.barVisible.groupBar
+      state.barVisible.itemBar = !state.barVisible.itemBar
+      state.barVisible.detailBar = !state.barVisible.detailBar
     }
   },
   actions: {},

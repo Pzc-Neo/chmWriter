@@ -131,7 +131,7 @@ export default {
       this.panelName = typeKey.substring(1, typeKey.length)
       // example: chapters
       this.tableName = this.panelMap[this.panelName]
-      console.log(this.tableName)
+
       // example: S
       const type = typeKey.substr(0, 1)
       this.resultIndex = 0
@@ -245,7 +245,6 @@ export default {
           }
           // example: Swriting, Cwriting
           const typeMapKey = mode + this.currentPanel
-          console.log(typeMapKey)
           // example: @w, >w
           this.command = this.typeMap[typeMapKey]
           this.$refs.commandBox.focus()
@@ -262,7 +261,7 @@ export default {
   flex-direction: column;
   position: fixed;
   width: 500px;
-  height: 60%;
+  max-height: 60%;
   overflow: hidden;
   top: 35px;
   left: 50%;

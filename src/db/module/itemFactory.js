@@ -1,3 +1,11 @@
+/**
+ * Every factory's return value can't use by `Vue.property.$db.insert`
+ * example:
+ *     const item = new ChapterGroupFactory('','root', 0)
+ *     this.$db.insert(item)
+ * Boolean value: do not use `true/false`, sqlite3 dosn't suport. use `1/0` instead.
+ */
+
 import { randomStr } from '@/util/base'
 
 export const ChapterGroupFactory = function (title, pid, sort) {
@@ -43,12 +51,31 @@ export const ChapterFactory = function (title, groupId, sort) {
   }
 }
 
+export const WorldGroupFactory = function (title, pid, sort) {
+  const date = Date.now()
+  return {
+    tableName: 'world_groups',
+    data: {
+      id: randomStr(),
+      title: title,
+      description: '',
+      pid: pid || 'root',
+      created: date,
+      updated: date,
+      is_show: 1,
+      sort: sort
+    }
+  }
+}
+
 export const getItemFactory = function (type) {
   switch (type) {
     case 'chapter_groups':
       return ChapterGroupFactory
     case 'chapters':
       return ChapterFactory
+    case 'world_groups':
+      return WorldGroupFactory
     default:
       break
   }

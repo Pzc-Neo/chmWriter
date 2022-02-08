@@ -6,7 +6,7 @@
       :icon="tool.icon"
       :title="$t(tool.title)"
       :key="tool.id"
-      @click.stop="tool.func"
+      @click="e => tool.func(tool, e)"
     ></el-button>
     <el-divider direction="vertical"></el-divider>
     <el-button
@@ -15,7 +15,7 @@
       :icon="tool.icon"
       :title="$t(tool.title)"
       :key="tool.id"
-      @click="tool.func"
+      @click="e => tool.func(tool, e)"
     ></el-button>
   </div>
 </template>
@@ -48,6 +48,27 @@ export default {
           icon: 'el-icon-search',
           func: () => {
             this.$store.commit('SHOW_COMMANDBOX', 'search')
+          }
+        },
+        {
+          id: 'commanBarCommand',
+          title: 'action.command',
+          icon: 'fa fa-file-code-o',
+          func: () => {
+            this.$store.commit('SHOW_COMMANDBOX', 'command')
+          }
+        },
+        {
+          id: 'toggleExpand',
+          title: 'action.command',
+          icon: 'fa fa-expand',
+          func: tool => {
+            if (tool.icon === 'fa fa-expand') {
+              tool.icon = 'fa fa-compress'
+            } else {
+              tool.icon = 'fa fa-expand'
+            }
+            this.$store.commit('TOGGLE_EXPAND')
           }
         }
       ]

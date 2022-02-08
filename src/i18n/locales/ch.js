@@ -13,7 +13,11 @@ export default {
     notSave: '不保存',
     getInput: '获取输入',
     modify: '修改',
-    search: '搜索'
+    search: '搜索',
+    command: '命令',
+    copy: '复制',
+    copyPure: '复制纯净文本',
+    paste: '粘贴'
   },
   message: {
     confirm: '确定',
