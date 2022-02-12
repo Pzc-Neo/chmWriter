@@ -31,7 +31,7 @@ export default {
           title: 'contextMenuBar.newGroup',
           icon: 'el-icon-folder-add',
           func: () => {
-            this.$bus.$emit('writing:new-group')
+            this.$bus.$emit(this.currentPanel + ':new-group')
           }
         },
         {
@@ -39,7 +39,8 @@ export default {
           title: 'contextMenuBar.new',
           icon: 'el-icon-document-add',
           func: () => {
-            this.$bus.$emit('writing:new-item')
+            console.log(this.currentPanel)
+            this.$bus.$emit(this.currentPanel + ':new-item')
           }
         },
         {
@@ -79,12 +80,13 @@ export default {
   },
   computed: {
     ...mapState({
-      panelToolList: state => state.panelToolList
+      panelToolList: state => state.panelToolList,
+      currentPanel: state => state.currentPanel
     })
-  },
-  mounted() {
-    this.$bus.$emit('writing:save-content')
   }
+  // mounted() {
+  //   this.$bus.$emit('writing:save-content')
+  // }
 }
 </script>
 

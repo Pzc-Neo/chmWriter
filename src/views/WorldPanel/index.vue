@@ -107,13 +107,13 @@
 </template>
 
 <script>
-import GroupBar from '@/views/Common/GroupBar'
-import ItemBar from '@/views/Common/ItemBar'
-import ContentBar from '@/views/Common/ContentBar'
-import DetailBar from '@/views/Common/DetailBar'
-import InfoBox from '@/views/Common/DetailBar/InfoBox'
-import DialogBar from '@/views/Common/DialogBar'
-import TextareaBox from '@/views/Common/DetailBar/TextareaBox'
+import GroupBar from '@/views/Common/components/GroupBar'
+import ItemBar from '@/views/Common/components/ItemBar'
+import ContentBar from '@/views/Common/components/ContentBar'
+import DetailBar from '@/views/Common/components/DetailBar'
+import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
+import DialogBar from '@/views/Common/components/DialogBar'
+import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
 
 import AttrBox from './components/AttrBox'
 import ChapterItem from './components/ChapterItem'

@@ -1,93 +1,184 @@
 <template>
-  <div class="writing_panel">
-    <DialogBar />
+  <div :class="'panel ' + panelName + '_panel'">
     <GroupBar
       :itemList="groupList"
+      @updateAttr="updateAttrGroup"
       :currentGroup="currentGroup"
       :menuList="menuListGroup"
       :menuListBar="menuListGroupBar"
       @changeTo="changeToGroup"
-      @changePid="changeItemGroupId"
+      @changeItemGroupId="changeItemGroupId"
       @updateSorts="updateGroupSorts"
     />
-    <ItemBar
-      :itemList="itemList"
-      :menuList="menuListChapter"
-      @changeTo="changeToItem"
-      @updateSorts="updateItemSorts"
-    >
-      <template v-slot="{ item }">
-        <ItemBox :item="item" />
-        <!-- <ChapterItem :item="item" /> -->
-      </template>
-    </ItemBar>
-    <ContentBar>
-      <el-empty
-        :image-size="200"
-        :description="$t('writing.nothingOpen')"
-        v-if="tabList.length === 0"
-        style="height: 100%"
-      ></el-empty>
-      <el-tabs
-        closable
-        v-else
-        v-model="currentTabId"
-        type="card"
-        class="tab_bar"
-        @tab-remove="removeTab"
-        @tab-click="handleTabClick"
+    <div class="middle">
+      <ItemBar
+        :itemList="itemList"
+        :currentItem="currentItem"
+        :menuListBar="menuListItemBar"
+        :menuList="menuListItem"
+        @changeTo="changeToItem"
+        @updateSorts="updateItemSorts"
+        :customStyle="itemBarStyle"
       >
-        <el-tab-pane
-          v-for="item in tabList"
-          :key="item.id"
-          :label="item.title"
-          :name="item.id"
-          class="editor_container"
-          @dblclick="removeTab(item.id)"
-          :style="{ width: editorWidth }"
+        <template v-slot="{ item }">
+          <Item :item="item" />
+        </template>
+      </ItemBar>
+      <ContentBar :customStyle="{ flex: 2 }">
+        <el-empty
+          :image-size="200"
+          :description="$t('info.empty')"
+          v-if="tabList.length === 0"
+          style="height: 100%"
+        ></el-empty>
+        <el-tabs
+          v-else
+          closable
+          v-model="currentTabId"
+          type="card"
+          class="tab_bar"
+          @tab-remove="handleRemoveTab"
+          @tab-click="handleTabClick"
         >
-          <CmEditor :item="item" />
-        </el-tab-pane>
-      </el-tabs>
-    </ContentBar>
+          <el-tab-pane
+            v-for="item in tabList"
+            :key="item.id"
+            :label="item.title"
+            :name="item.id"
+            class="editor_container"
+            :style="{ width: editorWidth }"
+          >
+            <span
+              slot="label"
+              @dblclick="handleRemoveTab(item.id)"
+              @contextmenu.prevent="showTabContextMenu($event, item)"
+            >
+              <span v-show="item.isChanged">*</span>
+              {{ item.title }}
+            </span>
+            <CmEditor
+              :item="item"
+              @change="handleEditorContentChange"
+              @update:content="saveContent"
+              @switch:tab="isNext => switchTab(isNext)"
+              @close="removeTab"
+              @countWord="
+                words => {
+                  updateAttrItem('words', words, item, false)
+                }
+              "
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </ContentBar>
+    </div>
     <DetailBar :item="currentItem">
-      <InfoBox :title="$t('detailBar.attribute')">
-        <AttrBox :item="currentItem" />
+      <InfoBox
+        :title="$t('detailBar.attribute')"
+        :isCollapse.sync="infoBoxCollapse.attribute"
+      >
+        <AttrBox
+          :item="currentItem"
+          @updateAttr="updateAttrItem"
+          @changeEditorWidth="
+            width => {
+              this.editorWidth = width + '%'
+            }
+          "
+        />
       </InfoBox>
-      <InfoBox :title="$t('detailBar.note')">
-        <TextareaBox :content="currentItem.note" />
+      <InfoBox
+        :title="$t('detailBar.note')"
+        :isEmpty="!currentItem.note"
+        :isCollapse.sync="infoBoxCollapse.note"
+      >
+        <TextareaBox
+          :content.sync="currentItem.note"
+          @change="
+            newContent => {
+              updateAttrItem('note', newContent, currentItem)
+            }
+          "
+        />
+      </InfoBox>
+      <InfoBox
+        :title="$t(panelName + '.foreshadowing')"
+        :isEmpty="!currentItem.foreshadowing"
+        :isCollapse.sync="infoBoxCollapse.foreshadowing"
+      >
+        <TextareaBox
+          :content.sync="currentItem.foreshadowing"
+          @change="
+            newContent => {
+              updateAttrItem('foreshadowing', newContent, currentItem)
+            }
+          "
+        />
       </InfoBox>
     </DetailBar>
   </div>
 </template>
 
 <script>
-import GroupBar from '@/views/Common/GroupBar'
-import ItemBar from '@/views/Common/ItemBar'
-import ItemBox from '@/views/Common/ItemBar/ItemBox'
-import ContentBar from '@/views/Common/ContentBar'
-import DetailBar from '@/views/Common/DetailBar'
-import InfoBox from '@/views/Common/DetailBar/InfoBox'
-import DialogBar from '@/views/Common/DialogBar'
+import GroupBar from '@/views/Common/components/GroupBar'
+import ItemBar from '@/views/Common/components/ItemBar'
+import ContentBar from '@/views/Common/components/ContentBar'
+import DetailBar from '@/views/Common/components/DetailBar'
+import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
+import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
+import CmEditor from '@/views/Common/components/CmEditor'
 
-import AttrBox from '@/views/WritingPanel/components/AttrBox'
-import TextareaBox from '@/views/Common/DetailBar/TextareaBox'
-import CmEditor from '@/views/Common/CmEditor'
+import AttrBox from './components/AttrBox'
+import Item from './components/Item'
 
-import { getItemFactory } from '@/db/module/itemFactory'
+import { menuListFactory } from './menuList/index'
+import { getToolList } from './toolList'
 
-import { getInput, getConfirm, listToTree, rename } from '@/util/base'
+import {
+  init,
+  getGroups,
+  changeToGroup,
+  getGroupFromDb,
+  getGroupFromLocal,
+  updateGroupSorts,
+  updateAttrGroup,
+  newGroup,
+  refreshGroupList,
+  deleteGroup
+} from '@/views/Common/script/group'
+import {
+  handleRemoveTab,
+  handleTabClick,
+  removeOtherTabs,
+  removeTab,
+  showTabContextMenu,
+  switchTab
+} from '@/views/Common/script/tab'
+import {
+  changeItemGroupId,
+  changeToItem,
+  deleteItem,
+  getItemFromDb,
+  getItemFromLocal,
+  getItems,
+  newItem,
+  refreshItemList,
+  revealItem,
+  updateAttrItem,
+  updateItemSorts
+} from '@/views/Common/script/item'
+import { infoBoxCollapseHandler } from '@/views/Common/script/other'
 
 export default {
+  name: 'DataPanel',
   components: {
     GroupBar,
     ItemBar,
-    ItemBox,
     ContentBar,
     DetailBar,
     InfoBox,
     CmEditor,
-    DialogBar,
+    Item,
     AttrBox,
     TextareaBox
   },
@@ -97,317 +188,224 @@ export default {
       groupTableName: 'data_groups',
       // Item table's name on datebase
       itemTableName: 'datas',
+      // Will use by event, i18n
+      panelName: 'data',
 
-      currentTabId: '2',
+      currentTabId: '',
       tabList: [],
-      menuListGroupBar: [
-        {
-          id: 'new',
-          title: '新建',
-          icon: 'el-icon-new',
-          func: targetItem => {
-            if (targetItem.children) {
-              const childs = targetItem.children
-              const sort = childs[childs.length - 1].sort + 1
-              // console.log('Create new group (Not finished)')
-              this.newGroup('root', sort, newGroup => {
-                this.groupList.push(newGroup)
-              })
-            }
-          }
-        }
-      ],
-      menuListGroup: [
-        {
-          id: 'newChild',
-          title: '新建同级',
-          icon: 'el-icon-new',
-          func: targetItem => {
-            const targetId = targetItem.pid === 'root' ? 'root' : targetItem.pid
-            this.newGroup(targetId, targetItem.sort)
-          }
-        },
-        {
-          id: 'newSilbling',
-          title: '新建子级',
-          icon: 'el-icon-new',
-          func: targetItem => {
-            let sort = 0
-            if (targetItem.children) {
-              const childs = targetItem.children
-              sort = childs[childs.length - 1].sort + 1
-            }
-            this.newGroup(targetItem.id, sort, newGroup => {
-              targetItem.children = targetItem?.children || []
-              targetItem.children.push(newGroup.data)
-              console.log(targetItem.children)
-            })
-          }
-        },
-        {
-          id: 'rename',
-          title: '重命名',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            rename.call(this, this.groupTableName, targetItem)
-          }
-        },
-        {
-          id: 'delect',
-          title: '删除',
-          icon: 'el-icon-delete',
-          func: targetItem => {
-            this.deleteGroup(targetItem)
-          }
-        }
-      ],
-      menuListChapter: [
-        {
-          id: 'new',
-          title: '新建',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            this.newItem()
-          }
-        },
-        {
-          id: 'rename',
-          title: '重命名',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            rename.call(this, this.itemTableName, targetItem)
-          }
-        },
-        {
-          id: 'other',
-          title: '其他',
-          // icon: 'el-icon-delete',
-          func: targetItem => {
-            // this.removeTab(targetItem.id)
-          }
-        },
-        {
-          id: 'delect',
-          title: '删除',
-          icon: 'el-icon-delete',
-          func: targetItem => {
-            this.deleteItem(targetItem)
-          }
-        },
-        {
-          id: 'info',
-          title: '信息',
-          icon: 'el-icon-info',
-          func: targetItem => {
-            console.log(targetItem)
-            // this.deleteItem(targetItem)
-          }
-        }
-      ],
+      menuListGroupBar: menuListFactory.call(this, 'groupBar'),
+      menuListGroup: menuListFactory.call(this, 'group'),
+      menuListItem: menuListFactory.call(this, 'item'),
+      menuListItemBar: menuListFactory.call(this, 'itemBar'),
+      menuListTab: menuListFactory.call(this, 'tab'),
+      toolList: getToolList.call(this),
       groupList: [],
       itemList: [],
       currentGroup: {},
       currentItem: {},
-      editorWidth: '100%'
+      editorWidth: '100%',
+      infoBoxCollapse: {
+        attribute: false,
+        note: false,
+        foreshadowing: false
+      }
+    }
+  },
+  computed: {
+    itemBarStyle() {
+      let _style = {
+        width: '100%',
+        flex: 3
+      }
+
+      if (this.$store.state.isSimpleMode) {
+        _style = {
+          ..._style,
+          display: 'flex',
+          flexFlow: 'row wrap',
+          alignContent: 'flex-start',
+          justifyContent: 'flex-start'
+        }
+      }
+      return _style
     }
   },
   methods: {
+    init() {
+      return init.call(this)
+    },
     getGroups() {
-      const temp = this.$db.getGroups(this.groupTableName)
-      return listToTree(temp)
-    },
-    getGroup(groupId) {
-      return this.$db.getGroup(this.groupTableName, groupId)
-    },
-    getItems(groupId) {
-      return this.$db.getItems(this.itemTableName, groupId)
+      return getGroups.call(this)
     },
     changeToGroup(groupId) {
-      this.itemList = this.getItems(groupId)
-      const group = this.getGroup(groupId)
-      this.currentGroup = group
-      this.$db.setConfig('last_chapter_group_id', groupId)
-      this.$store.commit('HIDE_CONTEXTMENU')
+      return changeToGroup.call(this, groupId)
     },
-    /**
-     * @param {String | Object} item item object or item's id
-     */
-    changeToItem(item) {
-      const temp = Object.prototype.toString.call(item)
-      // If true means item is id
-      if (temp === '[object String]') {
-        item = this.$db.getItem(this.itemTableName, item)
-      }
-      this.$store.state.writing.chapter.current = item
-
-      this.currentItem = item
-      const index = this.tabList.findIndex(_item => {
-        return _item.id === item.id
-      })
-      if (index === -1) {
-        this.tabList.push(item)
-      }
-      this.currentTabId = item.id
+    getGroupFromDb(groupId) {
+      return getGroupFromDb.call(this, groupId)
     },
-    updateItemSorts(paramData) {
-      this.$db.updateItemSorts(this.itemTableName, paramData)
-      this.changeToGroup(this.currentGroup.id)
+    getGroupFromLocal(groupId) {
+      return getGroupFromLocal.call(this, groupId)
     },
-    updateGroupSorts(paramData) {
-      this.$db.updateGroupSorts(this.groupTableName, paramData)
+    updateGroupSorts(diffData) {
+      return updateGroupSorts.call(this, diffData)
     },
-    updateAttr(column, value, item) {
-      this.$db.update(this.itemTableName, column, value, item.id)
-      item[column] = value
-
-      this.$message({
-        showClose: true,
-        duration: 1000,
-        message: `updata ${column} success`,
-        type: 'success'
-      })
+    updateAttrGroup(column, value, group, isShowMessage = true) {
+      return updateAttrGroup.call(this, column, value, group, isShowMessage)
     },
-    changeItemGroupId(groupId, itemId) {
-      this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
+    newGroup(pid, sort) {
+      return newGroup.call(this, pid, sort)
     },
     deleteGroup(targetItem) {
-      getConfirm.call(
-        this,
-        () => {
-          this.$db.deleteById(this.groupTableName, targetItem.id)
-        },
-        targetItem
-      )
+      return deleteGroup.call(this, targetItem)
+    },
+    refreshGroupList() {
+      return refreshGroupList.call(this)
+    },
+
+    getItems(groupId) {
+      return getItems.call(this, groupId)
+    },
+    getItemFromDb(itemId) {
+      return getItemFromDb.call(this, itemId)
+    },
+    getItemFromLocal(itemId) {
+      return getItemFromLocal.call(this, itemId)
+    },
+    changeToItem(itemId) {
+      return changeToItem.call(this, itemId)
+    },
+    revealItem(item) {
+      return revealItem.call(this, item)
+    },
+    updateItemSorts(diffData) {
+      return updateItemSorts.call(this, diffData)
+    },
+    updateAttrItem(column, value, item, isShowMessage = true) {
+      return updateAttrItem.call(this, column, value, item, isShowMessage)
+    },
+    changeItemGroupId(groupId, itemId) {
+      return changeItemGroupId.call(this, groupId, itemId)
+    },
+    refreshItemList() {
+      return refreshItemList.call(this)
+    },
+    newItem(sort) {
+      return newItem.call(this, sort)
     },
     deleteItem(targetItem) {
-      getConfirm.call(
-        this,
-        () => {
-          this.$db.deleteById(this.itemTableName, targetItem.id)
-          this.removeTab(targetItem.id)
-          this.changeToGroup(this.currentGroup.id)
-        },
-        targetItem
-      )
-      // this.$confirm(
-      //   `此操作将永久删除章节：[${targetItem.title}], 是否继续?`,
-      //   '提示',
-      //   {
-      //     confirmButtonText: '确定',
-      //     cancelButtonText: '取消',
-      //     type: 'warning'
-      //   }
-      // )
-      //   .then(() => {
-      //     this.$db.deleteById(this.itemTableName, targetItem.id)
-      //     this.removeTab(targetItem.id)
-      //     this.$message({
-      //       type: 'success',
-      //       message: '删除成功!'
-      //     })
-      //   })
-      //   .catch(() => {
-      //     this.$message({
-      //       type: 'info',
-      //       message: '已取消删除'
-      //     })
-      //   })
+      return deleteItem.call(this, targetItem)
     },
+    handleEditorContentChange(item, newContent) {
+      item.newContent = newContent
+      item.isChanged = true
+    },
+    handleRemoveTab(targetId) {
+      return handleRemoveTab.call(this, targetId)
+    },
+    // targetId is item's id
     removeTab(targetId) {
-      const tabs = this.tabList
-      let activeId = this.currentTabId
-      if (activeId === targetId) {
-        tabs.forEach((tab, index) => {
-          if (tab.id === targetId) {
-            const nextTab = tabs[index + 1] || tabs[index - 1]
-            if (nextTab) {
-              activeId = nextTab.id
-            }
-          }
-        })
-      }
-
-      this.currentTabId = activeId
-      this.tabList = tabs.filter(tab => tab.id !== targetId)
+      return removeTab.call(this, targetId)
+    },
+    removeOtherTabs(tabId) {
+      return removeOtherTabs.call(this, tabId)
+    },
+    switchTab(isNext = true) {
+      return switchTab.call(this, isNext)
     },
     handleTabClick(tab) {
-      this.changeToItem(tab.name)
+      return handleTabClick.call(this, tab)
     },
-    newGroup(pid, sort, callback) {
-      getInput.call(this, title => {
-        const Factory = getItemFactory(this.groupTableName)
-        const item = new Factory(title, pid, sort)
-        this.$db.insert(item)
-        callback(item)
-      })
+    showTabContextMenu(event, targetItem) {
+      return showTabContextMenu.call(this, event, targetItem)
     },
-    newItem() {
-      getInput.call(this, title => {
-        const Factory = getItemFactory(this.itemTableName)
-        const item = new Factory(title, this.currentGroup.id)
-        this.$db.insert(item)
-        this.changeToGroup(this.currentGroup.id)
-      })
-    },
-    saveChapter(content, itemId) {
-      if (content === undefined || itemId === undefined) {
-        const info = `content:${content} itemId: ${itemId}`
-        this.$alert(info, this.$t('result.warning'), {
-          confirmButtonText: this.$t('message.confirm'),
-          callback: action => {
-            this.$message({
-              type: 'warning',
-              message: `action: ${action}`
-            })
-          }
-        })
-        return
+
+    saveContent(content, itemId) {
+      let item = {}
+      if (itemId === undefined) {
+        item = this.currentItem
+      } else {
+        item = this.getItemFromLocal(itemId)
       }
-      this.$db.update(this.itemTableName, 'content', content, itemId)
 
-      this.$message({
-        showClose: true,
-        duration: 1000,
-        message: this.$t('writing.saved'),
-        type: 'success'
-      })
+      if (content === undefined) {
+        content = item.newContent
+      }
+      console.log(content, item)
 
-      const index = this.itemList.findIndex(item => {
-        return item.id === itemId
-      })
-      this.itemList[index].content = content
+      this.updateAttrItem('content', content, item)
+      item.isChanged = false
     }
   },
-  mounted() {
-    this.groupList = this.getGroups()
-
-    const config = this.$db.getConfig('last_chapter_group_id')
-    this.changeToGroup(config)
-
-    this.$bus.$on('writing.cmEditor:save_content', (content, itemId) => {
-      this.saveChapter(content, itemId)
-    })
-
-    this.$bus.$on('attrBar:changeEditorWidth', value => {
-      this.editorWidth = value + '%'
-    })
-
-    this.$bus.$on('attrBar:updateAttr', (column, value, itemId) => {
-      this.updateAttr(column, value, itemId)
+  watch: {
+    infoBoxCollapse: {
+      deep: true,
+      handler(newData) {
+        infoBoxCollapseHandler.call(this, newData)
+      }
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(_this => {
+      _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
     })
   },
-  computed: {}
+  mounted() {
+    this.init()
+
+    this.$bus.$on(this.panelName + ':new-group', () => {
+      this.newGroup()
+    })
+    this.$bus.$on(this.panelName + ':new-item', () => {
+      this.newItem()
+    })
+    this.$bus.$on(this.panelName + ':change-to-group', targetItem => {
+      this.changeToGroup(targetItem.id)
+    })
+    this.$bus.$on(this.panelName + ':change-to-item', targetItem => {
+      this.changeToItem(targetItem.id)
+      this.revealItem(targetItem)
+    })
+    this.$bus.$on(this.panelName + ':switch-tab', isNext => {
+      this.switchTab(isNext)
+    })
+    this.$bus.$on(this.panelName + ':remove-tab', () => {
+      console.log('remove-tab')
+      this.removeTab()
+    })
+
+    this.$bus.$on(this.panelName + ':save-content', () => {
+      this.saveContent()
+    })
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.panelName + ':new-group')
+    this.$bus.$off(this.panelName + ':new-item')
+    this.$bus.$off(this.panelName + ':change-to-group')
+    this.$bus.$off(this.panelName + ':change-to-item')
+    this.$bus.$off(this.panelName + ':switch-tab')
+    this.$bus.$off(this.panelName + ':remove-tab')
+
+    this.$bus.$off(this.panelName + ':save-content')
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-.writing_panel {
+.panel {
   flex: 1;
   display: flex;
+  overflow: hidden;
+  .middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
   .tab_bar {
     display: flex;
     flex-direction: column;
     height: 100%;
+    user-select: none;
     /deep/.el-tabs__header {
       margin: 0px;
       .el-tabs__item {

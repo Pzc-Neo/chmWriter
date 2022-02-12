@@ -5,11 +5,12 @@
     v-show="isShow"
     @contextmenu="showContextmenu"
     @click="handleClick"
+    :style="customStyle"
   >
     <el-empty
       v-if="itemList.length === 0"
       :image-size="120"
-      :description="$t('message.empty')"
+      :description="$t('info.empty')"
       style="height: 100%"
     ></el-empty>
     <!-- li's id willl use by `scrollToView` method  -->
@@ -57,6 +58,15 @@ export default {
       type: Object,
       default() {
         return {}
+      }
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {
+          width: '200px',
+          height: '100%'
+        }
       }
     }
   },
@@ -188,7 +198,6 @@ export default {
 
 <style lang="scss" scoped>
 .item_bar {
-  width: 200px;
   border-right: solid 1px #e6e6e6;
   overflow: auto;
   .item {

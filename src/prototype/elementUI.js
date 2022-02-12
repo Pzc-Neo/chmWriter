@@ -15,17 +15,20 @@ Vue.prototype.$message = function (message, type = 'success', duration = 1000) {
 }
 
 Vue.prototype.$prompt = function (callback, defaultValue = '') {
-  MessageBox.prompt(
-    this.$t('message.pleaseInput'),
-    this.$t('action.getInput'),
-    {
-      inputValue: defaultValue,
-      confirmButtonText: this.$t('message.confirm'),
-      cancelButtonText: this.$t('message.cancel'),
-      inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/, // nonempty
-      inputErrorMessage: this.$t('message.nonempty')
-    }
-  )
+  const msg = this.$t('message.pleaseInput')
+  // example: writing panel get input
+  const title =
+    this.$t('sideBar.' + this.$store.state.currentPanel) +
+    this.$t('sideBar.panel') +
+    ' ' +
+    this.$t('action.getInput')
+  MessageBox.prompt(msg, title, {
+    inputValue: defaultValue,
+    confirmButtonText: this.$t('message.confirm'),
+    cancelButtonText: this.$t('message.cancel'),
+    inputPattern: /^[\s\S]*.*[^\s][\s\S]*$/, // nonempty
+    inputErrorMessage: this.$t('message.nonempty')
+  })
     .then(({ value }) => {
       try {
         callback(value)

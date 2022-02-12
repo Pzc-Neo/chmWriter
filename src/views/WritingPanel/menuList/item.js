@@ -1,7 +1,7 @@
 /**
  * title: Use i18n's string.
  */
-export const menuListItemBarFactory = function () {
+export const itemBar = function () {
   return [
     {
       id: 'new',
@@ -16,7 +16,7 @@ export const menuListItemBarFactory = function () {
   ]
 }
 
-export const menuListItemFactory = function () {
+export const item = function () {
   return [
     {
       id: 'new',

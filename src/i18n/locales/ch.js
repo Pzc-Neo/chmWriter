@@ -4,7 +4,8 @@ export default {
     description: '开始创造世界吧！',
     default: '默认',
     canNotDelete: '不能删除',
-    notExist: '不存在'
+    notExist: '不存在',
+    empty: '空'
   },
   action: {
     update: '更新',
@@ -23,7 +24,6 @@ export default {
     confirm: '确定',
     cancel: '取消',
     nonempty: '不能为空',
-    empty: '空',
     rename: '重命名',
     pleaseInput: '请输入内容'
   },
@@ -69,7 +69,8 @@ export default {
     group: '分组',
     item: '项目',
     detail: '细节',
-    simple: '简单'
+    simple: '简单',
+    panel: '面板'
   },
   detailBar: {
     attribute: '属性',

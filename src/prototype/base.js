@@ -1,6 +1,8 @@
 import Vue from 'vue'
 
 Vue.prototype.$changePanel = function (panelPath) {
+  if (panelPath === '/' + this.$store.currentPanel) return
+
   this.$router.push(panelPath)
   this.$store.commit(
     'CHANGE_CURRENT_PANEL',

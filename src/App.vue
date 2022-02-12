@@ -55,13 +55,19 @@ export default {
           prama: ['command']
         },
         {
+          id: 'removeTab',
+          key: 'ctrl+w',
+          funcName: 'removeTab',
+          prama: []
+        },
+        {
           id: 'swtichTab',
           key: 'ctrl+tab',
           funcName: 'switchTab',
           prama: []
         },
         {
-          id: 'swtichTab',
+          id: 'swtichTabPrev',
           key: 'shift+ctrl+tab',
           funcName: 'switchTab',
           prama: [false]
@@ -83,6 +89,9 @@ export default {
     },
     switchTab(isNext) {
       this.$bus.$emit(this.currentPanel + ':switch-tab', isNext)
+    },
+    removeTab() {
+      this.$bus.$emit(this.currentPanel + ':remove-tab')
     }
   },
   mounted() {
@@ -95,10 +104,10 @@ export default {
       })
     })
 
-    hotkeys('ctrl+r', () => {
-      alert('stopped reload!')
-      return false
-    })
+    // hotkeys('ctrl+r', () => {
+    //   alert('stopped reload!')
+    //   return false
+    // })
   },
   computed: {
     ...mapState({

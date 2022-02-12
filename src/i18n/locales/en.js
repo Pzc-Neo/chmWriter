@@ -69,7 +69,8 @@ export default {
     group: 'Group',
     item: 'Item',
     detail: 'Detail',
-    simple: 'Simple'
+    simple: 'Simple',
+    panel: 'Panel'
   },
   detailBar: {
     attribute: 'Attribute',

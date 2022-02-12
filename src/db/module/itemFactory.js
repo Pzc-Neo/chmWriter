@@ -8,6 +8,33 @@
 
 import { randomStr } from '@/util/base'
 
+// export const DataFactory = function (title, groupId, sort) {
+//   const date = Date.now()
+//   return {
+//     tableName: 'datas',
+//     data: {
+//       id: randomStr(),
+//       group_id: groupId,
+//       title: title,
+//       created: date,
+//       updated: date,
+//       content: '',
+//       language: 0,
+//       words: 0,
+//       target_words: 3000,
+//       type: 0,
+//       status: 0,
+//       is_export: 1,
+//       note: '',
+//       foreshadowing: '',
+//       rate: 0,
+//       sign: '',
+//       other: '',
+//       sort: sort
+//     }
+//   }
+// }
+
 export const ChapterGroupFactory = function (title, pid, sort) {
   const date = Date.now()
   return {
@@ -77,6 +104,7 @@ export const getItemFactory = function (type) {
     case 'world_groups':
       return WorldGroupFactory
     default:
+      // this.$alert('No such factory: ' + type)
       break
   }
 }

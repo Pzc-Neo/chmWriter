@@ -1,0 +1,110 @@
+<template>
+  <div
+    v-if="$store.state.isSimpleMode"
+    class="simple_mode_item"
+    :title="item.title"
+  >
+    {{ item.title }}
+  </div>
+  <div v-else class="item">
+    <span class="left" :title="item.title">{{ item.title }}&nbsp;</span>
+    <span class="center">
+      {{ item.content }}
+    </span>
+    <span class="right">
+      <!-- <span>{{ $formatTime(item.updated) }}</span> -->
+      <el-tag :title="item.source">{{ item.source }}</el-tag>
+    </span>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'ChapterItem',
+  props: {
+    item: {
+      type: Object,
+      default() {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      tagTypes: ['', 'success', 'danger', 'warning']
+    }
+  },
+  computed: {
+    types() {
+      return [
+        this.$t('writing.types.normal'),
+        this.$t('writing.types.transition').substr(0, 5),
+        this.$t('writing.types.important')
+      ]
+    },
+    status() {
+      return [
+        this.$t('writing.statuss.first'),
+        this.$t('writing.statuss.second'),
+        this.$t('writing.statuss.final')
+      ]
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.simple_mode_item {
+  padding: 7px 8px;
+  border-bottom: 1px solid #f3f3f3;
+  width: 184px;
+  height: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.item {
+  display: flex;
+  padding: 5px 6px;
+  border-bottom: 1px solid #e6e6e6;
+  overflow: hidden;
+  .left {
+    width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: bold;
+    .el-tag {
+      height: 20px;
+      line-height: 18px;
+      padding: 0px 5px;
+    }
+  }
+  .center {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .right {
+    width: 60px;
+    display: flex;
+    margin-left: 3px;
+    text-align: right;
+    overflow: hidden;
+    flex-direction: row;
+    justify-content: space-around;
+    .el-tag {
+      width: 59px;
+      height: 100%;
+      /* padding: 2px; */
+      margin: 0px;
+      text-align: center;
+      line-height: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}
+</style>

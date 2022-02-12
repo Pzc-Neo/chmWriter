@@ -8,7 +8,7 @@
     <el-empty
       v-if="itemList.length === 0"
       :image-size="120"
-      :description="$t('message.empty')"
+      :description="$t('info.empty')"
       style="height: 100%"
     ></el-empty>
     <el-tree

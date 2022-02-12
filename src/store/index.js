@@ -12,7 +12,7 @@ export default new Vuex.Store({
       prama: {}
     },
 
-    // route
+    // Panel's name ('/' + Panel's name === Panel's path  === route)
     currentPanel: 'writing',
     panelToolList: [],
 
@@ -22,7 +22,7 @@ export default new Vuex.Store({
       detailBar: true
     },
     isShowIndex: false,
-    isSimpleMode: false,
+    isSimpleMode: true,
 
     commandBox: {
       isShow: false,
