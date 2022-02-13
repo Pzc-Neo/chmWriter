@@ -10,7 +10,6 @@ export const registerAppEvent = function (app, win) {
     win.minimize()
     event.returnValue = 'minimize'
   })
-
   ipcMain.on('app:maximize', function (event) {
     if (win.isMaximized()) {
       win.unmaximize()

@@ -194,6 +194,30 @@ export default {
   },
   mounted() {
     this.wordCounter(this.item.content, this.item.language)
+
+    // vim的输入模式改变的时候，切换输入法(这个方法特卡, 而且时不时失灵)
+    /*
+    CodeMirror.on(this.codemirror, 'vim-mode-change', function ({ mode }) {
+      function changeIm(imId) {
+        const child = require('child_process')
+        child.exec(
+          `C:\\im-select\\im-select.exe ${imId}`,
+          (err, stdout, stderr) => {
+            if (err) {
+              alert(err)
+            } else {
+              console.log('change im sussces', stdout, stderr)
+            }
+          }
+        )
+      }
+      if (mode === 'insert') {
+        changeIm(2052)
+      } else {
+        changeIm(1033)
+      }
+    })
+    */
   },
   computed: {
     codemirror() {

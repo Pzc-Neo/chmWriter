@@ -12,6 +12,9 @@ import '@/prototype/elementUI'
 
 import 'font-awesome/css/font-awesome.min.css'
 
+// import fs from 'fs'
+// fs.readFile(__dirname,'/')
+
 Vue.prototype.$db = new Db()
 Vue.prototype.$echarts = echarts
 Vue.prototype.$ELEMENT = {

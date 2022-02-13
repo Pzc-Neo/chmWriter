@@ -11,7 +11,7 @@
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps"
   },
-  "main": "./src/electronMain/background.js",
+  "main": "background.js",
   "dependencies": {
     "aws-sdk": "^2.1048.0",
     "better-sqlite3": "^7.4.6",

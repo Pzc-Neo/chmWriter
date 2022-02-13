@@ -3,8 +3,8 @@
 import { app, protocol, BrowserWindow, session } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import path from 'path'
-import createMenu from './electronMain/Menu'
-import createTray from './electronMain/Tray'
+import createMenu from '@/electronMain/Menu'
+import createTray from '@/electronMain/Tray'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import { registerAppEvent } from '@/electronMain/ipcMain/app'
 
