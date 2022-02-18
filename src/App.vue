@@ -2,9 +2,9 @@
   <div id="app" @click="hideStuffByClick" @keyup.esc="hideStuffByEsc">
     <!-- <PopupBox>
       <template slot="title">快捷键设置</template> -->
-    <PopupBox title="快捷键设置">
+    <!-- <PopupBox title="快捷键设置">
       <HotKey />
-    </PopupBox>
+    </PopupBox> -->
 
     <TopBar />
     <MiddleBar />
@@ -22,16 +22,16 @@ import 'normalize.css'
 import TopBar from '@/components/TopBar'
 import MiddleBar from '@/components/MiddleBar'
 import BottomBar from '@/components/BottomBar'
-import PopupBox from '@/components/PopupBox'
-import HotKey from '@/components/HotKey'
+// import PopupBox from '@/components/PopupBox'
+// import HotKey from '@/components/HotKey'
 
 export default {
   components: {
     TopBar,
     BottomBar,
-    MiddleBar,
-    HotKey,
-    PopupBox
+    MiddleBar
+    // HotKey,
+    // PopupBox
   },
   data() {
     return {
