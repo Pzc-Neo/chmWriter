@@ -126,6 +126,8 @@ export default {
     identity: 'Identity',
     birthday: 'Birthday',
     hobby: 'Hobby',
+    birthplace: 'Birthplace',
+    residence: 'Residence',
     description: 'Description'
   },
   tables: {

@@ -103,8 +103,10 @@ export const getItemFactory = function (type) {
       return ChapterFactory
     case 'world_groups':
       return WorldGroupFactory
-    default:
-      // this.$alert('No such factory: ' + type)
-      break
+    default: {
+      const err = new Error(`${type} Factory is not exit`)
+      console.error(err)
+      throw err
+    }
   }
 }

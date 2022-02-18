@@ -53,6 +53,21 @@
         v-model.number="item.height"
         @change="value => updateAttr('height', value)"
       ></el-input>
+      <el-tooltip
+        class="item"
+        effect="dark"
+        :content="'修改全局单位: ' + heightUnit"
+        placement="bottom-start"
+      >
+        <el-button
+          class="round_btn"
+          type="primary"
+          icon="el-icon-edit"
+          size="mini"
+          circle
+          @click="changeUnit('heightUnit')"
+        ></el-button>
+      </el-tooltip>
     </div>
     <!-- weight -->
     <div class="one_row">
@@ -66,7 +81,7 @@
       <el-tooltip
         class="item"
         effect="dark"
-        content="修改全局单位"
+        :content="'修改全局单位: ' + weightUnit"
         placement="bottom-start"
       >
         <el-button
@@ -75,6 +90,7 @@
           icon="el-icon-edit"
           size="mini"
           circle
+          @click="changeUnit('weightUnit')"
         ></el-button>
       </el-tooltip>
     </div>
@@ -86,6 +102,26 @@
       <el-input
         v-model="item.hobby"
         @change="value => updateAttr('hobby', value)"
+      ></el-input>
+    </div>
+    <!-- birthplace -->
+    <div class="one_row">
+      <el-tag class="chmST_sidbar_btn">
+        {{ $t('character.birthplace') }}
+      </el-tag>
+      <el-input
+        v-model="item.birthplace"
+        @change="value => updateAttr('birthplace', value)"
+      ></el-input>
+    </div>
+    <!-- residence -->
+    <div class="one_row">
+      <el-tag class="chmST_sidbar_btn">
+        {{ $t('character.residence') }}
+      </el-tag>
+      <el-input
+        v-model="item.residence"
+        @change="value => updateAttr('residence', value)"
       ></el-input>
     </div>
     <!-- <div class="one_row">
@@ -126,6 +162,14 @@ export default {
       default() {
         return {}
       }
+    },
+    weightUnit: {
+      type: String,
+      default: 'kg'
+    },
+    heightUnit: {
+      type: String,
+      default: 'cm'
     }
   },
   data() {
@@ -135,11 +179,18 @@ export default {
   },
   methods: {
     updateAttr(column, value) {
-      console.log(123)
-      this.$bus.$emit('character.AttrBar:updateAttr', column, value, this.item)
+      this.$emit('updateAttr', column, value, this.item)
+    },
+    /**
+     * column {String}  databasee's configs table's column name
+     */
+    changeUnit(column) {
+      this.$prompt(value => {
+        this.$emit('updateConfig', column, value)
+      }, this[column])
     },
     changeEditorWidth(width) {
-      this.$bus.$emit('characterAttrBar:changeEditorWidth', width)
+      this.$emit('changeEditorWidth', width)
     }
   }
 }

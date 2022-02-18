@@ -1,20 +1,22 @@
 <template>
-  <div class="writing_panel">
-    <DialogBar />
+  <div :class="'panel ' + panelName + '_panel'">
     <GroupBar
       :itemList="groupList"
+      @updateAttr="updateAttrGroup"
       :currentGroup="currentGroup"
       :menuList="menuListGroup"
+      :menuListBar="menuListGroupBar"
       @changeTo="changeToGroup"
-      @changePid="changeItemGroupId"
+      @changeItemGroupId="changeItemGroupId"
       @updateSorts="updateGroupSorts"
     />
     <ItemBar
-      :itemType="itemTableName"
       :itemList="itemList"
-      :menuList="menuListChapter"
-      :activeItem="currentItem"
+      :currentItem="currentItem"
+      :menuListBar="menuListItemBar"
+      :menuList="menuListItem"
       @changeTo="changeToItem"
+      @updateSorts="updateItemSorts"
     >
       <template v-slot="{ item }">
         <CharacterItem :item="item" />
@@ -23,42 +25,87 @@
     <ContentBar>
       <el-empty
         :image-size="200"
-        :description="$t('writing.nothingOpen')"
-        v-if="editableTabs.length === 0"
+        :description="$t('info.empty')"
+        v-if="tabList.length === 0"
         style="height: 100%"
       ></el-empty>
       <el-tabs
-        closable
         v-else
-        v-model="editableTabsId"
+        closable
+        v-model="currentTabId"
         type="card"
         class="tab_bar"
-        @tab-remove="removeTab"
+        @tab-remove="handleRemoveTab"
         @tab-click="handleTabClick"
       >
         <el-tab-pane
-          v-for="item in editableTabs"
+          v-for="item in tabList"
           :key="item.id"
           :label="item.title"
           :name="item.id"
           class="editor_container"
-          @dblclick="removeTab(item.id)"
           :style="{ width: editorWidth }"
         >
+          <span
+            slot="label"
+            @dblclick="handleRemoveTab(item.id)"
+            @contextmenu.prevent="showTabContextMenu($event, item)"
+          >
+            <span v-show="item.isChanged">*</span>
+            {{ item.title }}
+          </span>
           <RelationChart
             :relationData="relationData"
             :linkData="relationLink"
           />
-          >
         </el-tab-pane>
       </el-tabs>
     </ContentBar>
     <DetailBar :item="currentItem">
-      <InfoBox :title="$t('detailBar.attribute')">
-        <AttrBox :item="currentItem" />
+      <InfoBox
+        :title="$t('detailBar.attribute')"
+        :isCollapse.sync="infoBoxCollapse.attribute"
+      >
+        <AttrBox
+          :item="currentItem"
+          :weightUnit="weightUnit"
+          :heightUnit="heightUnit"
+          @updateAttr="updateAttrItem"
+          @updateConfig="updateConfig"
+          @changeEditorWidth="
+            width => {
+              this.editorWidth = width + '%'
+            }
+          "
+        />
       </InfoBox>
-      <InfoBox :title="$t('character.description')">
-        <TextareaBox :content="currentItem.description" />
+      <InfoBox
+        :title="$t(panelName + '.description')"
+        :isEmpty="!currentItem.description"
+        :isCollapse.sync="infoBoxCollapse.description"
+      >
+        <TextareaBox
+          :content.sync="currentItem.description"
+          @change="
+            newContent => {
+              updateAttrItem('description', newContent, currentItem)
+            }
+          "
+        />
+      </InfoBox>
+      <InfoBox
+        :title="$t('detailBar.note')"
+        :isEmpty="!currentItem.note"
+        :isCollapse.sync="infoBoxCollapse.note"
+      >
+        <TextareaBox
+          :content.sync="currentItem.note"
+          @change="
+            newContent => {
+              updateAttrItem('note', newContent, currentItem)
+            }
+          "
+        />
       </InfoBox>
     </DetailBar>
   </div>
@@ -70,28 +117,61 @@ import ItemBar from '@/views/Common/components/ItemBar'
 import ContentBar from '@/views/Common/components/ContentBar'
 import DetailBar from '@/views/Common/components/DetailBar'
 import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
-import DialogBar from '@/views/Common/components/DialogBar'
 import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
 
-import RelationChart from './components/RelationChart'
-import CharacterItem from './components/characterItem'
 import AttrBox from './components/AttrBox'
+import CharacterItem from './components/CharacterItem'
+import RelationChart from './components/RelationChart'
 
-import { listToTree, rename, deleteGroup } from '@/util/base'
-import { convertToRelationData } from './util'
+import { menuListFactory } from './menuList/index'
+import { getToolList } from './toolList'
+import { convertToRelationData, convertToRelationLink } from './util'
+
+import {
+  init,
+  getGroups,
+  getGroupFromDb,
+  getGroupFromLocal,
+  updateGroupSorts,
+  updateAttrGroup,
+  newGroup,
+  refreshGroupList,
+  deleteGroup
+} from '@/views/Common/script/group'
+import {
+  handleRemoveTab,
+  removeOtherTabs,
+  removeTab,
+  showTabContextMenu,
+  switchTab
+} from '@/views/Common/script/tab'
+import {
+  changeItemGroupId,
+  changeToItem,
+  deleteItem,
+  getItemFromDb,
+  getItemFromLocal,
+  getItems,
+  newItem,
+  refreshItemList,
+  revealItem,
+  updateAttrItem,
+  updateItemSorts
+} from '@/views/Common/script/item'
+import { infoBoxCollapseHandler, makeLastId } from '@/views/Common/script/other'
 
 export default {
+  name: 'CharacterPanel',
   components: {
     GroupBar,
     ItemBar,
     ContentBar,
     DetailBar,
     InfoBox,
-    DialogBar,
+    CharacterItem,
     AttrBox,
     TextareaBox,
-    RelationChart,
-    CharacterItem
+    RelationChart
   },
   data() {
     return {
@@ -99,227 +179,238 @@ export default {
       groupTableName: 'character_groups',
       // Item table's name on datebase
       itemTableName: 'characters',
+      // Will use by event, i18n
+      panelName: 'character',
 
-      editableTabsId: '2',
-      editableTabs: [],
-      tabIndex: 2,
-      menuListGroup: [
-        {
-          id: 'rename',
-          title: '重命名',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            rename.call(this, this.groupTableName, targetItem)
-          }
-        },
-        {
-          id: 'delect',
-          title: '删除',
-          icon: 'el-icon-delete',
-          func: targetItem => {
-            deleteGroup.call(this, targetItem)
-          }
-        }
-      ],
-      menuListChapter: [
-        {
-          id: 'rename',
-          title: '重命名',
-          icon: 'el-icon-edit',
-          func: targetItem => {
-            rename.call(this, this.itemTableName, targetItem)
-          }
-        },
-        {
-          id: 'othter',
-          title: '其他',
-          // icon: 'el-icon-delete',
-          func: targetItem => {
-            // this.removeTab(targetItem.id)
-          }
-        },
-        {
-          id: 'delect',
-          title: '删除',
-          icon: 'el-icon-delete',
-          func: targetItem => {
-            this.deleteItem(targetItem)
-          }
-        },
-        {
-          id: 'info',
-          title: '信息',
-          icon: 'el-icon-info',
-          func: targetItem => {
-            console.log(targetItem)
-            // this.deleteItem(targetItem)
-          }
-        }
-      ],
+      currentTabId: '',
+      tabList: [],
+      menuListGroupBar: menuListFactory.call(this, 'groupBar'),
+      menuListGroup: menuListFactory.call(this, 'group'),
+      menuListItem: menuListFactory.call(this, 'item'),
+      menuListItemBar: menuListFactory.call(this, 'itemBar'),
+      menuListTab: menuListFactory.call(this, 'tab'),
+      toolList: getToolList.call(this),
       groupList: [],
       itemList: [],
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
-
+      infoBoxCollapse: {
+        attribute: false,
+        note: false,
+        description: false
+      },
       relationData: [],
-      relationLink: []
+      relationLink: [],
+      weightUnit: 'kg',
+      heightUnit: 'cm'
     }
   },
   methods: {
-    /**
-     * @param {String | Object} item item object or item's id
-     */
-    changeToItem(item) {
-      const temp = Object.prototype.toString.call(item)
-      // If true means item is id
-      if (temp === '[object String]') {
-        item = this.$db.getItem(this.itemTableName, item)
-      }
-      this.$store.state.writing.chapter.current = item
-
-      this.currentItem = item || {}
-      // const index = this.editableTabs.findIndex(_item => {
-      //   return _item.id === item.id
-      // })
-      // if (index === -1) {
-      //   this.editableTabs.push(item)
-      // }
-      // this.editableTabsId = item.id
+    init() {
+      this.weightUnit = this.$db.getConfig('weightUnit')
+      this.heightUnit = this.$db.getConfig('heightUnit')
+      return init.call(this)
+    },
+    getGroups() {
+      return getGroups.call(this)
     },
     changeToGroup(groupId) {
-      const group = this.$db.getGroup(this.groupTableName, groupId)
-      if (group === undefined) return
+      let group = this.getGroupFromDb(groupId)
 
-      this.itemList = this.$db.getItems(this.itemTableName, groupId)
+      if (group === undefined) {
+        group = this.getGroupFromDb('default')
+        if (group !== undefined) {
+          this.changeToGroup('default')
+        } else {
+          this.$alert(this.$t('info.notExist'))
+        }
+        return
+      }
+
+      this.itemList = this.getItems(groupId)
       this.relationData = convertToRelationData(this.itemList)
 
-      this.currentGroup = group
-      this.$db.setConfig('last_chapter_group_id', group.id)
-      const index = this.editableTabs.findIndex(_item => {
-        return _item.id === group.id
+      const relations = this.$db.getGroups('character_relation', false)
+      this.relationLink = convertToRelationLink(relations)
+
+      const index = this.tabList.findIndex(_group => {
+        return _group.id === group.id
       })
       if (index === -1) {
-        this.editableTabs.push(group)
+        this.tabList.push(group)
       }
-      this.editableTabsId = group.id
-    },
-    updateGroupSorts(paramData) {
-      this.$db.updateGroupSorts(this.groupTableName, paramData)
-    },
-    updateAttr(column, value, item) {
-      this.$db.update(this.itemTableName, column, value, item.id)
-      item[column] = value
 
-      this.$message({
-        showClose: true,
-        duration: 1000,
-        message: `updata ${column} success`,
-        type: 'success'
-      })
+      this.currentGroup = group
+      this.$db.setConfig(makeLastId(this.groupTableName), groupId)
+      this.currentTabId = group.id
+
+      this.$store.commit('HIDE_CONTEXTMENU')
+    },
+
+    getGroupFromDb(groupId) {
+      return getGroupFromDb.call(this, groupId)
+    },
+    getGroupFromLocal(groupId) {
+      return getGroupFromLocal.call(this, groupId)
+    },
+    updateGroupSorts(diffData) {
+      return updateGroupSorts.call(this, diffData)
+    },
+    updateAttrGroup(column, value, group, isShowMessage = true) {
+      return updateAttrGroup.call(this, column, value, group, isShowMessage)
+    },
+    newGroup(pid, sort) {
+      return newGroup.call(this, pid, sort)
+    },
+    deleteGroup(targetItem) {
+      return deleteGroup.call(this, targetItem)
+    },
+    refreshGroupList() {
+      return refreshGroupList.call(this)
+    },
+
+    getItems(groupId) {
+      return getItems.call(this, groupId)
+    },
+    getItemFromDb(itemId) {
+      return getItemFromDb.call(this, itemId)
+    },
+    getItemFromLocal(itemId) {
+      return getItemFromLocal.call(this, itemId)
+    },
+    changeToItem(itemId) {
+      return changeToItem.call(this, itemId, false)
+    },
+    revealItem(item) {
+      return revealItem.call(this, item)
+    },
+    updateItemSorts(diffData) {
+      return updateItemSorts.call(this, diffData)
+    },
+    updateAttrItem(column, value, item, isShowMessage = true) {
+      return updateAttrItem.call(this, column, value, item, isShowMessage)
+    },
+    updateConfig(property, value) {
+      this[property] = value
+      this.$db.setConfig(property, value)
     },
     changeItemGroupId(groupId, itemId) {
-      this.$db.update(this.itemTableName, 'group_id', groupId, itemId)
+      return changeItemGroupId.call(this, groupId, itemId)
     },
-    getRelation() {},
+    refreshItemList() {
+      return refreshItemList.call(this)
+    },
+    newItem(sort) {
+      return newItem.call(this, sort)
+    },
     deleteItem(targetItem) {
-      this.$confirm(
-        `此操作将永久删除章节：[${targetItem.title}], 是否继续?`,
-        '提示',
-        {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }
-      )
-        .then(() => {
-          this.removeTab(targetItem.id)
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
+      return deleteItem.call(this, targetItem)
     },
+    handleEditorContentChange(item, newContent) {
+      item.newContent = newContent
+      item.isChanged = true
+    },
+    handleRemoveTab(targetId) {
+      return handleRemoveTab.call(this, targetId)
+    },
+    // targetId is item's id
     removeTab(targetId) {
-      const tabs = this.editableTabs
-      let activeId = this.editableTabsId
-      if (activeId === targetId) {
-        tabs.forEach((tab, index) => {
-          if (tab.id === targetId) {
-            const nextTab = tabs[index + 1] || tabs[index - 1]
-            if (nextTab) {
-              activeId = nextTab.id
-            }
-          }
-        })
-      }
-
-      this.editableTabsId = activeId
-      this.editableTabs = tabs.filter(tab => tab.id !== targetId)
+      return removeTab.call(this, targetId)
+    },
+    removeOtherTabs(tabId) {
+      return removeOtherTabs.call(this, tabId)
+    },
+    switchTab(isNext = true) {
+      return switchTab.call(this, isNext)
     },
     handleTabClick(tab) {
-      this.changeToItem(tab.name)
+      this.changeToGroup(tab.name)
     },
-    saveChapter(content, itemId) {
-      this.$db.update(this.itemTableName, 'content', content, itemId)
+    showTabContextMenu(event, targetItem) {
+      return showTabContextMenu.call(this, event, targetItem)
+    },
 
-      this.$message({
-        showClose: true,
-        duration: 1000,
-        message: this.$t('writing.saved'),
-        type: 'success'
-      })
+    saveContent(content, itemId) {
+      let item = {}
+      if (itemId === undefined) {
+        item = this.currentItem
+      } else {
+        item = this.getItemFromLocal(itemId)
+      }
 
-      const index = this.itemList.findIndex(item => {
-        return item.id === itemId
-      })
-      this.itemList[index].content = content
+      if (content === undefined) {
+        content = item.newContent
+      }
+
+      this.updateAttrItem('content', content, item)
+      item.isChanged = false
     }
   },
+  watch: {
+    infoBoxCollapse: {
+      deep: true,
+      handler(newData) {
+        infoBoxCollapseHandler.call(this, newData)
+      }
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next(_this => {
+      _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
+    })
+  },
   mounted() {
-    this.groupList = this.$db.getGroups(this.groupTableName)
-    this.groupList = listToTree(this.groupList)
+    this.init()
 
-    const config = this.$db.getConfig(
-      'last_id_' +
-        this.groupTableName.substring(0, this.groupTableName.length - 1)
-    )
-    this.changeToGroup(config.value)
-
-    // Registry event
-    this.$bus.$on('character:save', (content, itemId) => {
-      // this.saveChapter(content, itemId)
+    this.$bus.$on(this.panelName + ':new-group', () => {
+      this.newGroup()
+    })
+    this.$bus.$on(this.panelName + ':new-item', () => {
+      console.log('writing:new-item')
+      this.newItem()
+    })
+    this.$bus.$on(this.panelName + ':change-to-group', targetItem => {
+      this.changeToGroup(targetItem.id)
+    })
+    this.$bus.$on(this.panelName + ':change-to-item', targetItem => {
+      this.changeToItem(targetItem.id)
+      this.revealItem(targetItem)
+    })
+    this.$bus.$on(this.panelName + ':switch-tab', isNext => {
+      this.switchTab(isNext)
+    })
+    this.$bus.$on(this.panelName + ':remove-tab', () => {
+      this.removeTab()
     })
 
-    this.$bus.$on('attrBar:changeEditorWidth', value => {
-      this.editorWidth = value + '%'
+    this.$bus.$on(this.panelName + ':save-content', () => {
+      this.saveContent()
     })
+  },
+  beforeDestroy() {
+    this.$bus.$off(this.panelName + ':new-group')
+    this.$bus.$off(this.panelName + ':new-item')
+    this.$bus.$off(this.panelName + ':change-to-group')
+    this.$bus.$off(this.panelName + ':change-to-item')
+    this.$bus.$off(this.panelName + ':switch-tab')
+    this.$bus.$off(this.panelName + ':remove-tab')
 
-    this.$bus.$on('character.AttrBar:updateAttr', (column, value, itemId) => {
-      this.updateAttr(column, value, itemId)
-    })
-
-    this.$bus.$on('RelationChart:changeToItem', itemId => {
-      this.changeToItem(itemId)
-    })
+    this.$bus.$off(this.panelName + ':save-content')
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.writing_panel {
+.panel {
   flex: 1;
   display: flex;
+  overflow: hidden;
   .tab_bar {
     display: flex;
     flex-direction: column;
     height: 100%;
+    user-select: none;
     /deep/.el-tabs__header {
       margin: 0px;
       .el-tabs__item {

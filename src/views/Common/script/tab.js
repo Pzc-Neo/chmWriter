@@ -1,7 +1,7 @@
 export const handleRemoveTab = function (targetId) {
   return new Promise((resolve, reject) => {
     const item = this.getItemFromLocal(targetId)
-    if (item.isChanged === true) {
+    if (item?.isChanged) {
       this.changeToItem(item.id)
       ;(async function () {
         const result = await this.$confirmSync(
@@ -13,7 +13,7 @@ export const handleRemoveTab = function (targetId) {
         switch (result) {
           // save
           case 'confirm':
-            this.saveContent(item.newContent, item.id)
+            this.saveContent(item?.newContent, item.id)
             this.removeTab(targetId)
             break
           // not save
@@ -37,7 +37,7 @@ export const handleRemoveTab = function (targetId) {
 }
 
 // targetId is item's id
-export const removeTab = function (targetId) {
+export const removeTab = function (targetId, type = 'itemm') {
   targetId = targetId || this.currentTabId
   const tabs = this.tabList
   let activeId = this.currentTabId
@@ -48,7 +48,11 @@ export const removeTab = function (targetId) {
         const nextTab = tabs[index + 1] || tabs[index - 1]
         if (nextTab) {
           activeId = nextTab.id
-          this.changeToItem(activeId)
+          if (type === 'item') {
+            this.changeToItem(activeId)
+          } else {
+            this.changeToGroup(activeId)
+          }
         }
       }
     })

@@ -121,6 +121,8 @@ export default {
     identity: '身份',
     birthday: '生日',
     hobby: '爱好',
+    birthplace: '出生地',
+    residence: '所在地',
     description: '描述'
   },
   tables: {

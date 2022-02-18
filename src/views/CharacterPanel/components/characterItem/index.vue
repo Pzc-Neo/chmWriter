@@ -1,8 +1,8 @@
 <template>
-  <div v-if="$store.state.isSimpleMode" class="chapter_item_simple">
+  <div v-if="$store.state.isSimpleMode" class="simple_mode_item">
     {{ item.title }}
   </div>
-  <div v-else class="chapter_item">
+  <div v-else class="item">
     <div class="col top">
       <div class="left">
         {{ item.title }}
@@ -31,6 +31,7 @@
 
 <script>
 export default {
+  name: 'CharacterItem',
   props: {
     item: {
       type: Object,
@@ -71,10 +72,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.chapter_item_simple {
-  padding: 4px 8px;
+.simple_mode_item {
+  padding: 7px 8px;
+  border-bottom: 1px solid #f3f3f3;
 }
-.chapter_item {
+.item {
   display: flex;
   flex-direction: column;
   padding: 5px 6px;

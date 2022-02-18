@@ -22,31 +22,32 @@ export default {
       default() {
         return []
       }
+    },
+    linkData: {
+      type: Array,
+      default() {
+        return []
+      }
     }
-    // relationLink: {
-    //   type: Array,
-    //   default() {
-    //     return []
-    //   }
-    // }
   },
   data() {
     return {
-      chart: null,
-      relationLink: []
+      chart: null
+      // relationLink: []
     }
   },
   methods: {
     getLink(relationData) {
       const temp = this.$db.getGroups('character_relation', false)
       this.relationLink = convertToRelationLink(temp)
+
       // relationData.forEach(data => {
       //   const temp = this.$db.getItems('character_relation')
       //   this.links = convertToRelationLink(temp)
       // })
     },
     chartRender() {
-      this.getLink()
+      // this.getLink()
       // 基于准备好的dom，初始化echarts实例
       this.chart = this.$echarts.init(this.$el)
       var categories = []
@@ -57,9 +58,9 @@ export default {
       }
       const option = {
         // 图的标题
-        title: {
-          text: 'ECharts 关系图'
-        },
+        // title: {
+        //   text: 'ECharts 关系图'
+        // },
         // 提示框的配置
         tooltip: {
           formatter: function (x) {
@@ -132,7 +133,7 @@ export default {
             },
             data: this.relationData,
             // 数据
-            links: this.relationLink,
+            links: this.linkData,
             categories: categories
           }
         ]

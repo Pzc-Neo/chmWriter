@@ -19,7 +19,11 @@ export const init = function () {
   this.changeToItem(lastItemId)
 
   const jsonStr = this.$db.getConfig('info_box_collapse_' + this.panelName)
-  this.infoBoxCollapse = JSON.parse(jsonStr)
+  try {
+    this.infoBoxCollapse = JSON.parse(jsonStr)
+  } catch (error) {
+    this.infoBoxCollapse = {}
+  }
 }
 
 export const getGroups = function () {

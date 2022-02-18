@@ -18,7 +18,12 @@ export const getItemFromLocal = function (itemId) {
     return this.getItemFromDb(itemId)
   }
 }
-export const changeToItem = function (itemId) {
+/**
+ * @param {String} itemId
+ * @param {Boolean} isAddToTab Sometime you may want to add group to tab not item
+ * @returns
+ */
+export const changeToItem = function (itemId, isAddToTab = true) {
   if (this.currentItem.id === itemId) return
 
   const item = this.getItemFromLocal(itemId)
@@ -35,17 +40,19 @@ export const changeToItem = function (itemId) {
     this.$set(item, 'newContent', item.content)
   }
 
-  // Add to tabList
-  const index = this.tabList.findIndex(_item => {
-    return _item.id === item.id
-  })
-  if (index === -1) {
-    this.tabList.push(item)
+  if (isAddToTab) {
+    // Add to tabList
+    const index = this.tabList.findIndex(_item => {
+      return _item.id === item.id
+    })
+    if (index === -1) {
+      this.tabList.push(item)
+    }
+    this.currentTabId = item.id
   }
 
   this.currentItem = item
   this.$db.setConfig(makeLastId(this.itemTableName), item.id)
-  this.currentTabId = item.id
 }
 export const revealItem = function (item) {
   this.changeToGroup(item.group_id)
