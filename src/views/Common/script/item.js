@@ -65,7 +65,7 @@ export const updateAttrItem = function (
   if (Object.keys(item).length === 0) return
 
   // If item doesn't have target column then do nothing
-  if (!item[column]) return
+  if (!Object.hasOwnProperty.call(item, column)) return
 
   try {
     // Update db
@@ -75,8 +75,10 @@ export const updateAttrItem = function (
     item.updated = Date.now()
 
     if (column === 'words' || column === 'target_words') {
-      const rate = Math.floor((item.words / item.target_words) * 100)
-      this.updateAttrItem('rate', rate, item, false)
+      if (item.rate) {
+        const rate = Math.floor((item.words / item.target_words) * 100)
+        this.updateAttrItem('rate', rate, item, false)
+      }
     }
 
     if (isShowMessage) {
