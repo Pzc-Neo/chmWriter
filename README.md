@@ -6,27 +6,31 @@
 
 ![Writing Panel](./screenshot/writing_panel.png)
 
+### Data Panel
+
+![Data Panel](./screenshot/data_panel.png)
+
 ## Project setup
 
-```
+```cmd
 yarn
 ```
 
 ### Compiles and hot-reloads for development
 
-```
+```cmd
 yarn electron:serve
 ```
 
 ### Compiles and minifies for production
 
-```
+```cmd
 yarn electron:build
 ```
 
 ### Lints and fixes files
 
-```
+```cmd
 yarn lint
 ```
 
