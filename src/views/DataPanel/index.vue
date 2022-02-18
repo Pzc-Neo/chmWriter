@@ -101,20 +101,6 @@
           "
         />
       </InfoBox>
-      <InfoBox
-        :title="$t(panelName + '.foreshadowing')"
-        :isEmpty="!currentItem.foreshadowing"
-        :isCollapse.sync="infoBoxCollapse.foreshadowing"
-      >
-        <TextareaBox
-          :content.sync="currentItem.foreshadowing"
-          @change="
-            newContent => {
-              updateAttrItem('foreshadowing', newContent, currentItem)
-            }
-          "
-        />
-      </InfoBox>
     </DetailBar>
   </div>
 </template>

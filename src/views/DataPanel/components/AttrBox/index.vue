@@ -3,33 +3,16 @@
     <div class="one_row">
       <!-- type -->
       <el-tag class="chmST_sidbar_btn">
-        {{ $t('writing.type') }}
+        {{ $t('data.source') }}
       </el-tag>
       <el-select
-        :value="item.type"
-        @change="value => updateAttr('type', value)"
+        :value="item.source"
+        @change="value => updateAttr('source', value)"
       >
-        <el-option :label="$t('writing.types.normal')" :value="0"></el-option>
-        <el-option
-          :label="$t('writing.types.transition')"
-          :value="1"
-        ></el-option>
-        <el-option
-          :label="$t('writing.types.important')"
-          :value="2"
-        ></el-option>
-      </el-select>
-    </div>
-    <!-- status -->
-    <div class="one_row">
-      <el-tag>{{ $t('writing.status') }}</el-tag>
-      <el-select
-        :value="item.status"
-        @change="value => updateAttr('status', value)"
-      >
-        <el-option :label="$t('writing.statuss.first')" :value="0"></el-option>
-        <el-option :label="$t('writing.statuss.second')" :value="1"></el-option>
-        <el-option :label="$t('writing.statuss.final')" :value="2"></el-option>
+        <el-option :label="$t('data.sources.original')" :value="0"></el-option>
+        <el-option :label="$t('data.sources.internet')" :value="1"></el-option>
+        <el-option :label="$t('data.sources.book')" :value="2"></el-option>
+        <el-option :label="$t('data.sources.other')" :value="3"></el-option>
       </el-select>
     </div>
     <!-- language -->
@@ -44,18 +27,6 @@
         <el-option label="日本語" :value="2"></el-option>
       </el-select>
     </div>
-    <!-- export -->
-    <div class="one_row">
-      <el-tag>{{ $t('writing.is_export') }}</el-tag>
-      <!-- :value="Boolean(item.is_export)" -->
-      <el-switch
-        :value="item.is_export"
-        :active-value="1"
-        :inactive-value="0"
-        @change="value => updateAttr('is_export', value)"
-      ></el-switch>
-    </div>
-    <!-- words -->
     <div class="one_row">
       <el-tag>{{ $t('writing.words') }}</el-tag>
       <div class="words">{{ item.words }}</div>
@@ -75,15 +46,6 @@
         ></el-button>
       </el-tooltip>
     </div>
-    <!-- rate -->
-    <div class="one_row">
-      <el-tag class="text">{{ $t('writing.rate') }}</el-tag>
-      <el-progress
-        :text-inside="true"
-        :stroke-width="26"
-        :percentage="item.rate > 100 ? 100 : item.rate"
-      ></el-progress>
-    </div>
     <!-- created -->
     <div class="one_row">
       <el-tag class="text">{{ $t('writing.created') }}</el-tag>
@@ -95,15 +57,14 @@
       <span class="date">{{ $formatTime(item.updated) }}</span>
     </div>
     <!-- editor width -->
-    <div class="one_row">
+    <!-- <div class="one_row">
       <el-tag class="text">{{ $t('writing.width') }}</el-tag>
-      <!-- This slider will control the editor's width -->
       <el-slider
         v-model="editorWidth"
         :debounce="300"
         @input="changeEditorWidth"
       ></el-slider>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -122,6 +83,11 @@ export default {
       editorWidth: 100
     }
   },
+  watch: {
+    item(newItem, oldItem) {
+      console.log(newItem, oldItem)
+    }
+  },
   methods: {
     updateAttr(column, value) {
       this.$emit('updateAttr', column, value, this.item)
@@ -138,8 +104,7 @@ export default {
     },
     changeEditorWidth(width) {
       this.$emit('changeEditorWidth', width)
-    },
-    formateTime(timeStamp) {}
+    }
   },
   computed: {
     targetWordsBtnInfo() {

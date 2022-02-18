@@ -138,8 +138,7 @@ export default {
     },
     changeEditorWidth(width) {
       this.$emit('changeEditorWidth', width)
-    },
-    formateTime(timeStamp) {}
+    }
   },
   computed: {
     targetWordsBtnInfo() {

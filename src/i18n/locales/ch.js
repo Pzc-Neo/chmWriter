@@ -80,6 +80,15 @@ export default {
     created: '创建',
     updated: '修改'
   },
+  data: {
+    source: '来源',
+    sources: {
+      original: '原创',
+      internet: '网络',
+      book: '书',
+      other: '其他'
+    }
+  },
   writing: {
     nothingOpen: '什么都没有打开',
     title: '标题',

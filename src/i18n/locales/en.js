@@ -80,6 +80,15 @@ export default {
     created: 'Created',
     updated: 'Updated'
   },
+  data: {
+    source: 'Source',
+    sources: {
+      original: 'Original',
+      internet: 'Internet',
+      book: 'Book',
+      other: 'Other'
+    }
+  },
   writing: {
     nothingOpen: 'Nothing open',
     title: 'Title',
