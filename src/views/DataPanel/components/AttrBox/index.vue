@@ -30,21 +30,6 @@
     <div class="one_row">
       <el-tag>{{ $t('writing.words') }}</el-tag>
       <div class="words">{{ item.words }}</div>
-      <el-tooltip
-        class="item"
-        effect="dark"
-        :content="targetWordsBtnInfo"
-        placement="bottom-start"
-      >
-        <el-button
-          class="round_btn"
-          type="primary"
-          icon="el-icon-edit"
-          size="mini"
-          circle
-          @click="getWords"
-        ></el-button>
-      </el-tooltip>
     </div>
     <!-- created -->
     <div class="one_row">
@@ -56,15 +41,6 @@
       <el-tag class="text">{{ $t('writing.updated') }}</el-tag>
       <span class="date">{{ $formatTime(item.updated) }}</span>
     </div>
-    <!-- editor width -->
-    <!-- <div class="one_row">
-      <el-tag class="text">{{ $t('writing.width') }}</el-tag>
-      <el-slider
-        v-model="editorWidth"
-        :debounce="300"
-        @input="changeEditorWidth"
-      ></el-slider>
-    </div> -->
   </div>
 </template>
 <script>
@@ -91,30 +67,6 @@ export default {
   methods: {
     updateAttr(column, value) {
       this.$emit('updateAttr', column, value, this.item)
-    },
-    getWords() {
-      this.$prompt(value => {
-        value = parseInt(value)
-        if (isNaN(value)) {
-          this.$alert('NaN')
-          throw new Error()
-        }
-        this.$emit('updateAttr', 'target_words', value, this.item)
-      }, this.item.target_words)
-    },
-    changeEditorWidth(width) {
-      this.$emit('changeEditorWidth', width)
-    }
-  },
-  computed: {
-    targetWordsBtnInfo() {
-      return (
-        this.$t('action.modify') +
-        ' ' +
-        this.$t('writing.targetWords') +
-        ': ' +
-        this.item.target_words
-      )
     }
   }
 }
@@ -138,17 +90,6 @@ export default {
       font-size: 17px;
       font-weight: bold;
       color: #409eff;
-    }
-    .round_btn {
-      // position: absolute;
-      // top: -3px;
-      // right: 0px;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: $dtb-margin;
     }
   }
 }
