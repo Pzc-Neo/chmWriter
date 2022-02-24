@@ -12,7 +12,7 @@ export default new Vuex.Store({
       prama: {}
     },
 
-    // Panel's name ('/' + Panel's name === Panel's path  === route)
+    /* Panel's name ('/' + Panel's name === Panel's path  === route) */
     currentPanel: 'writing',
     panelToolList: [],
 
@@ -21,8 +21,12 @@ export default new Vuex.Store({
       itemBar: true,
       detailBar: true
     },
+    /* 是否显示itembar项目前面的序 */
     isShowIndex: false,
+    /* 是否itemBar项目的详细信息 */
     isSimpleMode: true,
+    /* groupBar和itemBar是不是个各占一栏，还是在同一栏显示 */
+    isDoubleBar: true,
 
     commandBox: {
       isShow: false,
@@ -57,6 +61,9 @@ export default new Vuex.Store({
     },
     TOGGLE_SIMPLE_MODE(state) {
       state.isSimpleMode = !state.isSimpleMode
+    },
+    TOGGLE_DOUBLE_BAR(state) {
+      state.isDoubleBar = !state.isDoubleBar
     },
     TOGGLE_EXPAND(state) {
       state.barVisible.groupBar = !state.barVisible.groupBar

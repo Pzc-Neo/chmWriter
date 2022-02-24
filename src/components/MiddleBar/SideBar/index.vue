@@ -73,6 +73,15 @@
         <!-- toggle simple mode -->
         <el-button
           plain
+          :type="isDoubleBar ? 'primary' : ''"
+          size="mini"
+          @click="toggleDoubleBar()"
+        >
+          {{ $t('sideBar.doubleBar') }}
+        </el-button>
+        <!-- toggle simple mode -->
+        <el-button
+          plain
           :type="isSimpleMode ? 'primary' : ''"
           size="mini"
           @click="toggleSimpleMode()"
@@ -124,6 +133,9 @@ export default {
     },
     toggleSimpleMode() {
       this.$store.commit('TOGGLE_SIMPLE_MODE')
+    },
+    toggleDoubleBar() {
+      this.$store.commit('TOGGLE_DOUBLE_BAR')
     }
   },
   computed: {
@@ -134,7 +146,8 @@ export default {
     },
     ...mapState({
       barVisible: state => state.barVisible,
-      isSimpleMode: state => state.isSimpleMode
+      isSimpleMode: state => state.isSimpleMode,
+      isDoubleBar: state => state.isDoubleBar
     })
   }
 }

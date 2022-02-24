@@ -64,8 +64,7 @@ export default {
       type: Object,
       default() {
         return {
-          width: '200px',
-          height: '100%'
+          width: '200px'
         }
       }
     }
@@ -198,7 +197,9 @@ export default {
 
 <style lang="scss" scoped>
 .item_bar {
+  height: 100%;
   border-right: solid 1px #e6e6e6;
+  border-top: 1px solid #e6e6e6;
   overflow: auto;
   .item {
     cursor: pointer;

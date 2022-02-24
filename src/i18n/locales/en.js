@@ -70,6 +70,7 @@ export default {
     item: 'Item',
     detail: 'Detail',
     simple: 'Simple',
+    doubleBar: 'DoubleBar',
     panel: 'Panel'
   },
   detailBar: {

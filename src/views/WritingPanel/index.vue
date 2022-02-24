@@ -1,27 +1,33 @@
 <template>
   <div :class="'panel ' + panelName + '_panel'">
-    <GroupBar
-      :itemList="groupList"
-      @updateAttr="updateAttrGroup"
-      :currentGroup="currentGroup"
-      :menuList="menuListGroup"
-      :menuListBar="menuListGroupBar"
-      @changeTo="changeToGroup"
-      @changeItemGroupId="changeItemGroupId"
-      @updateSorts="updateGroupSorts"
-    />
-    <ItemBar
-      :itemList="itemList"
-      :currentItem="currentItem"
-      :menuListBar="menuListItemBar"
-      :menuList="menuListItem"
-      @changeTo="changeToItem"
-      @updateSorts="updateItemSorts"
+    <div
+      class="group_and_item_bar_container"
+      :style="styleGroupItemBarContainer"
     >
-      <template v-slot="{ item }">
-        <ChapterItem :item="item" />
-      </template>
-    </ItemBar>
+      <GroupBar
+        :itemList="groupList"
+        @updateAttr="updateAttrGroup"
+        :currentGroup="currentGroup"
+        :menuList="menuListGroup"
+        :menuListBar="menuListGroupBar"
+        @changeTo="changeToGroup"
+        @changeItemGroupId="changeItemGroupId"
+        @updateSorts="updateGroupSorts"
+      />
+      <ItemBar
+        :itemList="itemList"
+        :currentItem="currentItem"
+        :menuListBar="menuListItemBar"
+        :menuList="menuListItem"
+        @changeTo="changeToItem"
+        @updateSorts="updateItemSorts"
+        :customStyle="styleItemBar"
+      >
+        <template v-slot="{ item }">
+          <ChapterItem :item="item" />
+        </template>
+      </ItemBar>
+    </div>
     <ContentBar>
       <el-empty
         :image-size="200"
@@ -117,6 +123,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import GroupBar from '@/views/Common/components/GroupBar'
 import ItemBar from '@/views/Common/components/ItemBar'
 import ContentBar from '@/views/Common/components/ContentBar'
@@ -205,7 +213,9 @@ export default {
         attribute: false,
         note: false,
         foreshadowing: false
-      }
+      },
+      // groupBar和itemBar组件容器的宽度
+      widthGroupItemBarContainer: '170px'
     }
   },
   methods: {
@@ -363,6 +373,34 @@ export default {
     this.$bus.$off(this.panelName + ':remove-tab')
 
     this.$bus.$off(this.panelName + ':save-content')
+  },
+  computed: {
+    ...mapState({
+      isDoubleBar: state => state.isDoubleBar
+    }),
+    styleItemBar() {
+      if (this.isDoubleBar) {
+        return {
+          width: '200px'
+        }
+      } else {
+        return {
+          width: this.widthGroupItemBarContainer
+        }
+      }
+    },
+    styleGroupItemBarContainer() {
+      if (this.isDoubleBar) {
+        return {
+          flexDirection: 'row'
+        }
+      } else {
+        return {
+          flexDirection: 'column',
+          width: this.widthGroupItemBarContainer
+        }
+      }
+    }
   }
 }
 </script>
@@ -372,6 +410,10 @@ export default {
   flex: 1;
   display: flex;
   overflow: hidden;
+  .group_and_item_bar_container {
+    display: flex;
+    flex-direction: column;
+  }
   .tab_bar {
     display: flex;
     flex-direction: column;

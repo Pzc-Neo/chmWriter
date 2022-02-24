@@ -70,6 +70,7 @@ export default {
     item: '项目',
     detail: '细节',
     simple: '简单',
+    doubleBar: '双栏',
     panel: '面板'
   },
   detailBar: {

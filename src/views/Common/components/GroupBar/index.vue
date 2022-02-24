@@ -2,8 +2,8 @@
   <div
     class="group_bar"
     v-show="isShow"
-    :style="{ width }"
-    @contextmenu="showBarMenu"
+    textmenu="showBarMenu"
+    :style="customStyle"
   >
     <el-empty
       v-if="itemList.length === 0"
@@ -14,6 +14,7 @@
     <el-tree
       ref="tree"
       :data="itemList"
+      :style="customStyle"
       node-key="id"
       :expand-on-click-node="false"
       :default-expanded-keys="expandedKeys"
@@ -29,7 +30,6 @@
       :allow-drag="allowDrag"
     >
       <span
-        :style="{ width }"
         class="group_tree_node"
         slot-scope="{ data }"
         :title="data.title"
@@ -68,14 +68,18 @@ export default {
         return []
       }
     },
-    width: {
-      type: String,
-      default: '170px'
-    },
     currentGroup: {
       type: Object,
       default() {
         return {}
+      }
+    },
+    customStyle: {
+      type: Object,
+      default() {
+        return {
+          width: '170px'
+        }
       }
     }
   },
@@ -176,11 +180,15 @@ export default {
 </script>
 <style lang="scss" scoped>
 .group_bar {
+  height: 100%;
   flex-direction: column;
   position: relative;
   border-right: solid 1px #e6e6e6;
+  // overflow-y: scroll;
+  overflow: hidden;
 
   /deep/.el-tree {
+    height: 100%;
     overflow: auto;
     .group_tree_node {
       overflow: hidden;

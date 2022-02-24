@@ -13,7 +13,7 @@
     <ItemBar
       :itemList="itemList"
       :currentItem="currentItem"
-      :menuListBar="menuListItemBar"
+      :enuListBar="menuListItemBar"
       :menuList="menuListItem"
       @changeTo="changeToItem"
       @updateSorts="updateItemSorts"
