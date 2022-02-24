@@ -1,5 +1,5 @@
 /**
- * Every factory's return value can't use by `Vue.property.$db.insert`
+ * Every factory return a object that can use by `Vue.property.$db.insert`
  * example:
  *     const item = new ChapterGroupFactory('','root', 0)
  *     this.$db.insert(item)

@@ -144,7 +144,7 @@ export default {
     },
     handleSearch(tableName, text) {
       text = '%' + text.split('').join('%') + '%'
-      const query = `SELECT * FROM ${tableName} WHERE title like ?`
+      const query = `SELECT * FROM ${tableName} WHERE title like ? order by updated DESC`
       // const query = `select c.id,c.title,c.updated,g.id,g.title from ${tableName} as c inner join ${
       //   tableName.substring(0, tableName.length - 1) + '_groups'
       // } as g on g.id=c.group_id  where c.title like ?;
