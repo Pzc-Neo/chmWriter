@@ -1,34 +1,49 @@
 <template>
-  <ul
-    class="item_bar"
-    ref="itemBar"
-    v-show="isShow"
-    @contextmenu="showContextmenu"
-    @click="handleClick"
-    :style="customStyle"
-  >
-    <el-empty
-      v-if="itemList.length === 0"
-      :image-size="120"
-      :description="$t('info.empty')"
-      style="height: 100%"
-    ></el-empty>
-    <!-- li's id willl use by `scrollToView` method  -->
-    <li
-      shadow="hover"
-      v-for="(item, index) in itemList"
-      :key="item.id"
-      :id="item.id"
-      :index="index"
-      :class="{ item, active: currentItem.id === item.id }"
-      draggable="true"
-      @dragstart="dragStart($event, item, index)"
-      @dragover="handleDragover($event)"
-      @drop="handleDrop($event, index)"
+  <div class="item_bar" v-show="isShow">
+    <div class="header">
+      <span class="title">
+        <span>{{ itemBarTitle }}</span>
+        <!-- toggle simple mode -->
+        <el-button
+          class="fa fa-columns"
+          plain
+          :type="isDoubleBar ? 'primary' : ''"
+          size="mini"
+          @click="toggleDoubleBar()"
+        ></el-button>
+      </span>
+      <span class="count">{{ itemList.length }}项</span>
+    </div>
+    <ul
+      class="item_list"
+      ref="itemList"
+      @contextmenu="showContextmenu"
+      @click="handleClick"
+      :style="customStyle"
     >
-      <slot :item="item"></slot>
-    </li>
-  </ul>
+      <el-empty
+        v-if="itemList.length === 0"
+        :image-size="120"
+        :description="$t('info.empty')"
+        style="height: 100%"
+      ></el-empty>
+      <!-- li's id willl use by `scrollToView` method  -->
+      <li
+        shadow="hover"
+        v-for="(item, index) in itemList"
+        :key="item.id"
+        :id="item.id"
+        :index="index"
+        :class="{ item, active: currentItem.id === item.id }"
+        draggable="true"
+        @dragstart="dragStart($event, item, index)"
+        @dragover="handleDragover($event)"
+        @drop="handleDrop($event, index)"
+      >
+        <slot :item="item"></slot>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -40,6 +55,12 @@ export default {
       type: Array,
       default() {
         return []
+      }
+    },
+    itemBarTitle: {
+      type: String,
+      default() {
+        return '子项'
       }
     },
     menuListBar: {
@@ -76,7 +97,7 @@ export default {
      * emit `changeTo` event.
      */
     handleClick(event) {
-      const rootDom = this.$refs.itemBar
+      const rootDom = this.$refs.itemList
       let target = event.target
       while (target !== rootDom) {
         if (target.tagName.toLowerCase() === 'li') {
@@ -155,10 +176,10 @@ export default {
     },
     showContextmenu(event) {
       let target = event.target
-      if (target === this.$refs.itemBar) {
+      if (target === this.$refs.itemList) {
         this.showBarMenu(event)
       } else {
-        while (target !== this.$refs.itemBar) {
+        while (target !== this.$refs.itemList) {
           if (target.tagName.toLowerCase() === 'li') {
             this.showItemMenu(event, target.id)
             break
@@ -185,11 +206,15 @@ export default {
         menuList: this.menuList
       }
       this.$store.commit('SHOW_CONTEXTMENU', param)
+    },
+    toggleDoubleBar() {
+      this.$store.commit('TOGGLE_DOUBLE_BAR')
     }
   },
   computed: {
     ...mapState({
-      isShow: state => state.barVisible.itemBar
+      isShow: state => state.barVisible.itemBar,
+      isDoubleBar: state => state.isDoubleBar
     })
   }
 }
@@ -197,18 +222,47 @@ export default {
 
 <style lang="scss" scoped>
 .item_bar {
-  height: 100%;
-  border-right: solid 1px #e6e6e6;
-  border-top: 1px solid #e6e6e6;
-  overflow: auto;
-  .item {
-    cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .header {
+    height: 2em;
+    line-height: 2em;
+    display: flex;
+    // padding: $main-padding;
+    padding: 0px 5px;
+    // background-color: #ebebeb;
+    .title {
+      flex: 1;
+      span {
+        padding: 0px 5px;
+      }
+      .el-button {
+        border: 0px;
+        margin: 0px;
+        padding: 5px;
+      }
+    }
+    .count {
+      flex: 1;
+      text-align: right;
+    }
   }
-  .item:hover {
-    background-color: #f0f7ff;
-  }
-  .item.active {
-    background-color: #f0f7ff;
+  .item_list {
+    height: 100%;
+    border-right: solid 1px #e6e6e6;
+    border-top: 1px solid #e6e6e6;
+    overflow: auto;
+    flex: 1;
+    .item {
+      cursor: pointer;
+    }
+    .item:hover {
+      background-color: #f0f7ff;
+    }
+    .item.active {
+      background-color: #f0f7ff;
+    }
   }
 }
 </style>

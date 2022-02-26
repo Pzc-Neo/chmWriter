@@ -91,6 +91,7 @@ export default {
     }
   },
   writing: {
+    chapter: '章节',
     nothingOpen: '什么都没有打开',
     title: '标题',
     content: '内容',

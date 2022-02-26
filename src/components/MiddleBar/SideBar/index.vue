@@ -71,14 +71,14 @@
       </div>
       <div class="btn_group">
         <!-- toggle simple mode -->
-        <el-button
+        <!-- <el-button
           plain
           :type="isDoubleBar ? 'primary' : ''"
           size="mini"
           @click="toggleDoubleBar()"
         >
           {{ $t('sideBar.doubleBar') }}
-        </el-button>
+        </el-button> -->
         <!-- toggle simple mode -->
         <el-button
           plain

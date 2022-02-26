@@ -20,6 +20,7 @@
         :currentItem="currentItem"
         :menuListBar="menuListItemBar"
         :menuList="menuListItem"
+        :itemBarTitle="$t('writing.chapter')"
         @changeTo="changeToItem"
         @updateSorts="updateItemSorts"
         :customStyle="styleItemBar"

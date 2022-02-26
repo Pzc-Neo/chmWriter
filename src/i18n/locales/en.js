@@ -91,6 +91,7 @@ export default {
     }
   },
   writing: {
+    chapter: 'Chapter',
     nothingOpen: 'Nothing open',
     title: 'Title',
     content: 'Content',
