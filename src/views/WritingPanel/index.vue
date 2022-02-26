@@ -387,7 +387,8 @@ export default {
         }
       } else {
         return {
-          width: this.widthGroupItemBarContainer
+          width: this.widthGroupItemBarContainer,
+          flex: 1
         }
       }
     },
@@ -398,7 +399,8 @@ export default {
         }
       } else {
         return {
-          width: this.widthGroupItemBarContainer
+          width: this.widthGroupItemBarContainer,
+          flex: 1
         }
       }
     },

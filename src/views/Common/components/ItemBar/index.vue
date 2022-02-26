@@ -1,5 +1,5 @@
 <template>
-  <div class="item_bar" v-show="isShow">
+  <div class="item_bar" v-show="isShow" :style="customStyle">
     <div class="header">
       <span class="title">
         <span>{{ itemBarTitle }}</span>
@@ -19,7 +19,6 @@
       ref="itemList"
       @contextmenu="showContextmenu"
       @click="handleClick"
-      :style="customStyle"
     >
       <el-empty
         v-if="itemList.length === 0"
