@@ -13,6 +13,7 @@
         @changeTo="changeToGroup"
         @changeItemGroupId="changeItemGroupId"
         @updateSorts="updateGroupSorts"
+        :customStyle="styleGroupBar"
       />
       <ItemBar
         :itemList="itemList"
@@ -378,6 +379,17 @@ export default {
     ...mapState({
       isDoubleBar: state => state.isDoubleBar
     }),
+    styleGroupBar() {
+      if (this.isDoubleBar) {
+        return {
+          width: '170px'
+        }
+      } else {
+        return {
+          width: this.widthGroupItemBarContainer
+        }
+      }
+    },
     styleItemBar() {
       if (this.isDoubleBar) {
         return {
