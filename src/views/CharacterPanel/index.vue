@@ -1,27 +1,34 @@
 <template>
   <div :class="'panel ' + panelName + '_panel'">
-    <GroupBar
-      :itemList="groupList"
-      @updateAttr="updateAttrGroup"
-      :currentGroup="currentGroup"
-      :menuList="menuListGroup"
-      :menuListBar="menuListGroupBar"
-      @changeTo="changeToGroup"
-      @changeItemGroupId="changeItemGroupId"
-      @updateSorts="updateGroupSorts"
-    />
-    <ItemBar
-      :itemList="itemList"
-      :currentItem="currentItem"
-      :enuListBar="menuListItemBar"
-      :menuList="menuListItem"
-      @changeTo="changeToItem"
-      @updateSorts="updateItemSorts"
+    <div
+      class="group_and_item_bar_container"
+      :style="styleGroupItemBarContainer"
     >
-      <template v-slot="{ item }">
-        <CharacterItem :item="item" />
-      </template>
-    </ItemBar>
+      <GroupBar
+        :itemList="groupList"
+        @updateAttr="updateAttrGroup"
+        :currentGroup="currentGroup"
+        :menuList="menuListGroup"
+        :menuListBar="menuListGroupBar"
+        @changeTo="changeToGroup"
+        @changeItemGroupId="changeItemGroupId"
+        @updateSorts="updateGroupSorts"
+        :customStyle="styleGroupBar"
+      />
+      <ItemBar
+        :itemList="itemList"
+        :currentItem="currentItem"
+        :enuListBar="menuListItemBar"
+        :menuList="menuListItem"
+        @changeTo="changeToItem"
+        @updateSorts="updateItemSorts"
+        :customStyle="styleItemBar"
+      >
+        <template v-slot="{ item }">
+          <CharacterItem :item="item" />
+        </template>
+      </ItemBar>
+    </div>
     <ContentBar>
       <el-empty
         :image-size="200"
@@ -112,6 +119,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import GroupBar from '@/views/Common/components/GroupBar'
 import ItemBar from '@/views/Common/components/ItemBar'
 import ContentBar from '@/views/Common/components/ContentBar'
@@ -203,7 +211,9 @@ export default {
       relationData: [],
       relationLink: [],
       weightUnit: 'kg',
-      heightUnit: 'cm'
+      heightUnit: 'cm',
+      // groupBar和itemBar组件容器的宽度
+      widthGroupItemBarContainer: '170px'
     }
   },
   methods: {
@@ -397,6 +407,47 @@ export default {
     this.$bus.$off(this.panelName + ':remove-tab')
 
     this.$bus.$off(this.panelName + ':save-content')
+  },
+  computed: {
+    ...mapState({
+      isDoubleBar: state => state.isDoubleBar
+    }),
+    styleGroupBar() {
+      if (this.isDoubleBar) {
+        return {
+          width: '170px'
+        }
+      } else {
+        return {
+          width: this.widthGroupItemBarContainer,
+          flex: 1
+        }
+      }
+    },
+    styleItemBar() {
+      if (this.isDoubleBar) {
+        return {
+          width: '200px'
+        }
+      } else {
+        return {
+          width: this.widthGroupItemBarContainer,
+          flex: 1
+        }
+      }
+    },
+    styleGroupItemBarContainer() {
+      if (this.isDoubleBar) {
+        return {
+          flexDirection: 'row'
+        }
+      } else {
+        return {
+          flexDirection: 'column',
+          width: this.widthGroupItemBarContainer
+        }
+      }
+    }
   }
 }
 </script>
@@ -406,6 +457,10 @@ export default {
   flex: 1;
   display: flex;
   overflow: hidden;
+  .group_and_item_bar_container {
+    display: flex;
+    flex-direction: column;
+  }
   .tab_bar {
     display: flex;
     flex-direction: column;

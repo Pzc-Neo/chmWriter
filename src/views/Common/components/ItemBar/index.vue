@@ -228,9 +228,9 @@ export default {
     height: 2em;
     line-height: 2em;
     display: flex;
-    // padding: $main-padding;
     padding: 0px 5px;
-    // background-color: #ebebeb;
+    border: solid 1px #e6e6e6;
+    border-bottom: 0px;
     .title {
       flex: 1;
       span {
