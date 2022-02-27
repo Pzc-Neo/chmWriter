@@ -67,7 +67,7 @@
             @change="handleEditorContentChange"
             @update:content="saveContent"
             @switch:tab="isNext => switchTab(isNext)"
-            @close="removeTab"
+            @close="handleRemoveTab"
             @countWord="
               words => {
                 updateAttrItem('words', words, item, false)
@@ -359,7 +359,7 @@ export default {
       this.switchTab(isNext)
     })
     this.$bus.$on(this.panelName + ':remove-tab', () => {
-      this.removeTab()
+      this.handleRemoveTab()
     })
 
     this.$bus.$on(this.panelName + ':save-content', () => {

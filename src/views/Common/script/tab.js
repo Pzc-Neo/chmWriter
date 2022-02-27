@@ -1,4 +1,5 @@
 export const handleRemoveTab = function (targetId) {
+  targetId = targetId || this.currentTabId
   return new Promise((resolve, reject) => {
     const item = this.getItemFromLocal(targetId)
     if (item?.isChanged) {
@@ -37,7 +38,7 @@ export const handleRemoveTab = function (targetId) {
 }
 
 // targetId is item's id
-export const removeTab = function (targetId, type = 'itemm') {
+export const removeTab = function (targetId, type = 'item') {
   targetId = targetId || this.currentTabId
   const tabs = this.tabList
   let activeId = this.currentTabId
