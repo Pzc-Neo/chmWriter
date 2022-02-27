@@ -26,7 +26,7 @@ export default new Vuex.Store({
     /* 是否itemBar项目的详细信息 */
     isSimpleMode: true,
     /* groupBar和itemBar是不是个各占一栏，还是在同一栏显示 */
-    isDoubleBar: true,
+    isDoubleBar: false,
 
     commandBox: {
       isShow: false,

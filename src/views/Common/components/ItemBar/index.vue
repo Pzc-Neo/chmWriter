@@ -19,6 +19,7 @@
       ref="itemList"
       @contextmenu="showContextmenu"
       @click="handleClick"
+      :style="customStyleList"
     >
       <el-empty
         v-if="itemList.length === 0"
@@ -86,6 +87,12 @@ export default {
         return {
           width: '200px'
         }
+      }
+    },
+    customStyleList: {
+      type: Object,
+      default() {
+        return {}
       }
     }
   },
@@ -248,6 +255,10 @@ export default {
     }
   }
   .item_list {
+    // display: flex;
+    // flex-direction: row;
+    // flex-wrap: wrap;
+    // align-content: flex-start;
     height: 100%;
     border-right: solid 1px #e6e6e6;
     border-top: 1px solid #e6e6e6;
@@ -255,6 +266,7 @@ export default {
     flex: 1;
     .item {
       cursor: pointer;
+      overflow: hidden;
     }
     .item:hover {
       background-color: #f0f7ff;

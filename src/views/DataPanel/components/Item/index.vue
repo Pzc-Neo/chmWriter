@@ -13,7 +13,7 @@
     </span>
     <span class="right">
       <!-- <span>{{ $formatTime(item.updated) }}</span> -->
-      <el-tag :title="item.source">{{ item.source }}</el-tag>
+      <el-tag :title="types[item.source]">{{ types[item.source] }}</el-tag>
     </span>
   </div>
 </template>
@@ -37,16 +37,10 @@ export default {
   computed: {
     types() {
       return [
-        this.$t('writing.types.normal'),
-        this.$t('writing.types.transition').substr(0, 5),
-        this.$t('writing.types.important')
-      ]
-    },
-    status() {
-      return [
-        this.$t('writing.statuss.first'),
-        this.$t('writing.statuss.second'),
-        this.$t('writing.statuss.final')
+        this.$t('data.sources.original'),
+        this.$t('data.sources.internet'),
+        this.$t('data.sources.book'),
+        this.$t('data.sources.other')
       ]
     }
   }

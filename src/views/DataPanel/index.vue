@@ -18,7 +18,8 @@
         :menuList="menuListItem"
         @changeTo="changeToItem"
         @updateSorts="updateItemSorts"
-        :customStyle="itemBarStyle"
+        :customStyle="{ width: '100%', flex: 3 }"
+        :customStyleList="styleItemList"
       >
         <template v-slot="{ item }">
           <Item :item="item" />
@@ -198,10 +199,9 @@ export default {
     }
   },
   computed: {
-    itemBarStyle() {
+    styleItemList() {
       let _style = {
-        width: '100%',
-        flex: 3
+        width: '100%'
       }
 
       if (this.$store.state.isSimpleMode) {
@@ -209,8 +209,7 @@ export default {
           ..._style,
           display: 'flex',
           flexFlow: 'row wrap',
-          alignContent: 'flex-start',
-          justifyContent: 'flex-start'
+          alignContent: 'flex-start'
         }
       }
       return _style
