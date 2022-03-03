@@ -132,6 +132,12 @@ export default {
     residence: 'Residence',
     description: 'Description'
   },
+  editor: {
+    cut: 'Cut',
+    copy: 'Copy',
+    paste: 'Paste',
+    selectAll: 'Select All'
+  },
   tables: {
     datas: 'Datas',
     data_groups: 'Data_groups',

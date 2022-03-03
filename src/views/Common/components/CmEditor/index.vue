@@ -16,7 +16,9 @@
         onCmCodeChange(newContent, item)
       }
     "
+    @beforeSelectionChange="onCmbeforeSelectionChange"
     @keyHandled="onKeyHandled"
+    @contextmenu.native="showContextmenu"
   />
 </template>
 
@@ -73,6 +75,7 @@ import 'codemirror/addon/display/autorefresh'
 
 import { countWords } from '@/util/text'
 import { debounce } from '@/util/base'
+import { cmEditorMenuList } from './menuList'
 
 export default {
   name: 'CmEditor',
@@ -92,6 +95,7 @@ export default {
   data() {
     return {
       isChanged: false,
+      menuList: cmEditorMenuList.call(this),
       cmOptions: {
         tabSize: 4,
         mode: 'markdown',
@@ -188,12 +192,22 @@ export default {
       }
       this.$emit('change', item, newContent)
     },
+    onCmbeforeSelectionChange(cm, a) {},
     onKeyHandled(cm, name, event) {
       // console.log(cm, name, event)
+    },
+    showContextmenu(event) {
+      const param = {
+        event,
+        targetItem: this.codemirror,
+        menuList: this.menuList
+      }
+      this.$store.commit('SHOW_CONTEXTMENU', param)
     }
   },
   mounted() {
     this.wordCounter(this.item.content, this.item.language)
+    console.log(this.menuList, this.item, this.test)
 
     // vim的输入模式改变的时候，切换输入法(这个方法特卡, 而且时不时失灵)
     /*

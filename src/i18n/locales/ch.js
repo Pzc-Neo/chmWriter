@@ -127,6 +127,12 @@ export default {
     residence: '所在地',
     description: '描述'
   },
+  editor: {
+    cut: '剪切',
+    copy: '复制',
+    paste: '粘贴',
+    selectAll: '全选'
+  },
   tables: {
     datas: '资料',
     data_groups: '资料分组',
