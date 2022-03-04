@@ -203,6 +203,28 @@ export default {
         menuList: this.menuList
       }
       this.$store.commit('SHOW_CONTEXTMENU', param)
+    },
+    /**
+     * Select hold line
+     */
+    selectLine(line) {
+      const editor = this.codemirror
+      if (line === undefined) {
+        line = editor.getCursor().line
+      }
+      const selectedText = editor.getLine(line)
+      // selection start
+      const head = {
+        line,
+        ch: 0
+      }
+      // selction end
+      const anchor = {
+        line,
+        ch: selectedText.length
+      }
+      // 设置选区
+      editor.setSelection(anchor, head)
     }
   },
   mounted() {

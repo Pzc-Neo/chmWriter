@@ -6,9 +6,16 @@ export const cmEditorMenuList = function () {
       title: 'editor.cut',
       icon: 'fa fa-cut',
       func: () => {
-        const selectedText = this.codemirror.getSelection()
+        const editor = this.codemirror
+        let selectedText = editor.getSelection()
+        // If nothing select, cut hold line
+        if (selectedText === '') {
+          const cursor = editor.getCursor()
+          selectedText = editor.getLine(cursor.line)
+          this.selectLine(cursor.line)
+        }
         clipboard.writeText(selectedText)
-        this.codemirror.replaceSelection('')
+        editor.replaceSelection('')
         this.$message(`${this.$t('editor.cut')} ${this.$t('result.success')}`)
       }
     },
@@ -18,7 +25,13 @@ export const cmEditorMenuList = function () {
       title: 'editor.copy',
       icon: 'fa fa-copy',
       func: () => {
-        const selectedText = this.codemirror.getSelection()
+        const editor = this.codemirror
+        let selectedText = editor.getSelection()
+        // If nothing select, copy hold line
+        if (selectedText === '') {
+          const cursor = editor.getCursor()
+          selectedText = editor.getLine(cursor.line)
+        }
         clipboard.writeText(selectedText)
         this.$message(`${this.$t('editor.copy')} ${this.$t('result.success')}`)
       }
