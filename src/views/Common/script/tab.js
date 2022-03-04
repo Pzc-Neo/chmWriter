@@ -21,6 +21,8 @@ export const handleRemoveTab = function (targetId) {
           case 'cancel':
             this.$message(this.$t('action.notSave'), 'info')
             this.removeTab(targetId)
+            // if not set to false, it will have `*` on the tab title when you reopen it.
+            item.isChanged = false
             break
           // close MessageBox and cancel
           case 'close':
