@@ -95,6 +95,21 @@ export const WorldGroupFactory = function (title, pid, sort) {
   }
 }
 
+export const characterRelationFactory = function (item) {
+  // const date = Date.now()
+  return {
+    tableName: 'character_relation',
+    data: {
+      ...item
+      // id: source.id + target.id,
+      // source_id: source.id,
+      // target_id: target.id,
+      // relation: relation,
+      // created: date,
+      // updated: date
+    }
+  }
+}
 export const getItemFactory = function (type) {
   switch (type) {
     case 'chapter_groups':
@@ -103,6 +118,8 @@ export const getItemFactory = function (type) {
       return ChapterFactory
     case 'world_groups':
       return WorldGroupFactory
+    case 'character_relation':
+      return characterRelationFactory
     default: {
       const err = new Error(`${type} Factory is not exit`)
       console.error(err)

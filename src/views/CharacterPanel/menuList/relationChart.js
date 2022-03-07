@@ -43,10 +43,23 @@ export const relationChart = function () {
       }
     },
     {
-      id: 'delect',
+      id: 'addRelation',
+      title: 'contextMenuBar.addEdge',
+      icon: 'el-icon-plus',
+      func: targetItem => {
+        this.addRelationMode = {
+          isOn: true,
+          params: targetItem
+        }
+      }
+    },
+
+    {
+      id: 'delete',
       title: 'contextMenuBar.delete',
       icon: 'el-icon-delete',
       func: targetItem => {
+        console.log(targetItem)
         this.deleteItem(targetItem)
       }
     },

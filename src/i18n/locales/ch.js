@@ -55,7 +55,8 @@ export default {
     delete: '删除',
     close: '关闭',
     closeOthers: '关闭其他',
-    reveal: '在侧栏显示'
+    reveal: '在侧栏显示',
+    addEdge: '添加连线'
   },
   sideBar: {
     data: '资料',

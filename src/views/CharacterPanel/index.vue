@@ -65,7 +65,10 @@
             :relationData="relationData"
             :linkData="relationLink"
             :menuList="menulistRelation"
+            :addRelationMode="addRelationMode"
+            :relationTableName="relationTableName"
             @change-to-item="changeToItem"
+            @new-relation="newRelation"
             @update-relation="updateRelation"
           />
         </el-tab-pane>
@@ -137,7 +140,7 @@ import RelationChart from './components/RelationChart'
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
 import { convertToRelationData, convertToRelationLink } from './util/converter'
-import { updateRelation } from './util/relation'
+import { newRelation, updateRelation } from './util/relation'
 
 import {
   init,
@@ -194,6 +197,10 @@ export default {
       relationTableName: 'character_relation',
       // Will use by event, i18n
       panelName: 'character',
+      addRelationMode: {
+        isOn: false,
+        params: {}
+      },
 
       currentTabId: '',
       tabList: [],
@@ -247,7 +254,7 @@ export default {
       this.itemList = this.getItems(groupId)
       this.relationData = convertToRelationData(this.itemList)
 
-      const relations = this.$db.getGroups('character_relation', false)
+      const relations = this.$db.getGroups(this.relationTableName, false)
       this.relationLink = convertToRelationLink(relations)
 
       const index = this.tabList.findIndex(_group => {
@@ -364,6 +371,13 @@ export default {
     },
     updateRelation(targetItem) {
       updateRelation.call(this, targetItem)
+    },
+    newRelation(relationItem) {
+      newRelation.call(this, relationItem)
+    },
+    refreshRelationChart() {
+      const relations = this.$db.getGroups(this.relationTableName, false)
+      this.relationLink = convertToRelationLink(relations)
     }
   },
   watch: {

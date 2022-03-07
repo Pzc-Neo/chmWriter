@@ -14,7 +14,11 @@ Vue.prototype.$message = function (message, type = 'success', duration = 1000) {
   })
 }
 
-Vue.prototype.$prompt = function (callback, defaultValue = '') {
+Vue.prototype.$prompt = function (
+  callback,
+  defaultValue = '',
+  isShowMessage = true
+) {
   const msg = this.$t('message.pleaseInput')
   // example: writing panel get input
   const title =
@@ -32,10 +36,12 @@ Vue.prototype.$prompt = function (callback, defaultValue = '') {
     .then(({ value }) => {
       try {
         callback(value)
-        Message({
-          type: 'success',
-          message: this.$t('result.success')
-        })
+        if (isShowMessage) {
+          Message({
+            type: 'success',
+            message: this.$t('result.success')
+          })
+        }
       } catch (e) {
         Message({
           type: 'error',

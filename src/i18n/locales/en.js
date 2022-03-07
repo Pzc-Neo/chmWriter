@@ -55,7 +55,8 @@ export default {
     delete: 'Delete',
     close: 'Close',
     closeOthers: 'Close others',
-    reveal: 'Reveal in side bar'
+    reveal: 'Reveal in side bar',
+    addEdge: 'Add edge'
   },
   sideBar: {
     data: 'Data',
