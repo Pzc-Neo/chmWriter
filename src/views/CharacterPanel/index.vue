@@ -64,6 +64,9 @@
           <RelationChart
             :relationData="relationData"
             :linkData="relationLink"
+            :menuList="menulistRelation"
+            @change-to-item="changeToItem"
+            @update-relation="updateRelation"
           />
         </el-tab-pane>
       </el-tabs>
@@ -133,7 +136,8 @@ import RelationChart from './components/RelationChart'
 
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
-import { convertToRelationData, convertToRelationLink } from './util'
+import { convertToRelationData, convertToRelationLink } from './util/converter'
+import { updateRelation } from './util/relation'
 
 import {
   init,
@@ -187,6 +191,7 @@ export default {
       groupTableName: 'character_groups',
       // Item table's name on datebase
       itemTableName: 'characters',
+      relationTableName: 'character_relation',
       // Will use by event, i18n
       panelName: 'character',
 
@@ -197,6 +202,7 @@ export default {
       menuListItem: menuListFactory.call(this, 'item'),
       menuListItemBar: menuListFactory.call(this, 'itemBar'),
       menuListTab: menuListFactory.call(this, 'tab'),
+      menulistRelation: menuListFactory.call(this, 'relationChart'),
       toolList: getToolList.call(this),
       groupList: [],
       itemList: [],
@@ -355,6 +361,9 @@ export default {
 
       this.updateAttrItem('content', content, item)
       item.isChanged = false
+    },
+    updateRelation(targetItem) {
+      updateRelation.call(this, targetItem)
     }
   },
   watch: {

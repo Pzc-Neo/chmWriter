@@ -1,6 +1,7 @@
 import { group, groupBar } from './group'
 import { item, itemBar } from './item'
 import { tab, tabBar } from './tab'
+import { relationChart } from './relationChart'
 
 export const menuListFactory = function (type) {
   switch (type) {
@@ -16,6 +17,8 @@ export const menuListFactory = function (type) {
       return tab.call(this)
     case 'tabBar':
       return tabBar.call(this)
+    case 'relationChart':
+      return relationChart.call(this)
     default:
       break
   }
