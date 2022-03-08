@@ -32,7 +32,6 @@ export const convertToRelationLink = function (itemList) {
         curveness: countMap[mapKey] === 1 ? 0 : 0.5
       }
     }
-    console.log(newItem)
     result.push(newItem)
   })
   return result

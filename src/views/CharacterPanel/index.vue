@@ -354,7 +354,7 @@ export default {
       return showTabContextMenu.call(this, event, targetItem)
     },
 
-    saveContent(content, itemId) {
+    /*     saveContent(content, itemId) {
       let item = {}
       if (itemId === undefined) {
         item = this.currentItem
@@ -368,7 +368,7 @@ export default {
 
       this.updateAttrItem('content', content, item)
       item.isChanged = false
-    },
+    }, */
     updateRelation(targetItem) {
       updateRelation.call(this, targetItem)
     },
@@ -378,6 +378,10 @@ export default {
     refreshRelationChart() {
       const relations = this.$db.getGroups(this.relationTableName, false)
       this.relationLink = convertToRelationLink(relations)
+    },
+    renderAll() {
+      const itemList = this.$db.getAllFromTable(this.itemTableName)
+      this.relationData = convertToRelationData(itemList)
     }
   },
   watch: {

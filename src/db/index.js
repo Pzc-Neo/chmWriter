@@ -93,6 +93,11 @@ class Db {
     return stmt.all([itemId])[0]
   }
 
+  getAllFromTable(tableName) {
+    const query = `SELECT * FROM ${tableName}`
+    return this.db.prepare(query).all()
+  }
+
   /**
    * Get items that doesn't belong to anygroup
    * @param {String} groupTableName

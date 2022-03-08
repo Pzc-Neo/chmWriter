@@ -1,19 +1,11 @@
 export const getToolList = function () {
   return [
     {
-      id: 'saveContent',
-      title: 'action.save',
-      icon: 'fa fa-save',
+      id: 'renderAll',
+      title: 'action.renderAll',
+      icon: 'fa fa-cubes',
       func: () => {
-        this.saveContent()
-      }
-    },
-    {
-      id: 'format',
-      title: 'action.format',
-      icon: 'fa fa-font',
-      func: () => {
-        console.log('format')
+        this.renderAll()
       }
     },
     {
@@ -22,14 +14,6 @@ export const getToolList = function () {
       icon: 'fa fa-files-o',
       func: () => {
         console.log('copy')
-      }
-    },
-    {
-      id: 'copyPure',
-      title: 'action.copyPure',
-      icon: 'fa fa-clipboard',
-      func: () => {
-        console.log('copy pure')
       }
     }
   ]
