@@ -77,7 +77,7 @@ export default {
     chartRender() {
       // this.getLink()
       // 基于准备好的dom，初始化echarts实例
-      this.chart = this.$echarts.init(this.$el)
+      this.chart = this.$echarts.init(this.$el, null, { renderer: 'svg' })
       const option = getOption.call(this)
       // 绘制图表
       this.chart.setOption(option)

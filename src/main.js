@@ -11,7 +11,10 @@ import '@/prototype/base'
 import '@/prototype/elementUI'
 
 import 'font-awesome/css/font-awesome.min.css'
+// 可以根据需要选用只用到的渲染器
+import { SVGRenderer, CanvasRenderer } from 'echarts/renderers'
 
+echarts.use([SVGRenderer, CanvasRenderer])
 // import fs from 'fs'
 // fs.readFile(__dirname,'/')
 
