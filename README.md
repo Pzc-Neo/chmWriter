@@ -2,13 +2,17 @@
 
 ## Screenshot
 
+### Data Panel
+
+![Data Panel](./screenshot/data_panel.png)
+
 ### Writing Panel
 
 ![Writing Panel](./screenshot/writing_panel.png)
 
-### Data Panel
+### Character Panel
 
-![Data Panel](./screenshot/data_panel.png)
+![Character Panel](./screenshot/character_panel.png)
 
 ## Project setup
 
