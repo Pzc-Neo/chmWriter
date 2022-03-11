@@ -58,9 +58,16 @@ export const relationChart = function () {
       id: 'delete',
       title: 'contextMenuBar.delete',
       icon: 'el-icon-delete',
-      func: targetItem => {
-        console.log(targetItem)
-        this.deleteItem(targetItem)
+      func: params => {
+        if (params.dataType === 'node') {
+          this.deleteItem(params.data)
+        } else if (params.dataType === 'edge') {
+          this.deleteRelation(params.data)
+        } else {
+          const msg = "Can't deal with dataType: " + params.dataType
+          this.$alert(msg)
+          console.error(new Error(msg))
+        }
       }
     },
     {

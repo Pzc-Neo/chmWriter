@@ -375,6 +375,12 @@ export default {
     newRelation(relationItem) {
       newRelation.call(this, relationItem)
     },
+    async deleteRelation(targetItem) {
+      const result = await this.$confirmSync(targetItem.title)
+      if (result === 'confirm') {
+        this.$db.deleteById(this.relationTableName, targetItem.id)
+      }
+    },
     refreshRelationChart() {
       const relations = this.$db.getGroups(this.relationTableName, false)
       this.relationLink = convertToRelationLink(relations)
