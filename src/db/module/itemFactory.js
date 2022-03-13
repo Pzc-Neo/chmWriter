@@ -8,32 +8,43 @@
 
 import { randomStr } from '@/util/base'
 
-// export const DataFactory = function (title, groupId, sort) {
-//   const date = Date.now()
-//   return {
-//     tableName: 'datas',
-//     data: {
-//       id: randomStr(),
-//       group_id: groupId,
-//       title: title,
-//       created: date,
-//       updated: date,
-//       content: '',
-//       language: 0,
-//       words: 0,
-//       target_words: 3000,
-//       type: 0,
-//       status: 0,
-//       is_export: 1,
-//       note: '',
-//       foreshadowing: '',
-//       rate: 0,
-//       sign: '',
-//       other: '',
-//       sort: sort
-//     }
-//   }
-// }
+export const DataGroupFactory = function (title, pid, sort) {
+  const date = Date.now()
+  return {
+    tableName: 'data_groups',
+    data: {
+      id: randomStr(),
+      title: title,
+      description: '',
+      pid: pid,
+      is_expand: 1,
+      created: date,
+      updated: date,
+      sort: sort
+    }
+  }
+}
+
+export const DataFactory = function (title, groupId, sort) {
+  const date = Date.now()
+  return {
+    tableName: 'datas',
+    data: {
+      id: randomStr(),
+      group_id: groupId,
+      title: title,
+      source: 1,
+      content: '',
+      other: '',
+      words: 0,
+      created: date,
+      updated: date,
+      note: '',
+      language: 0,
+      sort: sort
+    }
+  }
+}
 
 export const ChapterGroupFactory = function (title, pid, sort) {
   const date = Date.now()
@@ -112,6 +123,10 @@ export const characterRelationFactory = function (item) {
 }
 export const getItemFactory = function (type) {
   switch (type) {
+    case 'datas':
+      return DataFactory
+    case 'data_groups':
+      return DataGroupFactory
     case 'chapter_groups':
       return ChapterGroupFactory
     case 'chapters':
