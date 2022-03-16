@@ -56,7 +56,8 @@ export default {
     close: 'Close',
     closeOthers: 'Close others',
     reveal: 'Reveal in side bar',
-    addEdge: 'Add edge'
+    addEdge: 'Add edge',
+    showGroupChart: 'Show group chart'
   },
   sideBar: {
     data: 'Data',

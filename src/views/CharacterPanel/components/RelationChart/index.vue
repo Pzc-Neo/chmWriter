@@ -46,12 +46,12 @@ export default {
     }
   },
   watch: {
-    relationData: {
-      handler() {
-        this.chartRender()
-      },
-      deep: true
-    },
+    // relationData: {
+    //   handler() {
+    //     this.chartRender()
+    //   },
+    //   deep: true
+    // },
     linkData: {
       handler() {
         this.chartRender()

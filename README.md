@@ -14,6 +14,10 @@
 
 ![Character Panel](./screenshot/character_panel.png)
 
+### Command_box
+
+![Command box](./screenshot/command_box.png)
+
 ## Project setup
 
 ```cmd

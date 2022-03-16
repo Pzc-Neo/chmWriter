@@ -31,6 +31,28 @@ export const getGroups = function () {
   return listToTree(groups)
 }
 
+/**
+ * Get all child groups by id , include itself.
+ * @param {String} groupId
+ * @returns
+ */
+export const getAllChildGroups = function (groupId) {
+  const resultGroupIdList = []
+  const queue = [groupId]
+  while (queue.length > 0) {
+    const _groupId = queue.shift()
+    resultGroupIdList.push(_groupId)
+    const childGroupList = this.$db.getGroupsByPid(
+      this.groupTableName,
+      _groupId
+    )
+    childGroupList.forEach(childGroup => {
+      queue.push(childGroup.id)
+    })
+  }
+  return resultGroupIdList
+}
+
 export const getGroupFromDb = function (groupId) {
   return this.$db.getGroup(this.groupTableName, groupId)
 }
@@ -46,8 +68,15 @@ export const getGroupFromLocal = function (groupId) {
   }
 }
 
-export const changeToGroup = function (groupId) {
-  if (this.currentGroup.id === groupId) return
+/**
+ *
+ * @param {String} groupId
+ * @param {Boolean} force If truly, change to group anyway.
+ * even if target group is current group.
+ * @returns
+ */
+export const changeToGroup = function (groupId, force = false) {
+  if (this.currentGroup.id === groupId && !force) return
 
   let group = this.getGroupFromDb(groupId)
   if (group === undefined) {

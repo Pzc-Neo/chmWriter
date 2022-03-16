@@ -75,6 +75,12 @@ class Db {
     return stmt.all()
   }
 
+  getGroupsByPid(tableName, pid) {
+    const query = `SELECT * FROM ${tableName} WHERE pid=?`
+    const stmt = this.db.prepare(query)
+    return stmt.all([pid])
+  }
+
   getGroup(tableName, groupId) {
     const query = `SELECT * FROM ${tableName} WHERE id=?`
     const stmt = this.db.prepare(query)

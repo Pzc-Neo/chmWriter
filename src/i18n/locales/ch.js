@@ -56,7 +56,8 @@ export default {
     close: '关闭',
     closeOthers: '关闭其他',
     reveal: '在侧栏显示',
-    addEdge: '添加连线'
+    addEdge: '添加连线',
+    showGroupChart: '打开本组关系图'
   },
   sideBar: {
     data: '资料',

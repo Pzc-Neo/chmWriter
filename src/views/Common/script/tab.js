@@ -39,7 +39,11 @@ export const handleRemoveTab = function (targetId) {
   })
 }
 
-// targetId is item's id
+/**
+ * Remove tab by id
+ * @param {*} targetId item's id
+ * @param {*} type can be `item` `group` `tab`
+ */
 export const removeTab = function (targetId, type = 'item') {
   targetId = targetId || this.currentTabId
   const tabs = this.tabList
@@ -51,10 +55,18 @@ export const removeTab = function (targetId, type = 'item') {
         const nextTab = tabs[index + 1] || tabs[index - 1]
         if (nextTab) {
           activeId = nextTab.id
-          if (type === 'item') {
-            this.changeToItem(activeId)
-          } else {
-            this.changeToGroup(activeId)
+          switch (type) {
+            case 'item':
+              this.changeToItem(activeId)
+              break
+            case 'group':
+              this.changeToGroup(activeId)
+              break
+            case 'tab':
+              this.switchTab(false, 'tab')
+              break
+            default:
+              break
           }
         }
       }
@@ -68,7 +80,7 @@ export const removeTab = function (targetId, type = 'item') {
   }
 }
 
-export const switchTab = function (isNext = true) {
+export const switchTab = function (isNext = true, type = 'item') {
   const index = this.tabList.findIndex(tab => tab.id === this.currentTabId)
   let nextTab
   if (isNext) {
@@ -77,8 +89,21 @@ export const switchTab = function (isNext = true) {
     nextTab = this.tabList[index - 1] || this.tabList[this.tabList.length - 1]
   }
   if (nextTab) {
-    const activeId = nextTab.id
-    this.changeToItem(activeId)
+    const activeId = nextTab?.id
+    console.log(index, type)
+    switch (type) {
+      case 'item':
+        this.changeToItem(activeId)
+        break
+      case 'group':
+        this.changeToGroup(activeId)
+        break
+      case 'tab':
+        // do nothing
+        break
+      default:
+        break
+    }
   }
 }
 

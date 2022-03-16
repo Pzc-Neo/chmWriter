@@ -1,10 +1,29 @@
 import { getItemFactory } from '@/db/module/itemFactory'
 import { scrollToView } from '@/util/dom'
 import { makeLastId } from './other'
+import { getAllChildGroups } from './group'
 
 export const getItems = function (groupId) {
   return this.$db.getItems(this.itemTableName, groupId)
 }
+
+/**
+ * Get group's item , include all child group's item.
+ * @param {String} groupId
+ * @returns
+ */
+export const getAllChildItems = function (groupId) {
+  let resultItemList = []
+  const groupIdList = getAllChildGroups.call(this, groupId)
+  console.log('groupIdList: ', groupIdList)
+  groupIdList.forEach(_gorupId => {
+    const tempItemList = this.getItems(_gorupId)
+    resultItemList = [...resultItemList, ...tempItemList]
+  })
+  console.log(resultItemList)
+  return resultItemList
+}
+
 export const getItemFromDb = function (itemId) {
   return this.$db.getItem(this.itemTableName, itemId)
 }
@@ -131,6 +150,6 @@ export const deleteItem = async function (targetItem) {
   if (result === 'confirm') {
     this.$db.deleteById(this.itemTableName, targetItem.id)
     this.removeTab(targetItem.id)
-    this.changeToGroup(this.currentGroup.id)
+    this.changeToGroup(this.currentGroup.id, true)
   }
 }

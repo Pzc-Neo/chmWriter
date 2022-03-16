@@ -21,6 +21,14 @@ export const groupBar = function () {
 export const group = function () {
   return [
     {
+      id: 'showGroupChart',
+      title: 'contextMenuBar.showGroupChart',
+      icon: 'el-icon-orange',
+      func: targetItem => {
+        this.showGroupChart(targetItem.id)
+      }
+    },
+    {
       id: 'newSilbling',
       title: 'contextMenuBar.newSilbling',
       icon: 'el-icon-folder-add',

@@ -140,7 +140,12 @@ import RelationChart from './components/RelationChart'
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
 import { convertToRelationData, convertToRelationLink } from './util/converter'
-import { newRelation, updateRelation } from './util/relation'
+import {
+  newRelation,
+  updateRelation,
+  getRelationDate,
+  getRelationLink
+} from './util/relation'
 
 import {
   init,
@@ -151,7 +156,8 @@ import {
   updateAttrGroup,
   newGroup,
   refreshGroupList,
-  deleteGroup
+  deleteGroup,
+  changeToGroup
 } from '@/views/Common/script/group'
 import {
   handleRemoveTab,
@@ -222,6 +228,7 @@ export default {
         description: false
       },
       relationData: [],
+      // Inclue all character's relation link
       relationLink: [],
       weightUnit: 'kg',
       heightUnit: 'cm',
@@ -233,44 +240,41 @@ export default {
     init() {
       this.weightUnit = this.$db.getConfig('weightUnit')
       this.heightUnit = this.$db.getConfig('heightUnit')
+
+      const relations = this.$db.getGroups(this.relationTableName, false)
+      this.relationLink = convertToRelationLink(relations)
+
       return init.call(this)
     },
     getGroups() {
       return getGroups.call(this)
     },
     changeToGroup(groupId) {
-      let group = this.getGroupFromDb(groupId)
-
-      if (group === undefined) {
-        group = this.getGroupFromDb('default')
-        if (group !== undefined) {
-          this.changeToGroup('default')
-        } else {
-          this.$alert(this.$t('info.notExist'))
-        }
-        return
-      }
-
-      this.itemList = this.getItems(groupId)
-      this.relationData = convertToRelationData(this.itemList)
-
-      const relations = this.$db.getGroups(this.relationTableName, false)
-      this.relationLink = convertToRelationLink(relations)
-
+      return changeToGroup.call(this, groupId)
+    },
+    /**
+     * Show current group's relation chart.
+     * @param {*} groupId
+     */
+    showGroupChart(groupId) {
+      const group = this.getGroupFromDb(groupId)
       const index = this.tabList.findIndex(_group => {
         return _group.id === group.id
       })
       if (index === -1) {
         this.tabList.push(group)
+      } else {
+        this.currentTabId = groupId
+        return
       }
 
-      this.currentGroup = group
+      this.relationData = getRelationDate.call(this, groupId)
+
       this.$db.setConfig(makeLastId(this.groupTableName), groupId)
       this.currentTabId = group.id
 
       this.$store.commit('HIDE_CONTEXTMENU')
     },
-
     getGroupFromDb(groupId) {
       return getGroupFromDb.call(this, groupId)
     },
@@ -292,7 +296,6 @@ export default {
     refreshGroupList() {
       return refreshGroupList.call(this)
     },
-
     getItems(groupId) {
       return getItems.call(this, groupId)
     },
@@ -337,15 +340,14 @@ export default {
     handleRemoveTab(targetId) {
       return handleRemoveTab.call(this, targetId)
     },
-    // targetId is item's id
     removeTab(targetId) {
-      return removeTab.call(this, targetId)
+      return removeTab.call(this, targetId, 'tab')
     },
     removeOtherTabs(tabId) {
       return removeOtherTabs.call(this, tabId)
     },
-    switchTab(isNext = true) {
-      return switchTab.call(this, isNext)
+    switchTab(isNext = true, type = 'tab') {
+      return switchTab.call(this, isNext, type)
     },
     handleTabClick(tab) {
       this.changeToGroup(tab.name)
@@ -353,22 +355,6 @@ export default {
     showTabContextMenu(event, targetItem) {
       return showTabContextMenu.call(this, event, targetItem)
     },
-
-    /*     saveContent(content, itemId) {
-      let item = {}
-      if (itemId === undefined) {
-        item = this.currentItem
-      } else {
-        item = this.getItemFromLocal(itemId)
-      }
-
-      if (content === undefined) {
-        content = item.newContent
-      }
-
-      this.updateAttrItem('content', content, item)
-      item.isChanged = false
-    }, */
     updateRelation(targetItem) {
       updateRelation.call(this, targetItem)
     },
@@ -382,8 +368,7 @@ export default {
       }
     },
     refreshRelationChart() {
-      const relations = this.$db.getGroups(this.relationTableName, false)
-      this.relationLink = convertToRelationLink(relations)
+      this.relationLink = getRelationLink.call(this)
     },
     renderAll() {
       const itemList = this.$db.getAllFromTable(this.itemTableName)
