@@ -2,7 +2,18 @@ module.exports = {
   pluginOptions: {
     electronBuilder: {
       externals: ['better-sqlite3'],
-      nodeIntegration: true
+      nodeIntegration: true,
+      builderOptions: {
+        extraResources: {
+          // 拷贝dll等静态文件到指定位置,否则打包之后回出现找不大dll的问题
+          from: './app_file/',
+          to: './app_file/'
+        }
+        // build: {
+        //   extraResources: ['./dev_tools/**']
+        // }
+        // options placed here will be merged with default configuration and passed to electron-builder
+      }
     }
   },
   css: {

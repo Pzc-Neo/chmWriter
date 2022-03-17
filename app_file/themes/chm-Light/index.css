@@ -1,0 +1,24 @@
+/* 
+主题：默认亮主题
+作者：潘志城_Neo
+*/
+
+:root {
+  --main_color: #a8b7c5;
+  --main_bg_color: #282c34;
+  --main_bg_color_2: #2c323ecc;
+  --main_bg_color_3: #21252dfa;
+  --main_bg_color_4: #252931;
+  --main_border_color: #222225;
+
+  --main_btn_color: #9fcbe8;
+  --main_btn_bg_color: #1859a0;
+  --main_btn_border_color: #007accb5;
+  --main_btn_color_hover: #ced8ef;
+  --main_btn_bg_color_hover: #3068ad;
+}
+
+/* #app {
+  color: var(--main_color);
+  background-color: var(--main_bg_color);
+} */

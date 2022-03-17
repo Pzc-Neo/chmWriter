@@ -43,7 +43,8 @@ export default {
     about: '关于',
     language: '语言',
     ch: '中文',
-    en: '英文'
+    en: '英文',
+    pereferences: '偏好设置'
   },
   contextMenuBar: {
     new: '新建',
@@ -146,5 +147,13 @@ export default {
     character_groups: '角色分组',
     plots: '情节',
     plot_groups: '情节分组'
+  },
+  pereferences: {
+    basic: '基础',
+    theme: '主题',
+    refresh: '刷新',
+    openFolder: '打开文件夹',
+    backup: '备份',
+    close: '关闭'
   }
 }

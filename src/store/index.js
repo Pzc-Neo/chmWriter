@@ -27,6 +27,7 @@ export default new Vuex.Store({
     isSimpleMode: true,
     /* groupBar和itemBar是不是个各占一栏，还是在同一栏显示 */
     isDoubleBar: false,
+    isShowPereferenceBox: false,
 
     commandBox: {
       isShow: false,

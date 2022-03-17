@@ -8,8 +8,9 @@
       <el-submenu index="file">
         <template slot="title">{{ $t('menuBar.file') }}</template>
         <el-menu-item index="new-file">新建</el-menu-item>
-        <el-menu-item index="2-2">选项2</el-menu-item>
-        <el-menu-item index="2-3">选项3</el-menu-item>
+        <el-menu-item index="pereferences">
+          {{ $t('menuBar.pereferences') }}
+        </el-menu-item>
       </el-submenu>
       <el-submenu index="3">
         <template slot="title">{{ $t('menuBar.edit') }}</template>
@@ -64,14 +65,17 @@ export default {
   methods: {
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
-      if (keyPath[0] === 'help') {
-        if (keyPath[1] === 'language') {
+      const [index0, index1] = keyPath
+      if (index0 === 'help') {
+        if (index1 === 'language') {
           this.changeLocale(key)
         }
-      } else if (keyPath[0] === 'file') {
-        if (keyPath[1] === 'new-file') {
+      } else if (index0 === 'file') {
+        if (index1 === 'new-file') {
           console.log('new file')
           // this.$db.createDb()
+        } else if (index1 === 'pereferences') {
+          this.$bus.$emit('pereferences-box:show')
         }
       }
     },

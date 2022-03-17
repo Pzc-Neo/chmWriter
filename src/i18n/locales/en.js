@@ -43,7 +43,8 @@ export default {
     about: 'About',
     language: 'Language',
     ch: 'Chiness',
-    en: 'English'
+    en: 'English',
+    pereferences: 'Pereferences'
   },
   contextMenuBar: {
     new: 'New',
@@ -151,5 +152,13 @@ export default {
     character_groups: 'Character_groups',
     plots: 'Plots',
     plot_groups: 'Plot_groups'
+  },
+  pereferences: {
+    basic: 'Basic',
+    theme: 'Theme',
+    refresh: 'Refresh',
+    openFolder: 'Open folder',
+    backup: 'Backup',
+    close: 'Close'
   }
 }

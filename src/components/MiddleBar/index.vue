@@ -5,6 +5,7 @@
     <el-drawer title="我是标题" :visible.sync="drawer" direction="ltr">
       <span>我来啦!</span>
     </el-drawer>
+    <PereferenceBox :isShow.sync="isShowPereferenceBox" />
     <SideBar />
     <div class="right">
       <ToolBar />
@@ -20,17 +21,25 @@ import SideBar from '@/components/MiddleBar/SideBar'
 import ContextMenuBar from '@/components/MiddleBar/ContextMenuBar'
 import ToolBar from '@/components/MiddleBar/ToolBar'
 import CommandBox from '@/components/CommandBox'
+import PereferenceBox from '@/components/PereferenceBox'
 export default {
   components: {
     SideBar,
     ContextMenuBar,
     ToolBar,
-    CommandBox
+    CommandBox,
+    PereferenceBox
   },
   data() {
     return {
+      isShowPereferenceBox: false,
       drawer: false
     }
+  },
+  mounted() {
+    this.$bus.$on('pereferences-box:show', () => {
+      this.isShowPereferenceBox = true
+    })
   }
 }
 </script>
