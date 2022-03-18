@@ -7,7 +7,7 @@
     </el-drawer>
     <PereferenceBox :isShow.sync="isShowPereferenceBox" />
     <SideBar />
-    <div class="right">
+    <div class="main">
       <ToolBar />
       <keep-alive>
         <router-view></router-view>
@@ -49,7 +49,7 @@ export default {
   display: flex;
   flex: 1;
   overflow: hidden;
-  .right {
+  .main {
     display: flex;
     flex: 1;
     flex-direction: column;

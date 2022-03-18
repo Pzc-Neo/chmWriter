@@ -35,14 +35,14 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .info_box {
   border: 1px solid $border-color;
   margin: 3px;
   border-radius: $border-radius;
   .header {
-    height: $dtb-height;
-    line-height: $dtb-line-height;
+    height: 23px;
+    line-height: 23px;
     text-align: center;
     user-select: none;
     cursor: pointer;
@@ -51,7 +51,7 @@ export default {
     }
   }
   .content {
-    padding: 2px 6px;
+    padding: 4px 6px;
     textarea {
       border: 1px solid $border-color;
     }

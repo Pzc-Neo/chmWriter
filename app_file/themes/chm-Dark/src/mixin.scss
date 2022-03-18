@@ -1,0 +1,23 @@
+@mixin base-btn-1 {
+  color: $color_2;
+  background: $bg_color_5;
+  border: $border_2;
+}
+
+@mixin base-btn-2 {
+  color: $color_3;
+  background: $bg_color_4;
+  border: $border_2;
+}
+@mixin base-input {
+  color: $color_1;
+  background-color: $bg_color_3;
+  border: $border_1;
+}
+
+@mixin base-popup-1 {
+  color: $color_1;
+  background-color: $bg_color_2;
+  border: $border_2;
+  box-shadow: $box_shadow_1;
+}

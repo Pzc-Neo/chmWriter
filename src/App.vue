@@ -1,5 +1,10 @@
 <template>
-  <div id="app" @click="hideStuffByClick" @keyup.esc="hideStuffByEsc">
+  <div
+    id="app"
+    class="app"
+    @click="hideStuffByClick"
+    @keyup.esc="hideStuffByEsc"
+  >
     <!-- <PopupBox>
       <template slot="title">快捷键设置</template> -->
     <!-- <PopupBox title="快捷键设置">
@@ -122,7 +127,7 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
-#app {
+.app {
   display: flex;
   flex-direction: column;
   height: 100vh;

@@ -193,7 +193,7 @@ export default {
   }
   /deep/ .el-button {
     width: 75%;
-    padding: 6px 2px;
+    padding: 5px 2px;
     margin: 2px auto;
   }
   .btn_group {

@@ -237,9 +237,10 @@ export default {
     display: flex;
     padding: 0px 5px;
     border: solid 1px #e6e6e6;
-    border-bottom: 0px;
     .title {
-      flex: 1;
+      display: flex;
+      flex: 2;
+      overflow: hidden;
       span {
         padding: 0px 5px;
       }
@@ -255,13 +256,8 @@ export default {
     }
   }
   .item_list {
-    // display: flex;
-    // flex-direction: row;
-    // flex-wrap: wrap;
-    // align-content: flex-start;
     height: 100%;
-    border-right: solid 1px #e6e6e6;
-    border-top: 1px solid #e6e6e6;
+    // border-right: solid 1px #e6e6e6;
     overflow: auto;
     flex: 1;
     .item {

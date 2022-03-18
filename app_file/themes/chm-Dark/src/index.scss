@@ -1,0 +1,146 @@
+@import 'global.scss';
+@import 'mixin.scss';
+@import 'element-ui.scss';
+@import 'codemirror.scss';
+
+#app {
+  color: $color_1;
+  background-color: $bg_color_1;
+
+  .top_bar {
+    color: $color_1;
+    background-color: $bg_color_1;
+    border-bottom: $border_1;
+    .el-menu--horizontal {
+      .el-submenu {
+        .el-submenu__title {
+          color: $color_1;
+        }
+        .el-submenu__title:hover {
+          background-color: $hover_bg_color_1;
+        }
+      }
+    }
+  }
+
+  .middle_bar {
+    .side_bar {
+      border-right: $border_1;
+      .el-menu {
+        color: $color_1;
+        background-color: transparent;
+        .el-menu-item {
+          i {
+            color: $color_1;
+          }
+        }
+        .el-menu-item:focus,
+        .el-menu-item:hover {
+          background-color: $bg_color_2;
+        }
+        .el-menu-item.is-active {
+          i {
+            color: $color_2;
+          }
+        }
+      }
+    }
+    .main {
+      .tool_bar {
+        border-bottom: $border_1;
+        background-color: $bg_color_2;
+        .el-button {
+          background-color: transparent;
+          // tool bar's icon
+          i {
+            color: $color_1;
+          }
+        }
+        .el-button:hover {
+          // tool bar's icon
+          i {
+            color: $color_2;
+          }
+        }
+      }
+      .panel {
+        .group_bar {
+          border-right: $border_1;
+          .el-tree {
+            color: $color_1;
+            background-color: $bg_color_2;
+            .el-tree-node__content:hover {
+              background-color: $bg_color_3;
+            }
+          }
+          // current node
+          .el-tree--highlight-current
+            .el-tree-node.is-current
+            > .el-tree-node__content {
+            background-color: $bg_color_3;
+          }
+        }
+        .item_bar {
+          border-right: $border_1;
+          .header {
+            border: $border_1;
+            .el-button.el-button--mini {
+              color: $color_1;
+              border: 0;
+              background-color: transparent;
+            }
+            .el-button.el-button--primary {
+              color: $color_2;
+            }
+            .el-button.is-plain:hover {
+              color: $color_1;
+              background-color: $bg_color_4;
+            }
+          }
+          .item_list {
+            .item.active {
+              background-color: $bg_color_2;
+            }
+            .item:hover {
+              background-color: $bg_color_2;
+            }
+            .simple_mode_item {
+              // border-bottom: 1px solid $border_1;
+              border-bottom: 0px;
+            }
+          }
+        }
+        .detail_bar {
+          border-left: $border_1;
+          .info_box {
+            border: $border_1;
+            color: $color_1;
+            background-color: $bg_color_2;
+            .el-tag {
+              @include base-btn-1;
+            }
+          }
+        }
+      }
+    }
+    .contextmenu_bar {
+      @include base-popup-1;
+      .el-menu {
+        background-color: transparent;
+        border: 0;
+        .el-menu-item {
+          color: inherit;
+        }
+        .el-menu-item i {
+          color: inherit;
+        }
+        .el-menu-item:hover {
+          background-color: $bg_color_4;
+        }
+      }
+    }
+  }
+  .bottom_bar {
+    background-color: $bg_color_4;
+  }
+}

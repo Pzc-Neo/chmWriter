@@ -96,6 +96,7 @@ export default {
     background-color: transparent;
   }
   /deep/ .el-menu--horizontal {
+    border-bottom: 0px;
     .el-menu-item,
     .el-submenu .el-submenu__title {
       height: 30px;

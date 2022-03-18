@@ -173,10 +173,10 @@ export default {
         }
       },
       styleEditorContent: {
-        letterSpacing: '-1px',
+        letterSpacing: '0.3px',
         fontSize: '15px',
         lineHeight: '24px',
-        textAlign: 'justify'
+        textAlign: 'left'
       }
     }
   },
@@ -268,7 +268,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  border-right: 1px solid #e6e6e6;
+  // border-right: 1px solid #e6e6e6;
   /deep/.vue-codemirror {
     height: 100%;
   }

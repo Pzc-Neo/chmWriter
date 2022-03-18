@@ -9,6 +9,7 @@
 ### Writing Panel
 
 ![Writing Panel](./screenshot/writing_panel.png)
+![Writing Panel dark](./screenshot/writing_panel_dark.png)
 
 ### Character Panel
 

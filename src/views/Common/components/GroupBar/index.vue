@@ -199,18 +199,5 @@ export default {
       }
     }
   }
-  // .default {
-  //   padding: 10px 23px 6px 23px;
-  //   cursor: pointer;
-  //   span {
-  //     margin-left: 3px;
-  //   }
-  // }
-  // .default:hover {
-  //   background-color: #f5f7fa;
-  // }
-  // .default.active {
-  //   background-color: #f0f7ff;
-  // }
 }
 </style>

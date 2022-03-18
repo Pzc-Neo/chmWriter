@@ -9,7 +9,8 @@
     "electron:build": "vue-cli-service electron:build",
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
-    "postuninstall": "electron-builder install-app-deps"
+    "postuninstall": "electron-builder install-app-deps",
+    "theme:watch": "npx node-sass -w app_file\\themes\\chm-Dark\\src -o app_file\\themes\\chm-Dark"
   },
   "main": "background.js",
   "dependencies": {

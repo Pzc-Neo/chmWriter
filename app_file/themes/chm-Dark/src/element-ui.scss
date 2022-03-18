@@ -1,0 +1,124 @@
+/* element-ui -start */
+#app {
+  .el-button--mini.el-button--primary.is-plain {
+    @include base-btn-2;
+  }
+  .el-button--mini.is-plain {
+    @include base-btn-1;
+  }
+  .el-input {
+    .el-input__inner {
+      @include base-input;
+    }
+  }
+  .el-textarea {
+    .el-textarea__inner {
+      @include base-input;
+    }
+  }
+
+  .el-tabs {
+    .el-tabs__item {
+      color: $color_1;
+      // @include base-btn-1;
+      border-radius: 5px 5px 0px 0px;
+      // height: 28px;
+      // line-height: 28px;
+      // border: $border_2;
+      border-left: $border_2;
+      background-color: transparent;
+    }
+    .el-tabs__item.is-active {
+      // @include base-btn-2;
+      color: $color_2;
+      // border: 0;
+      border-bottom: 1px solid $bg_color_1;
+      // border-bottom-color: red;
+    }
+    .el-tabs__header {
+      border-bottom: $border_2;
+      .el-tabs__nav {
+        border: $border_2;
+        border-left: 0;
+        border-bottom: none;
+      }
+    }
+  }
+  .el-dialog {
+    @include base-popup-1;
+    .el-form {
+      .el-form-item {
+        .el-form-item__label {
+          color: $color_1;
+        }
+        .el-form-item__content {
+          .el-button--primary {
+            @include base-btn-2;
+          }
+          .el-button--primary:hover {
+            @include base-btn-1;
+          }
+        }
+      }
+    }
+  }
+  .el-progress-bar__outer {
+    background-color: $bg_color_3;
+  }
+  .el-slider__runway {
+    background-color: $bg_color_3;
+  }
+  /* element-ui -end */
+}
+
+div.el-menu--horizontal {
+  .el-menu.el-menu--popup {
+    @include base-popup-1;
+    .el-menu-item,
+    .el-submenu__title {
+      color: $color_1;
+      background-color: $bg_color_2;
+    }
+    .el-menu-item:hover,
+    .el-submenu__title:hover {
+      background-color: $bg_color_4;
+    }
+    .el-submenu.is-active {
+      .el-submenu__title {
+        color: $color_2;
+      }
+    }
+  }
+}
+div.el-select-dropdown {
+  @include base-popup-1;
+  .el-select-dropdown__item {
+    color: $color_1;
+  }
+  .el-select-dropdown__item.selected {
+    color: $color_2;
+  }
+  .el-select-dropdown__item.hover {
+    background-color: $bg_color_4;
+  }
+}
+
+div.el-message-box {
+  @include base-popup-1;
+  .el-message-box__title {
+    color: $color_1;
+  }
+  .el-message-box__content {
+    color: $color_1;
+    .el-message-box__input {
+      .el-input__inner {
+        @include base-input;
+      }
+    }
+    .el-message-box__btns {
+      .el-button {
+        @include base-btn-1;
+      }
+    }
+  }
+}
