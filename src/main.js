@@ -41,9 +41,11 @@ new Vue({
       Vue.prototype.$appFilePath = path.join(__dirname, '../app_file')
     }
   },
+  created() {
+    loadTheme()
+  },
   mounted() {
     const locale = this.$db.getConfig('locale')
     this.$i18n.locale = locale
-    loadTheme()
   }
 }).$mount('#app')
