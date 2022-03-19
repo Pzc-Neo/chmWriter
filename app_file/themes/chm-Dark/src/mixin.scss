@@ -9,6 +9,7 @@
   background: $bg_color_4;
   border: $border_2;
 }
+
 @mixin base-input {
   color: $color_1;
   background-color: $bg_color_3;
@@ -20,4 +21,75 @@
   background-color: $bg_color_2;
   border: $border_2;
   box-shadow: $box_shadow_1;
+}
+
+/* el: element-UI */
+@mixin el_default_plain {
+  color: #606266;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+}
+
+@mixin el_primary_plain {
+  color: #409eff;
+  background: #ecf5ff;
+  border-color: #b3d8ff;
+}
+
+@mixin el_success_plain {
+  color: #67c23a;
+  background: #f0f9eb;
+  border-color: #c2e7b0;
+}
+
+@mixin el_info_plain {
+  color: #909399;
+  background: #f4f4f5;
+  border-color: #d3d4d6;
+}
+
+@mixin el_warning_plain {
+  color: #e6a23c;
+  background: #fdf6ec;
+  border-color: #f5dab1;
+}
+@mixin el_danger_plain {
+  color: #f56c6c;
+  background: #fef0f0;
+  border-color: #fbc4c4;
+}
+
+@mixin el_default {
+  color: #409eff;
+  background: #fff;
+  border-color: #409eff;
+}
+
+@mixin el_primary {
+  color: #adcef1;
+  background-color: #10569c;
+  border-color: #256cb5;
+}
+
+@mixin el_success {
+  color: #bbf9da;
+  background-color: #116f4c;
+  border-color: #1c8a52;
+}
+
+@mixin el_info {
+  color: #fff;
+  background-color: #909399;
+  border-color: #909399;
+}
+
+@mixin el_warning {
+  color: #f9e3c2;
+  background-color: #966c2d;
+  border-color: #b98a45;
+}
+@mixin el_danger {
+  color: #ffd0d0;
+  background-color: #903737;
+  border-color: #af4242;
 }

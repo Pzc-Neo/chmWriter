@@ -41,8 +41,8 @@ export default {
   margin: 3px;
   border-radius: $border-radius;
   .header {
-    height: 23px;
-    line-height: 23px;
+    height: 25px;
+    line-height: 25px;
     text-align: center;
     user-select: none;
     cursor: pointer;
@@ -52,6 +52,7 @@ export default {
   }
   .content {
     padding: 4px 6px;
+    padding-top: 0px;
     textarea {
       border: 1px solid $border-color;
     }

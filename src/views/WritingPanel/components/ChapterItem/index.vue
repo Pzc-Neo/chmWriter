@@ -2,7 +2,7 @@
   <div v-if="$store.state.isSimpleMode" class="simple_mode_item">
     {{ item.title }}
   </div>
-  <div v-else class="item">
+  <div v-else class="detail_mode_item">
     <div class="col top">
       <span class="left">
         {{ status[item.status] }}
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      tagTypes: ['', 'success', 'danger', 'warning']
+      tagTypes: ['primary', 'success', 'danger', 'warning']
     }
   },
   computed: {
@@ -64,7 +64,7 @@ export default {
   padding: 7px 8px;
   border-bottom: 1px solid #f3f3f3;
 }
-.item {
+.detail_mode_item {
   display: flex;
   flex-direction: column;
   padding: 5px 6px;

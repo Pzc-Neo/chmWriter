@@ -11,6 +11,8 @@ export default function () {
     // title: {
     //   text: 'ECharts 关系图'
     // },
+
+    darkMode: true,
     // 提示框的配置
     tooltip: {
       formatter: function (x) {

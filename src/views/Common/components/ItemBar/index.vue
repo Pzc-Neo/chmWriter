@@ -231,12 +231,15 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border-right: solid 1px #e6e6e6;
   .header {
     height: 2em;
     line-height: 2em;
     display: flex;
     padding: 0px 5px;
     border: solid 1px #e6e6e6;
+    border-left: 0;
+    border-right: 0;
     .title {
       display: flex;
       flex: 2;

@@ -93,15 +93,11 @@ export default {
       }
     }
     .el-button.round_btn {
-      // position: absolute;
-      // top: -3px;
-      // right: 0px;
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       display: flex;
       align-items: center;
       justify-content: center;
-      // margin-left: $dtb-margin;
       margin-left: 6px;
     }
   }

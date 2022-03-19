@@ -174,17 +174,6 @@ export default {
       font-weight: bold;
       color: #409eff;
     }
-    .round_btn {
-      // position: absolute;
-      // top: -3px;
-      // right: 0px;
-      width: 24px;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: $dtb-margin;
-    }
   }
 }
 </style>

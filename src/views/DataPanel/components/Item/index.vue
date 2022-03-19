@@ -13,7 +13,12 @@
     </span>
     <span class="right">
       <!-- <span>{{ $formatTime(item.updated) }}</span> -->
-      <el-tag :title="types[item.source]">{{ types[item.source] }}</el-tag>
+      <el-tag
+        :class="'el-tag--' + tagTypes[item.source]"
+        :title="types[item.source]"
+      >
+        {{ types[item.source] }}
+      </el-tag>
     </span>
   </div>
 </template>
@@ -31,7 +36,7 @@ export default {
   },
   data() {
     return {
-      tagTypes: ['', 'success', 'danger', 'warning']
+      tagTypes: ['primary', 'success', 'warning', 'danger']
     }
   },
   computed: {
@@ -52,15 +57,15 @@ export default {
   padding: 7px 8px;
   border-bottom: 1px solid #f3f3f3;
   width: 184px;
-  height: 2rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .item {
   display: flex;
-  padding: 5px 6px;
-  border-bottom: 1px solid #e6e6e6;
+  align-items: center;
+  padding: 0px 6px;
+  margin: 3px 0px;
   overflow: hidden;
   .left {
     width: 150px;
@@ -91,7 +96,7 @@ export default {
     .el-tag {
       width: 59px;
       height: 100%;
-      /* padding: 2px; */
+      padding: 2px;
       margin: 0px;
       text-align: center;
       line-height: 100%;
