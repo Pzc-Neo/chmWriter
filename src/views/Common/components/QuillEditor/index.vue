@@ -15,6 +15,8 @@
       <button class="ql-bold"></button>
       <button class="ql-italic"></button>
       <button class="ql-underline"></button>
+      <button class="ql-emoji"></button>
+      <!-- <button class="ql-table"></button> -->
 
       <button class="ql-list" value="ordered"></button>
       <button class="ql-list" value="bullet"></button>
@@ -89,10 +91,23 @@ import Quill from 'quill'
 import 'quill/dist/quill.snow.css'
 
 import { Counter } from './lib/quill-text-counter/TextCounter'
+import { FileDrop } from './lib/quill-file-drop/src/FileDrop'
 import { QuillEditorMenuList } from './menuList'
+import ImageResize from 'quill-image-resize'
+import { ImageDrop } from 'quill-image-drop-module'
+import * as Emoji from 'quill-emoji'
+import MagicUrl from 'quill-magic-url'
 
-Quill.register('modules/counter', Counter)
+import 'quill-emoji/dist/quill-emoji.css'
 
+Quill.register({
+  'modules/counter': Counter,
+  'modules/fileDrop': FileDrop,
+  'modules/imageResize': ImageResize,
+  'modules/imageDrop': ImageDrop,
+  'modules/emoji': Emoji,
+  'modules/magicUrl': MagicUrl
+})
 export default {
   props: {
     content: {
@@ -145,13 +160,19 @@ export default {
         modules: {
           // syntax: true,
           toolbar: this.$refs.quill_editor_toolbar,
-          // imageResize: {},
-          // imageDrop: true,
+          imageResize: {},
+          imageDrop: true,
           // FileDrop: true,
+          'emoji-toolbar': true,
+          // 'emoji-textarea': true, // show emoji icon on content area
+          'emoji-shortname': true, // show popup when input `:` and one or more character. example: `:smile:`
+          magicUrl: true, // auto add link
+          // table: false, // disable table module
           counter: {
             container: this.$refs.counter,
-            unit: 'chiness'
-          }
+            unit: 'Chiness'
+          },
+          fileDrop: true
         },
         placeholder: '输入内容...',
         readOnly: false,
@@ -174,12 +195,13 @@ export default {
 
       const quill = new Quill(target, options)
       quill.on('text-change', (delta, oldDelta, source) => {
-        if (source === 'user') {
-          this.isChange = true
-          // } else if (source === 'api') {
-          //   // this.$emit('updata:content', this.getContents())
-          //   console.log('api')
-        }
+        this.isChange = true
+        // if (source === 'user') {
+        //   this.isChange = true
+        //   // } else if (source === 'api') {
+        //   //   // this.$emit('updata:content', this.getContents())
+        //   //   console.log('api')
+        // }
       })
 
       quill.on('selection-change', (range, oldRange, source) => {
