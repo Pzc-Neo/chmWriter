@@ -82,6 +82,10 @@
     color: #ffd0d0;
     background-color: #903737;
     border-color: #af4242; }
+  #app .el-empty .el-empty__image path,
+  #app .el-empty .el-empty__image polygon,
+  #app .el-empty .el-empty__image rect {
+    fill: #a8b7c5; }
 
 div.el-menu--horizontal .el-menu.el-menu--popup {
   color: #a8b7c5;
@@ -377,6 +381,29 @@ div.el-message-box {
     color: #052496 !important;
     text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px, #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important; }
 
+div.ql-snow .ql-stroke {
+  stroke: #a8b7c5; }
+
+div.ql-snow .ql-fill,
+div.ql-snow .ql-stroke.ql-fill {
+  fill: #a8b7c5; }
+
+div.ql-snow.ql-toolbar button,
+div.ql-snow .ql-toolbar button {
+  color: #a8b7c5; }
+
+div.ql-snow .ql-picker {
+  color: #a8b7c5; }
+
+div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  background-color: #2b313c; }
+
+div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  border-color: #222225; }
+
+div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  border-color: #222225; }
+
 #app {
   color: #a8b7c5;
   background-color: #282c34;
@@ -446,7 +473,7 @@ div.el-message-box {
     #app .middle_bar .main .panel .item_bar .item_list .item:hover {
       background-color: #2b313c; }
     #app .middle_bar .main .panel .item_bar .item_list .simple_mode_item {
-      border-bottom: 1px solid #222225; }
+      border-bottom: 0px; }
     #app .middle_bar .main .panel .item_bar .item_list .detail_mode_item {
       color: #a8b7c5;
       border-bottom: 1px solid #222225; }
@@ -466,6 +493,16 @@ div.el-message-box {
         color: #409eff;
         background: #363f637d;
         border: 1px solid #4a9df81f; }
+      #app .middle_bar .main .panel .detail_bar .info_box .quill_editor_container .quill_editor_toolbar {
+        color: #a8b7c5;
+        border: 1px solid #222225; }
+      #app .middle_bar .main .panel .detail_bar .info_box .quill_editor_container .quill_editor.ql-container {
+        border-color: #222225;
+        background-color: #282c34; }
+        #app .middle_bar .main .panel .detail_bar .info_box .quill_editor_container .quill_editor.ql-container .ql-editor.ql-blank::before {
+          color: #495563; }
+      #app .middle_bar .main .panel .detail_bar .info_box .quill_editor_container .bottom {
+        border: 1px solid #222225; }
   #app .middle_bar .contextmenu_bar {
     color: #a8b7c5;
     background-color: #2b313c;

@@ -98,6 +98,15 @@
   .el-tag--light.el-tag--danger {
     @include el_danger;
   }
+  .el-empty {
+    .el-empty__image {
+      path,
+      polygon,
+      rect {
+        fill: $color_1;
+      }
+    }
+  }
   /* element-ui -end */
 }
 

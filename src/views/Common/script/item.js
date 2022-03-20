@@ -108,10 +108,14 @@ export const updateAttrItem = function (
     }
 
     if (isShowMessage) {
+      let message = this.panelName + '.' + column
+      if (column === 'note') {
+        message = 'detailBar.note'
+      }
       this.$message(
-        `${this.$t('action.update')} ${this.$t(
-          this.panelName + '.' + column
-        )} ${this.$t('result.success')} (${item.title})`
+        `${this.$t('action.update')} ${this.$t(message)} ${this.$t(
+          'result.success'
+        )} (${item.title})`
       )
     }
   } catch (err) {

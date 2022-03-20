@@ -93,7 +93,9 @@
         :isEmpty="!currentItem.note"
         :isCollapse.sync="infoBoxCollapse.note"
       >
-        <TextareaBox
+        <QuillEditor
+          slot-scope="{ isFixedMode }"
+          :isFixedMode="isFixedMode"
           :content.sync="currentItem.note"
           @change="
             newContent => {
@@ -112,8 +114,8 @@ import ItemBar from '@/views/Common/components/ItemBar'
 import ContentBar from '@/views/Common/components/ContentBar'
 import DetailBar from '@/views/Common/components/DetailBar'
 import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
-import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
 import CmEditor from '@/views/Common/components/CmEditor'
+import QuillEditor from '@/views/Common/components/QuillEditor'
 
 import AttrBox from './components/AttrBox'
 import Item from './components/Item'
@@ -167,7 +169,7 @@ export default {
     CmEditor,
     Item,
     AttrBox,
-    TextareaBox
+    QuillEditor
   },
   data() {
     return {

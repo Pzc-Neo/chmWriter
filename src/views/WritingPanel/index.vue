@@ -97,7 +97,9 @@
         :isEmpty="!currentItem.note"
         :isCollapse.sync="infoBoxCollapse.note"
       >
-        <TextareaBox
+        <QuillEditor
+          slot-scope="{ isFixedMode }"
+          :isFixedMode="isFixedMode"
           :content.sync="currentItem.note"
           @change="
             newContent => {
@@ -111,7 +113,9 @@
         :isEmpty="!currentItem.foreshadowing"
         :isCollapse.sync="infoBoxCollapse.foreshadowing"
       >
-        <TextareaBox
+        <QuillEditor
+          slot-scope="{ isFixedMode }"
+          :isFixedMode="isFixedMode"
           :content.sync="currentItem.foreshadowing"
           @change="
             newContent => {
@@ -132,8 +136,9 @@ import ItemBar from '@/views/Common/components/ItemBar'
 import ContentBar from '@/views/Common/components/ContentBar'
 import DetailBar from '@/views/Common/components/DetailBar'
 import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
-import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
+// import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
 import CmEditor from '@/views/Common/components/CmEditor'
+import QuillEditor from '@/views/Common/components/QuillEditor'
 
 import AttrBox from './components/AttrBox'
 import ChapterItem from './components/ChapterItem'
@@ -187,7 +192,8 @@ export default {
     CmEditor,
     ChapterItem,
     AttrBox,
-    TextareaBox
+    // TextareaBox,
+    QuillEditor
   },
   data() {
     return {

@@ -2,6 +2,7 @@
 @import 'mixin.scss';
 @import 'element-ui.scss';
 @import 'codemirror.scss';
+@import 'quill.scss';
 
 #app {
   color: $color_1;
@@ -109,8 +110,8 @@
               background-color: $bg_color_2;
             }
             .simple_mode_item {
-              border-bottom: $border_1;
-              // border-bottom: 0px;
+              // border-bottom: $border_1;
+              border-bottom: 0px;
             }
             .detail_mode_item {
               color: $color_1;
@@ -156,6 +157,22 @@
             background-color: $bg_color_2;
             .el-tag {
               @include base-btn-1;
+            }
+            .quill_editor_container {
+              .quill_editor_toolbar {
+                color: $color_1;
+                border: $border_1;
+              }
+              .quill_editor.ql-container {
+                border-color: $border_color_1;
+                background-color: $bg_color_1;
+                .ql-editor.ql-blank::before {
+                  color: $color_4;
+                }
+              }
+              .bottom {
+                border: $border_1;
+              }
             }
           }
         }

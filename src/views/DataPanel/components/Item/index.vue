@@ -55,7 +55,7 @@ export default {
 <style lang="scss" scoped>
 .simple_mode_item {
   padding: 7px 8px;
-  border-bottom: 1px solid #f3f3f3;
+  // border-bottom: 1px solid #f3f3f3;
   width: 184px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -65,14 +65,14 @@ export default {
   display: flex;
   align-items: center;
   padding: 0px 6px;
-  margin: 3px 0px;
+  margin: 4px 0px;
   overflow: hidden;
   .left {
     width: 150px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-weight: bold;
+    // font-weight: bold;
     .el-tag {
       height: 20px;
       line-height: 18px;

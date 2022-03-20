@@ -27,7 +27,8 @@ export default {
 
 <style lang="scss">
 .detail_bar {
-  width: 200px;
+  width: 205px;
+  overflow: auto;
   border-left: solid 1px #e6e6e6;
   .one_row {
     display: flex;

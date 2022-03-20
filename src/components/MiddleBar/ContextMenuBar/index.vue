@@ -64,7 +64,7 @@ export default {
   display: inline-block;
   position: fixed;
   border-radius: 5px;
-  z-index: 10;
+  z-index: 100;
   /deep/ .el-menu {
     border: solid 1px #e6e6e6;
     .el-menu-item,

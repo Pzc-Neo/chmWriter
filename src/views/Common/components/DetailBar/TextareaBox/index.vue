@@ -12,6 +12,7 @@
     :value="content"
     @input="handleInput"
     @change="handleChange"
+    :style="{ height: editorHeight }"
   ></el-input>
 </template>
 
@@ -25,6 +26,15 @@ export default {
     height: {
       type: String,
       default: '150px'
+    },
+    isFixedMode: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    editorHeight() {
+      return this.isFixedMode ? '561px' : '130px'
     }
   },
   methods: {
@@ -38,5 +48,4 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

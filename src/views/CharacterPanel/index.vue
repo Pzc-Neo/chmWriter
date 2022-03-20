@@ -97,7 +97,9 @@
         :isEmpty="!currentItem.description"
         :isCollapse.sync="infoBoxCollapse.description"
       >
-        <TextareaBox
+        <QuillEditor
+          slot-scope="{ isFixedMode }"
+          :isFixedMode="isFixedMode"
           :content.sync="currentItem.description"
           @change="
             newContent => {
@@ -112,6 +114,16 @@
         :isCollapse.sync="infoBoxCollapse.note"
       >
         <TextareaBox
+          :content.sync="currentItem.note"
+          @change="
+            newContent => {
+              updateAttrItem('note', newContent, currentItem)
+            }
+          "
+        />
+        <QuillEditor
+          slot-scope="{ isFixedMode }"
+          :isFixedMode="isFixedMode"
           :content.sync="currentItem.note"
           @change="
             newContent => {
@@ -136,6 +148,8 @@ import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
 import AttrBox from './components/AttrBox'
 import CharacterItem from './components/CharacterItem'
 import RelationChart from './components/RelationChart'
+
+import QuillEditor from '@/views/Common/components/QuillEditor'
 
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
@@ -192,7 +206,8 @@ export default {
     CharacterItem,
     AttrBox,
     TextareaBox,
-    RelationChart
+    RelationChart,
+    QuillEditor
   },
   data() {
     return {
@@ -315,6 +330,7 @@ export default {
       return updateItemSorts.call(this, diffData)
     },
     updateAttrItem(column, value, item, isShowMessage = true) {
+      console.log(column, value, item)
       return updateAttrItem.call(this, column, value, item, isShowMessage)
     },
     updateConfig(property, value) {

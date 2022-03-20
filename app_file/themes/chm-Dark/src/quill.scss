@@ -1,0 +1,29 @@
+div.ql-snow .ql-stroke {
+  stroke: $color_1;
+}
+
+div.ql-snow .ql-fill,
+div.ql-snow .ql-stroke.ql-fill {
+  fill: $color_1;
+}
+
+div.ql-snow.ql-toolbar button,
+div.ql-snow .ql-toolbar button {
+  color: $color_1;
+}
+
+div.ql-snow .ql-picker {
+  color: $color_1;
+}
+
+div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  background-color: $bg_color_2;
+}
+
+div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  border-color: $border_color_1;
+}
+
+div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  border-color: $border_color_1;
+}
