@@ -12,6 +12,7 @@
       :options="cmOptions"
       @ready="onCmReady"
       @focus="onCmFocus"
+      @changes="onCmChange"
       @input="
         newContent => {
           onInput(newContent, item)
@@ -22,6 +23,7 @@
       @contextmenu.native="showContextmenu"
     />
     <PreviewBox
+      ref="previewBox"
       v-if="isShowPreviewBox"
       class="preview_box"
       :style="stylePreviewBox"
@@ -34,6 +36,8 @@
 
 <script>
 import { codemirror } from 'vue-codemirror'
+import './util/cmCommand'
+
 // import base style
 import 'codemirror/lib/codemirror.css'
 // import language js
@@ -203,6 +207,10 @@ export default {
     wordCounter: debounce(countWords, 1000, function (words) {
       this.$emit('countWord', words)
     }),
+    onCmChange(cm, changes) {
+      console.log(changes)
+      this.updateByTypewriterMode(cm, changes)
+    },
     onInput(newContent, item) {
       if (this.isCountWord) {
         this.wordCounter(newContent, item.language)
@@ -256,6 +264,21 @@ export default {
       } else {
         this.styleEditorContainer.flexDirection = 'row'
       }
+    },
+    // 按照打字机模式更新视图
+    updateByTypewriterMode: function (cm, changes) {
+      if (cm.getSelection().length !== 0) {
+        return
+      }
+      const scrollOrigins = ['+input', '+delete', '*compose', 'paste']
+      for (let i = 0, len = changes.length; i < len; i++) {
+        const each = changes[i]
+        const origin = each.origin
+        if (scrollOrigins.includes(origin)) {
+          cm.execCommand('editorScrollSelectionToCenter')
+          return
+        }
+      }
     }
   },
   mounted() {
@@ -307,6 +330,7 @@ export default {
 .cm_editor_container {
   display: flex;
   overflow: hidden;
+  width: 100%;
   .cm_editor {
     flex: 1;
     // display: flex;
@@ -345,6 +369,10 @@ export default {
 
       span.cm-header-6 {
         font-size: 1.3em;
+      }
+      /* 打字机模式，底下留白50% */
+      .CodeMirror-lines {
+        padding-bottom: 50%;
       }
     }
   }

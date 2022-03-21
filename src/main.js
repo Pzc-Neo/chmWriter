@@ -26,7 +26,7 @@ Vue.prototype.$ELEMENT = {
 }
 
 Vue.config.productionTip = false
-new Vue({
+window.app = new Vue({
   router,
   store,
   i18n,
