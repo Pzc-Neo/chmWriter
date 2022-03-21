@@ -23,7 +23,7 @@ export default {
     },
     previewType: {
       type: String,
-      default: 'markdown'
+      default: 'pureText'
     }
   },
   data() {
@@ -35,7 +35,7 @@ export default {
   watch: {
     content(newContent, oldContent) {
       if (newContent !== oldContent) {
-        this.previewContent = marked(newContent)
+        this.renderContent()
       }
     },
     previewType(newType, oldType) {

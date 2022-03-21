@@ -108,7 +108,7 @@ export default {
     return {
       isChanged: false,
       isShowPreviewBox: false,
-      previewType: 'markdown',
+      previewType: 'pureText',
       styleEditorContainer: {
         flexDirection: 'row'
       },
@@ -243,7 +243,7 @@ export default {
       // 设置选区
       editor.setSelection(anchor, head)
     },
-    showPreviewBox(previewType = 'markdown') {
+    showPreviewBox(previewType = 'pureText') {
       this.isShowPreviewBox = true
       this.previewType = previewType
     },
