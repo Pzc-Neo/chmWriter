@@ -134,7 +134,12 @@ export default {
     cut: '剪切',
     copy: '复制',
     paste: '粘贴',
-    selectAll: '全选'
+    selectAll: '全选',
+    showPreviewBox: '显示预览框',
+    previewMarkdown: '预览markdown',
+    previewPureText: '预览纯文本',
+    hidePreviewBox: '隐藏预览框',
+    toggleEditorLayout: '切换编辑器布局'
   },
   tables: {
     datas: '资料',

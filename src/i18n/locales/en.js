@@ -139,7 +139,11 @@ export default {
     cut: 'Cut',
     copy: 'Copy',
     paste: 'Paste',
-    selectAll: 'Select All'
+    selectAll: 'Select All',
+    previewMarkdown: 'Preview markdown',
+    previewPureText: 'Preview pure text',
+    hidePreviewBox: 'Hide preview box',
+    toggleEditorLayout: 'Toggle Editor Layout'
   },
   tables: {
     datas: 'Datas',

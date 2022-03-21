@@ -2,6 +2,30 @@ import { clipboard } from 'electron'
 export const cmEditorMenuList = function () {
   return [
     {
+      id: 'showPreviewBox_markdown',
+      title: 'editor.previewMarkdown',
+      icon: 'fa fa-file-text-o',
+      func: () => {
+        this.showPreviewBox('markdown')
+      }
+    },
+    {
+      id: 'showPreviewBox_pureText',
+      title: 'editor.previewPureText',
+      icon: 'fa fa-file-powerpoint-o',
+      func: () => {
+        this.showPreviewBox('pureText')
+      }
+    },
+    {
+      id: 'toggleEditorLayout',
+      title: 'editor.toggleEditorLayout',
+      icon: 'fa fa-columns',
+      func: () => {
+        this.toggleEditorLayout()
+      }
+    },
+    {
       id: 'cut',
       title: 'editor.cut',
       icon: 'fa fa-cut',

@@ -1,0 +1,47 @@
+[
+  {
+    "title": "行内",
+    "id": "inline",
+    "example": "`行内`",
+    "pattern": "`(.+?)`",
+    "result": "$1",
+    "modifiers": "g",
+    "is_use": true
+  },
+  {
+    "title": "加粗",
+    "id": "bold",
+    "example": "**加粗**",
+    "pattern": "\\*\\*(.+?)\\*\\*",
+    "result": "$1",
+    "modifiers": "g",
+    "is_use": true
+  },
+  {
+    "title": "斜体",
+    "id": "italic",
+    "example": "*斜体*",
+    "pattern": "\\*(.+?)\\*",
+    "result": "$1",
+    "modifiers": "g",
+    "is_use": true
+  },
+  {
+    "title": "多换行",
+    "id": "muti_br",
+    "example": "\n\n\n",
+    "pattern": "(\\n[ ]*?\\n[ ]*?)\\n+[ ]*?",
+    "result": "$1",
+    "modifiers": "gm",
+    "is_use": true
+  },
+  {
+    "title": "标题的#",
+    "id": "title#",
+    "example": "#",
+    "pattern": "^#+ (.*?)$",
+    "result": "$1",
+    "modifiers": "gm",
+    "is_use": true
+  }
+]

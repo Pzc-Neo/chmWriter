@@ -1,25 +1,35 @@
 <template>
-  <!-- Two-way Data-Binding -->
-  <!-- <codemirror v-model="content" :options="cmOptions" /> -->
+  <div class="cm_editor_container" :style="styleEditorContainer">
+    <!-- Two-way Data-Binding -->
+    <!-- <codemirror v-model="content" :options="cmOptions" /> -->
 
-  <!-- Or manually control the data synchronization -->
-  <codemirror
-    class="cm_editor"
-    ref="cmEditor"
-    :style="styleEditorContent"
-    :value="item.content"
-    :options="cmOptions"
-    @ready="onCmReady"
-    @focus="onCmFocus"
-    @input="
-      newContent => {
-        onCmCodeChange(newContent, item)
-      }
-    "
-    @beforeSelectionChange="onCmbeforeSelectionChange"
-    @keyHandled="onKeyHandled"
-    @contextmenu.native="showContextmenu"
-  />
+    <!-- Or manually control the data synchronization -->
+    <codemirror
+      class="cm_editor"
+      ref="cmEditor"
+      :style="styleEditorContent"
+      :value="item.content"
+      :options="cmOptions"
+      @ready="onCmReady"
+      @focus="onCmFocus"
+      @input="
+        newContent => {
+          onInput(newContent, item)
+        }
+      "
+      @beforeSelectionChange="onCmbeforeSelectionChange"
+      @keyHandled="onKeyHandled"
+      @contextmenu.native="showContextmenu"
+    />
+    <PreviewBox
+      v-if="isShowPreviewBox"
+      class="preview_box"
+      :style="stylePreviewBox"
+      :previewType.sync="previewType"
+      :content="item.content"
+      @hide="hidePreviewBox"
+    />
+  </div>
 </template>
 
 <script>
@@ -76,6 +86,7 @@ import 'codemirror/addon/display/autorefresh'
 import { countWords } from '@/util/text'
 import { debounce } from '@/util/base'
 import { cmEditorMenuList } from './menuList'
+import PreviewBox from './PreviewBox'
 
 export default {
   name: 'CmEditor',
@@ -90,11 +101,17 @@ export default {
     }
   },
   components: {
-    codemirror
+    codemirror,
+    PreviewBox
   },
   data() {
     return {
       isChanged: false,
+      isShowPreviewBox: false,
+      previewType: 'markdown',
+      styleEditorContainer: {
+        flexDirection: 'row'
+      },
       menuList: cmEditorMenuList.call(this),
       cmOptions: {
         tabSize: 4,
@@ -186,7 +203,7 @@ export default {
     wordCounter: debounce(countWords, 1000, function (words) {
       this.$emit('countWord', words)
     }),
-    onCmCodeChange(newContent, item) {
+    onInput(newContent, item) {
       if (this.isCountWord) {
         this.wordCounter(newContent, item.language)
       }
@@ -225,12 +242,24 @@ export default {
       }
       // 设置选区
       editor.setSelection(anchor, head)
+    },
+    showPreviewBox(previewType = 'markdown') {
+      this.isShowPreviewBox = true
+      this.previewType = previewType
+    },
+    hidePreviewBox() {
+      this.isShowPreviewBox = !this.isShowPreviewBox
+    },
+    toggleEditorLayout() {
+      if (this.styleEditorContainer.flexDirection === 'row') {
+        this.styleEditorContainer.flexDirection = 'column'
+      } else {
+        this.styleEditorContainer.flexDirection = 'row'
+      }
     }
   },
   mounted() {
     this.wordCounter(this.item.content, this.item.language)
-    console.log(this.menuList, this.item, this.test)
-
     // vim的输入模式改变的时候，切换输入法(这个方法特卡, 而且时不时失灵)
     /*
     CodeMirror.on(this.codemirror, 'vim-mode-change', function ({ mode }) {
@@ -258,22 +287,70 @@ export default {
   computed: {
     codemirror() {
       return this.$refs.cmEditor.codemirror
+    },
+    stylePreviewBox() {
+      if (this.styleEditorContainer.flexDirection === 'column') {
+        return {
+          borderTop: '1px solid #e6e6e6'
+        }
+      } else {
+        return {
+          borderLeft: '1px solid #e6e6e6'
+        }
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.cm_editor {
+.cm_editor_container {
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  // border-right: 1px solid #e6e6e6;
-  /deep/.vue-codemirror {
-    height: 100%;
+  overflow: hidden;
+  .cm_editor {
+    flex: 1;
+    // display: flex;
+    // flex-direction: column;
+    min-height: 10px;
+    min-width: 30px;
+    // border-right: 1px solid #e6e6e6;
+    /deep/.vue-codemirror {
+      height: 100%;
+    }
+    /deep/ .CodeMirror.cm-s-eclipse {
+      height: 100%;
+      // font-family: 'Microsoft YaHei';
+      font-family: 'none';
+      color: #383838;
+      /* h1-h6 */
+      span.cm-header-1 {
+        font-size: 1.8em;
+      }
+
+      span.cm-header-2 {
+        font-size: 1.7em;
+      }
+
+      span.cm-header-3 {
+        font-size: 1.6em;
+      }
+
+      span.cm-header-4 {
+        font-size: 1.5em;
+      }
+
+      span.cm-header-5 {
+        font-size: 1.4em;
+      }
+
+      span.cm-header-6 {
+        font-size: 1.3em;
+      }
+    }
   }
-  /deep/ .CodeMirror {
-    height: 100%;
+  .preview_box {
+    flex: 1;
+    min-width: 30px;
   }
 }
 </style>

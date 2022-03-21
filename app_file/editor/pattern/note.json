@@ -1,0 +1,50 @@
+[
+  {
+    "title": "标题",
+    "id": "header",
+    "example": "# 标题",
+    "pattern": "^#+ .+$",
+    "modifiers": "gm",
+    "is_use": true
+  },
+  {
+    "title": "备注",
+    "id": "note",
+    "example": "```note\n备注```",
+    "pattern": "```note[\\s\\S]+\\n```\\n",
+    "modifiers": "gm",
+    "is_use": true
+  },
+  {
+    "title": "链接",
+    "id": "link",
+    "example": "[城墨写作](https://www.chmwriter.com)",
+    "pattern": "[^!]\\[.+\\]\\(.+\\)",
+    "modifiers": "gm",
+    "is_use": true
+  },
+  {
+    "title": "默认备注",
+    "id": "default_note",
+    "example": "<!-- 默认备注 -->",
+    "pattern": "<!--[ ]*?(.*?\\n)*?.*?[ ]*?-->\\n",
+    "modifiers": "gm",
+    "is_use": true
+  },
+  {
+    "title": "图片",
+    "id": "image",
+    "example": "![城墨写作](https://www.chmwriter.com/icon.png)",
+    "pattern": "!\\[.+\\]\\(.+\\)\\n",
+    "modifiers": "gm",
+    "is_use": true
+  },
+  {
+    "title": "分割线",
+    "id": "split_line",
+    "example": "---",
+    "pattern": "\\n---+\\n\\n",
+    "modifiers": "gm",
+    "is_use": true
+  }
+]

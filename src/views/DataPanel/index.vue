@@ -402,6 +402,7 @@ export default {
     /deep/ .el-tabs__content {
       flex: 1;
       .el-tab-pane {
+        display: flex;
         position: absolute;
         height: 100%;
         left: 50%;
