@@ -63,6 +63,7 @@ export default {
   sideBar: {
     data: '资料',
     writing: '写作',
+    setting: '设定',
     world: '世界',
     character: '角色',
     plot: '情节',
@@ -78,7 +79,10 @@ export default {
   },
   detailBar: {
     attribute: '属性',
-    note: '备注'
+    baseAttribute: '基础属性',
+    otherAttribute: '其他属性',
+    note: '备注',
+    language: '语言'
   },
   common: {
     created: '创建',

@@ -16,6 +16,11 @@
         <i class="el-icon-edit"></i>
         <span slot="title">{{ $t('sideBar.writing') }}</span>
       </el-menu-item>
+      <!-- setting -->
+      <el-menu-item index="/setting">
+        <i class="fa fa-cogs"></i>
+        <span slot="title">{{ $t('sideBar.setting') }}</span>
+      </el-menu-item>
       <!-- world -->
       <el-menu-item index="/world">
         <i class="el-icon-map-location"></i>

@@ -63,6 +63,7 @@ export default {
   sideBar: {
     data: 'Data',
     writing: 'Writing',
+    setting: 'Setting',
     world: 'World',
     character: 'Character',
     plot: 'Plot',
@@ -78,7 +79,10 @@ export default {
   },
   detailBar: {
     attribute: 'Attribute',
-    note: 'Note'
+    note: 'Note',
+    baseAttribute: 'Base attribute',
+    otherAttribute: 'Other attribute',
+    language: 'Language'
   },
   common: {
     created: 'Created',

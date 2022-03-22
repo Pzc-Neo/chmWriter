@@ -25,7 +25,6 @@
         v-if="itemList.length === 0"
         :image-size="120"
         :description="$t('info.empty')"
-        style="height: 100%"
       ></el-empty>
       <!-- li's id willl use by `scrollToView` method  -->
       <li
@@ -266,6 +265,10 @@ export default {
     }
     .item.active {
       background-color: #f0f7ff;
+    }
+    .el-empty {
+      width: 100%;
+      height: 100%;
     }
   }
 }

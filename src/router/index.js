@@ -24,6 +24,11 @@ const routes = [
     component: WritingPanel
   },
   {
+    path: '/setting',
+    name: 'SettingPanel',
+    component: () => import('@/views/SettingPanel')
+  },
+  {
     path: '/data',
     name: 'DataPanel',
     // route level code-splitting

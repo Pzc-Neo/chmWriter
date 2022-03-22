@@ -2,6 +2,7 @@ import { getItemFactory } from '@/db/module/itemFactory'
 import { scrollToView } from '@/util/dom'
 import { makeLastId } from './other'
 import { getAllChildGroups } from './group'
+import { addToTab } from './tab'
 
 export const getItems = function (groupId) {
   return this.$db.getItems(this.itemTableName, groupId)
@@ -58,14 +59,7 @@ export const changeToItem = function (itemId, isAddToTab = true) {
   }
 
   if (isAddToTab) {
-    // Add to tabList
-    const index = this.tabList.findIndex(_item => {
-      return _item.id === item.id
-    })
-    if (index === -1) {
-      this.tabList.push(item)
-    }
-    this.currentTabId = item.id
+    addToTab.call(this, item)
   }
 
   this.currentItem = item
@@ -107,8 +101,13 @@ export const updateAttrItem = function (
 
     if (isShowMessage) {
       let message = this.panelName + '.' + column
-      if (column === 'note') {
-        message = 'detailBar.note'
+      switch (column) {
+        case 'note':
+          message = 'detailBar.note'
+          break
+        case 'language':
+          message = 'detailBar.language'
+          break
       }
       this.$message(
         `${this.$t('action.update')} ${this.$t(message)} ${this.$t(

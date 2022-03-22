@@ -7,17 +7,20 @@ import { makeLastId } from './other'
 
 /**
  * Get groupList, ItemList and change to last one
+ * @param {String} mode can be 'all', 'group', 'item'
  */
-export const init = function () {
+export const init = function (mode = 'all') {
   this.$changePanel('/' + this.panelName)
 
-  this.groupList = this.getGroups()
-  const lastGroupId = this.$db.getConfig(makeLastId(this.groupTableName))
-  this.changeToGroup(lastGroupId)
-
-  const lastItemId = this.$db.getConfig(makeLastId(this.itemTableName))
-  this.changeToItem(lastItemId)
-
+  if (mode === 'all' || mode === 'group') {
+    this.groupList = this.getGroups()
+    const lastGroupId = this.$db.getConfig(makeLastId(this.groupTableName))
+    this.changeToGroup(lastGroupId)
+  }
+  if (mode === 'all' || mode === 'item') {
+    const lastItemId = this.$db.getConfig(makeLastId(this.itemTableName))
+    this.changeToItem(lastItemId)
+  }
   const jsonStr = this.$db.getConfig('info_box_collapse_' + this.panelName)
   try {
     this.infoBoxCollapse = JSON.parse(jsonStr)
@@ -114,10 +117,19 @@ export const updateAttrGroup = function (
   group.updated = Date.now()
 
   if (isShowMessage) {
+    let message = this.panelName + '.' + column
+    switch (column) {
+      case 'note':
+        message = 'detailBar.note'
+        break
+      case 'language':
+        message = 'detailBar.language'
+        break
+    }
     this.$message(
-      `${this.$t('action.update')} ${this.$t(
-        this.panelName + '.' + column
-      )} ${this.$t('result.success')}`
+      `${this.$t('action.update')} ${this.$t(message)} ${this.$t(
+        'result.success'
+      )}`
     )
   }
 }

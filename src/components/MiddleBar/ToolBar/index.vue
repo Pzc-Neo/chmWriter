@@ -54,7 +54,7 @@ export default {
         {
           id: 'commanBarCommand',
           title: 'action.command',
-          icon: 'fa fa-file-code-o',
+          icon: 'fa fa-terminal',
           func: () => {
             this.$store.commit('SHOW_COMMANDBOX', 'command')
           }

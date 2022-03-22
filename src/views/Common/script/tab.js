@@ -1,9 +1,29 @@
-export const handleRemoveTab = function (targetId) {
+export const addToTab = function (item) {
+  // Add to tabList
+  const index = this.tabList.findIndex(_item => {
+    return _item.id === item.id
+  })
+  if (index === -1) {
+    this.tabList.push(item)
+  }
+  this.currentTabId = item.id
+}
+
+export const handleRemoveTab = function (targetId, type = 'item') {
   targetId = targetId || this.currentTabId
   return new Promise((resolve, reject) => {
-    const item = this.getItemFromLocal(targetId)
+    let item = null
     if (item?.isChanged) {
-      this.changeToItem(item.id)
+      switch (type) {
+        case 'item':
+          item = this.getItemFromLocal(targetId)
+          this.changeToItem(item.id)
+          break
+        case 'group':
+          item = this.getGroupFromDb(targetId)
+          this.changeToGroup(item.id)
+          break
+      }
       ;(async function () {
         const result = await this.$confirmSync(
           item.title,
@@ -90,7 +110,6 @@ export const switchTab = function (isNext = true, type = 'item') {
   }
   if (nextTab) {
     const activeId = nextTab?.id
-    console.log(index, type)
     switch (type) {
       case 'item':
         this.changeToItem(activeId)
@@ -107,18 +126,32 @@ export const switchTab = function (isNext = true, type = 'item') {
   }
 }
 
-export const handleTabClick = function (tab) {
+export const handleTabClick = function (tab, type = 'item') {
   const itemId = tab.name
-  this.changeToItem(itemId)
+  switch (type) {
+    case 'item':
+      this.changeToItem(itemId)
+      break
+    case 'group':
+      this.changeToGroup(itemId)
+      break
+  }
 }
 
-export const removeOtherTabs = async function (tabId) {
+export const removeOtherTabs = async function (tabId, type = 'item') {
   const tabsNeedToRemove = this.tabList.filter(tab => tab.id !== tabId)
   for (let i = 0; i < tabsNeedToRemove.length; i++) {
     const tab = tabsNeedToRemove[i]
     await this.handleRemoveTab(tab.id)
   }
-  this.changeToItem(tabId)
+  switch (type) {
+    case 'item':
+      this.changeToItem(tabId)
+      break
+    case 'group':
+      this.changeToGroup(tabId)
+      break
+  }
 }
 
 export const showTabContextMenu = function (event, targetItem) {

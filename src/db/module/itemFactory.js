@@ -89,6 +89,23 @@ export const ChapterFactory = function (title, groupId, sort) {
   }
 }
 
+export const SettingFactory = function (title, pid, sort) {
+  const date = Date.now()
+  return {
+    tableName: 'settings',
+    data: {
+      id: randomStr(),
+      title: title,
+      description: '',
+      pid: pid || 'root',
+      is_expand: 1,
+      created: date,
+      updated: date,
+      sort: sort
+    }
+  }
+}
+
 export const WorldGroupFactory = function (title, pid, sort) {
   const date = Date.now()
   return {
@@ -131,6 +148,8 @@ export const getItemFactory = function (type) {
       return ChapterGroupFactory
     case 'chapters':
       return ChapterFactory
+    case 'settings':
+      return SettingFactory
     case 'world_groups':
       return WorldGroupFactory
     case 'character_relation':

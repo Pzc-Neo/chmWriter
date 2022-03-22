@@ -7,24 +7,10 @@
       :menuList="menuListGroup"
       :menuListBar="menuListGroupBar"
       @changeTo="changeToGroup"
-      @changeItemGroupId="changeItemGroupId"
       @updateSorts="updateGroupSorts"
     />
+    <!-- :customStyle="{ width: '200px' }" -->
     <div class="middle">
-      <ItemBar
-        :itemList="itemList"
-        :currentItem="currentItem"
-        :menuListBar="menuListItemBar"
-        :menuList="menuListItem"
-        @changeTo="changeToItem"
-        @updateSorts="updateItemSorts"
-        :customStyle="{ width: '100%', flex: 3 }"
-        :customStyleList="styleItemList"
-      >
-        <template v-slot="{ item }">
-          <Item :item="item" />
-        </template>
-      </ItemBar>
       <ContentBar :customStyle="{ flex: 2 }">
         <el-empty
           :image-size="200"
@@ -55,17 +41,18 @@
               @contextmenu.prevent="showTabContextMenu($event, item)"
             >
               <span v-show="item.isChanged">*</span>
-              {{ item.title }}
+              <span>{{ item.title }}</span>
             </span>
             <CmEditor
               :item="item"
+              contentKey="description"
               @change="handleEditorContentChange"
               @update:content="saveContent"
               @switch:tab="isNext => switchTab(isNext)"
               @close="handleRemoveTab"
               @countWord="
                 words => {
-                  updateAttrItem('words', words, item, false)
+                  updateAttrGroup('words', words, item, false)
                 }
               "
             />
@@ -73,14 +60,14 @@
         </el-tabs>
       </ContentBar>
     </div>
-    <DetailBar :item="currentItem">
+    <DetailBar :item="currentGroup">
       <InfoBox
         :title="$t('detailBar.attribute')"
         :isCollapse.sync="infoBoxCollapse.attribute"
       >
         <AttrBox
-          :item="currentItem"
-          @updateAttr="updateAttrItem"
+          :item="currentGroup"
+          @updateAttr="updateAttrGroup"
           @changeEditorWidth="
             width => {
               this.editorWidth = width + '%'
@@ -96,10 +83,10 @@
         <QuillEditor
           slot-scope="{ isFixedMode }"
           :isFixedMode="isFixedMode"
-          :content.sync="currentItem.note"
+          :content.sync="currentGroup.note"
           @change="
             newContent => {
-              updateAttrItem('note', newContent, currentItem)
+              updateAttrGroup('note', newContent, currentGroup)
             }
           "
         />
@@ -110,7 +97,6 @@
 
 <script>
 import GroupBar from '@/views/Common/components/GroupBar'
-import ItemBar from '@/views/Common/components/ItemBar'
 import ContentBar from '@/views/Common/components/ContentBar'
 import DetailBar from '@/views/Common/components/DetailBar'
 import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
@@ -118,7 +104,6 @@ import CmEditor from '@/views/Common/components/CmEditor'
 import QuillEditor from '@/views/Common/components/QuillEditor'
 
 import AttrBox from './components/AttrBox'
-import Item from './components/Item'
 
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
@@ -126,7 +111,6 @@ import { getToolList } from './toolList'
 import {
   init,
   getGroups,
-  changeToGroup,
   getGroupFromDb,
   getGroupFromLocal,
   updateGroupSorts,
@@ -136,6 +120,7 @@ import {
   deleteGroup
 } from '@/views/Common/script/group'
 import {
+  addToTab,
   handleRemoveTab,
   handleTabClick,
   removeOtherTabs,
@@ -143,42 +128,28 @@ import {
   showTabContextMenu,
   switchTab
 } from '@/views/Common/script/tab'
-import {
-  changeItemGroupId,
-  changeToItem,
-  deleteItem,
-  getItemFromDb,
-  getItemFromLocal,
-  getItems,
-  newItem,
-  refreshItemList,
-  revealItem,
-  updateAttrItem,
-  updateItemSorts
-} from '@/views/Common/script/item'
-import { infoBoxCollapseHandler } from '@/views/Common/script/other'
+
+import { infoBoxCollapseHandler, makeLastId } from '@/views/Common/script/other'
 
 export default {
-  name: 'DataPanel',
+  name: 'SettingPanel',
   components: {
     GroupBar,
-    ItemBar,
     ContentBar,
     DetailBar,
     InfoBox,
     CmEditor,
-    Item,
     AttrBox,
     QuillEditor
   },
   data() {
     return {
       // Group table's name on datebase
-      groupTableName: 'data_groups',
+      groupTableName: 'settings',
       // Item table's name on datebase
-      itemTableName: 'datas',
+      itemTableName: 'data1s',
       // Will use by event, i18n
-      panelName: 'data',
+      panelName: 'setting',
 
       currentTabId: '',
       tabList: [],
@@ -219,13 +190,32 @@ export default {
   },
   methods: {
     init() {
-      return init.call(this)
+      return init.call(this, 'group')
     },
     getGroups() {
       return getGroups.call(this)
     },
-    changeToGroup(groupId) {
-      return changeToGroup.call(this, groupId)
+    changeToGroup(groupId, force = false) {
+      // return changeToGroup.call(this, groupId)
+      if (this.currentGroup.id === groupId && !force) return
+
+      let group = this.getGroupFromDb(groupId)
+      if (group === undefined) {
+        group = this.getGroupFromDb('default')
+        if (group !== undefined) {
+          // this.changeToGroup('default')
+          console.log('undefined')
+        } else {
+          this.$alert(
+            `${this.$t('sideBar.group')}: ${this.$t('info.notExist')}`
+          )
+        }
+        return
+      }
+      addToTab.call(this, group)
+      this.currentGroup = group
+      this.$db.setConfig(makeLastId(this.groupTableName), groupId)
+      this.$store.commit('HIDE_CONTEXTMENU')
     },
     getGroupFromDb(groupId) {
       return getGroupFromDb.call(this, groupId)
@@ -248,59 +238,25 @@ export default {
     refreshGroupList() {
       return refreshGroupList.call(this)
     },
-
-    getItems(groupId) {
-      return getItems.call(this, groupId)
-    },
-    getItemFromDb(itemId) {
-      return getItemFromDb.call(this, itemId)
-    },
-    getItemFromLocal(itemId) {
-      return getItemFromLocal.call(this, itemId)
-    },
-    changeToItem(itemId) {
-      return changeToItem.call(this, itemId)
-    },
-    revealItem(item) {
-      return revealItem.call(this, item)
-    },
-    updateItemSorts(diffData) {
-      return updateItemSorts.call(this, diffData)
-    },
-    updateAttrItem(column, value, item, isShowMessage = true) {
-      return updateAttrItem.call(this, column, value, item, isShowMessage)
-    },
-    changeItemGroupId(groupId, itemId) {
-      return changeItemGroupId.call(this, groupId, itemId)
-    },
-    refreshItemList() {
-      return refreshItemList.call(this)
-    },
-    newItem(sort) {
-      return newItem.call(this, sort)
-    },
-    deleteItem(targetItem) {
-      return deleteItem.call(this, targetItem)
-    },
     handleEditorContentChange(item, newContent) {
       item.newContent = newContent
       item.isChanged = true
     },
     handleRemoveTab(targetId) {
-      return handleRemoveTab.call(this, targetId)
+      return handleRemoveTab.call(this, targetId, 'group')
     },
     // targetId is item's id
     removeTab(targetId) {
-      return removeTab.call(this, targetId)
+      return removeTab.call(this, targetId, 'group')
     },
     removeOtherTabs(tabId) {
-      return removeOtherTabs.call(this, tabId)
+      return removeOtherTabs.call(this, tabId, 'group')
     },
     switchTab(isNext = true) {
-      return switchTab.call(this, isNext)
+      return switchTab.call(this, isNext, 'group')
     },
     handleTabClick(tab) {
-      return handleTabClick.call(this, tab)
+      return handleTabClick.call(this, tab, 'group')
     },
     showTabContextMenu(event, targetItem) {
       return showTabContextMenu.call(this, event, targetItem)
@@ -309,15 +265,16 @@ export default {
     saveContent(content, itemId) {
       let item = {}
       if (itemId === undefined) {
-        item = this.currentItem
+        item = this.currentGroup
       } else {
-        item = this.getItemFromLocal(itemId)
+        item = this.getGroupFromDb(itemId)
       }
 
       if (content === undefined) {
         content = item.newContent
       }
-      this.updateAttrItem('content', content, item)
+
+      this.updateAttrGroup('description', content, item)
       item.isChanged = false
     }
   },
@@ -340,15 +297,8 @@ export default {
     this.$bus.$on(this.panelName + ':new-group', () => {
       this.newGroup()
     })
-    this.$bus.$on(this.panelName + ':new-item', () => {
-      this.newItem()
-    })
     this.$bus.$on(this.panelName + ':change-to-group', targetItem => {
       this.changeToGroup(targetItem.id)
-    })
-    this.$bus.$on(this.panelName + ':change-to-item', targetItem => {
-      this.changeToItem(targetItem.id)
-      this.revealItem(targetItem)
     })
     this.$bus.$on(this.panelName + ':switch-tab', isNext => {
       this.switchTab(isNext)
@@ -363,9 +313,7 @@ export default {
   },
   beforeDestroy() {
     this.$bus.$off(this.panelName + ':new-group')
-    this.$bus.$off(this.panelName + ':new-item')
     this.$bus.$off(this.panelName + ':change-to-group')
-    this.$bus.$off(this.panelName + ':change-to-item')
     this.$bus.$off(this.panelName + ':switch-tab')
     this.$bus.$off(this.panelName + ':remove-tab')
 

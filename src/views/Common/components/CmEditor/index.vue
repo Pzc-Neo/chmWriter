@@ -8,7 +8,7 @@
       class="cm_editor"
       ref="cmEditor"
       :style="styleEditorContent"
-      :value="item.content"
+      :value="item[contentKey]"
       :options="cmOptions"
       @ready="onCmReady"
       @focus="onCmFocus"
@@ -27,7 +27,7 @@
       v-if="isShowPreviewBox"
       :class="[classPreviewBox]"
       :previewType.sync="previewType"
-      :content="item.content"
+      :content="item[contentKey]"
       @hide="hidePreviewBox"
     />
   </div>
@@ -97,6 +97,10 @@ export default {
     item: {
       type: Object,
       require: true
+    },
+    contentKey: {
+      type: String,
+      default: 'content'
     },
     isCountWord: {
       type: Boolean,
@@ -207,7 +211,6 @@ export default {
       this.$emit('countWord', words)
     }),
     onCmChange(cm, changes) {
-      console.log(changes)
       this.updateByTypewriterMode(cm, changes)
     },
     onCmInput(newContent, item) {
@@ -281,7 +284,7 @@ export default {
     }
   },
   mounted() {
-    this.wordCounter(this.item.content, this.item.language)
+    this.wordCounter(this.item[this.contentKey], this.item.language)
     // vim的输入模式改变的时候，切换输入法(这个方法特卡, 而且时不时失灵)
     /*
     CodeMirror.on(this.codemirror, 'vim-mode-change', function ({ mode }) {

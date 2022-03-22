@@ -262,9 +262,9 @@ export default {
 }
 
 .preview_box.border_top {
-  border-top: 1px solid #383838;
+  border-top: 1px solid #e6e6e6;
 }
 .preview_box.border_left {
-  border-left: 1px solid #383838;
+  border-left: 1px solid #e6e6e6;
 }
 </style>
