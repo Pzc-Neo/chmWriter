@@ -76,6 +76,10 @@
             .el-tree-node__content:hover {
               background-color: $bg_color_3;
             }
+
+            .el-tree-node:focus > .el-tree-node__content {
+              background-color: $bg_color_3;
+            }
           }
           // current node
           .el-tree--highlight-current

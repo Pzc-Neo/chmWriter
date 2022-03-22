@@ -492,6 +492,8 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
       background-color: #2b313c; }
       #app .middle_bar .main .panel .group_bar .el-tree .el-tree-node__content:hover {
         background-color: #252931; }
+      #app .middle_bar .main .panel .group_bar .el-tree .el-tree-node:focus > .el-tree-node__content {
+        background-color: #252931; }
     #app .middle_bar .main .panel .group_bar .el-tree--highlight-current
 .el-tree-node.is-current
 > .el-tree-node__content {

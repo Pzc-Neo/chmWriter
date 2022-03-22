@@ -198,6 +198,9 @@ export default {
         margin-right: 3px;
       }
     }
+    .el-tree-node:focus > .el-tree-node__content {
+      background-color: #f5f7fa;
+    }
   }
 }
 </style>
