@@ -92,6 +92,7 @@
           "
         />
       </InfoBox>
+
       <InfoBox
         :title="$t('detailBar.note')"
         :isEmpty="!currentItem.note"
@@ -328,7 +329,11 @@ export default {
       }
 
       this.updateAttrItem('content', content, item)
-      item.isChanged = false
+      if (item?.isChanged === undefined) {
+        this.$set(item, 'isChanged', false)
+      } else {
+        item.isChanged = false
+      }
     }
   },
   watch: {
