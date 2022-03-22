@@ -76,10 +76,20 @@
     </ContentBar>
     <DetailBar :item="currentItem">
       <InfoBox
-        :title="$t('detailBar.attribute')"
+        :title="$t('detailBar.baseAttribute')"
+        :isCollapse.sync="infoBoxCollapse.attributeBase"
+      >
+        <AttrBoxBase
+          :item="currentItem"
+          @updateAttr="updateAttrItem"
+          @updateConfig="updateConfig"
+        />
+      </InfoBox>
+      <InfoBox
+        :title="$t('detailBar.otherAttribute')"
         :isCollapse.sync="infoBoxCollapse.attribute"
       >
-        <AttrBox
+        <AttrBoxOther
           :item="currentItem"
           :weightUnit="weightUnit"
           :heightUnit="heightUnit"
@@ -145,7 +155,8 @@ import DetailBar from '@/views/Common/components/DetailBar'
 import InfoBox from '@/views/Common/components/DetailBar/InfoBox'
 import TextareaBox from '@/views/Common/components/DetailBar/TextareaBox'
 
-import AttrBox from './components/AttrBox'
+import AttrBoxOther from './components/AttrBoxOther'
+import AttrBoxBase from './components/AttrBoxBase'
 import CharacterItem from './components/CharacterItem'
 import RelationChart from './components/RelationChart'
 
@@ -204,7 +215,8 @@ export default {
     DetailBar,
     InfoBox,
     CharacterItem,
-    AttrBox,
+    AttrBoxOther,
+    AttrBoxBase,
     TextareaBox,
     RelationChart,
     QuillEditor
