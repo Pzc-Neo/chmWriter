@@ -1,6 +1,6 @@
 <template>
   <div
-    class="preview_content"
+    class="preview_box"
     v-html="previewContent"
     @contextmenu="showContextmenu"
   ></div>
@@ -75,7 +75,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.preview_content {
+.preview_box {
+  flex: 1;
+  min-width: 30px;
+
   overflow-x: hidden;
   overflow-y: auto;
   box-sizing: border-box;
@@ -130,7 +133,7 @@ export default {
     }
 
     p {
-      margin: 8px 0px;
+      margin: 15px 0px;
       /* 行内代码 */
       code {
         color: #fafbfe;
@@ -144,6 +147,7 @@ export default {
     pre {
       code {
         display: block;
+        padding: 3px 6px;
         background: #eeeff3;
       }
     }
@@ -178,9 +182,8 @@ export default {
     th {
       color: #d5dde5;
       background: #24292f;
-      border-top: 1px solid #343a45;
-      border-left: 1px solid #343a45;
-      border-right: 1px solid #343a45;
+      border: 1px solid #343a45;
+      border-bottom: 0;
       padding: 4px 11px;
       text-align: left;
       vertical-align: middle;
@@ -257,23 +260,11 @@ export default {
     }
   }
 }
-.preview_header {
-  display: none;
-  width: 100%;
-  padding: 3px;
 
-  position: absolute;
-  top: 0px;
-  border-bottom: 1px solid #e6e6e6;
-  background-color: #fafbfe;
-  z-index: 100;
-  .el-button {
-    padding: 4px 8px;
-  }
+.preview_box.border_top {
+  border-top: 1px solid #383838;
 }
-.preview_box:hover {
-  .preview_header {
-    display: block;
-  }
+.preview_box.border_left {
+  border-left: 1px solid #383838;
 }
 </style>

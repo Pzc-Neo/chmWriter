@@ -15,7 +15,7 @@
       @changes="onCmChange"
       @input="
         newContent => {
-          onInput(newContent, item)
+          onCmInput(newContent, item)
         }
       "
       @beforeSelectionChange="onCmbeforeSelectionChange"
@@ -25,8 +25,7 @@
     <PreviewBox
       ref="previewBox"
       v-if="isShowPreviewBox"
-      class="preview_box"
-      :style="stylePreviewBox"
+      :class="[classPreviewBox]"
       :previewType.sync="previewType"
       :content="item.content"
       @hide="hidePreviewBox"
@@ -211,7 +210,7 @@ export default {
       console.log(changes)
       this.updateByTypewriterMode(cm, changes)
     },
-    onInput(newContent, item) {
+    onCmInput(newContent, item) {
       if (this.isCountWord) {
         this.wordCounter(newContent, item.language)
       }
@@ -311,15 +310,11 @@ export default {
     codemirror() {
       return this.$refs.cmEditor.codemirror
     },
-    stylePreviewBox() {
+    classPreviewBox() {
       if (this.styleEditorContainer.flexDirection === 'column') {
-        return {
-          borderTop: '1px solid #e6e6e6'
-        }
+        return 'border_top'
       } else {
-        return {
-          borderLeft: '1px solid #e6e6e6'
-        }
+        return 'border_left'
       }
     }
   }
@@ -375,10 +370,6 @@ export default {
         padding-bottom: 50%;
       }
     }
-  }
-  .preview_box {
-    flex: 1;
-    min-width: 30px;
   }
 }
 </style>

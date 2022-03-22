@@ -404,6 +404,49 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
 div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
   border-color: #222225; }
 
+#app .preview_box {
+  color: #a8b7c5;
+  background-color: #282c34;
+  border-color: #222225;
+  /* 引用 */
+  /*** Table Styles **/
+  /* 整个表格 */
+  /* 表格标题 */ }
+  #app .preview_box p {
+    /* 行内代码 */ }
+    #app .preview_box p code {
+      color: #409eff;
+      background: #363f637d;
+      border: 1px solid #4a9df81f; }
+  #app .preview_box pre code {
+    color: #75bfff;
+    background: #2c3242; }
+  #app .preview_box blockquote {
+    color: #75bfff;
+    background: #2c3242;
+    border-left: 3px solid #409eff; }
+  #app .preview_box table {
+    border: 1px solid #334464; }
+  #app .preview_box th {
+    color: #bedcf0;
+    background: #266bb4;
+    border-color: #2e354c; }
+  #app .preview_box tr {
+    border-top: 1px solid #334464;
+    border-bottom: 1px solid #334464;
+    color: #409eff;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1); }
+  #app .preview_box tr:hover td {
+    background: #4e5066;
+    color: #ffffff; }
+  #app .preview_box tr:nth-child(odd) td {
+    background: #2e354c; }
+  #app .preview_box tr:nth-child(odd):hover td {
+    background: #4e5066; }
+  #app .preview_box td {
+    background: #39405a;
+    border-right: 1px solid #2e354c; }
+
 #app {
   color: #a8b7c5;
   background-color: #282c34;

@@ -1,0 +1,64 @@
+#app {
+  .preview_box {
+    color: $color_1;
+    background-color: $bg_color_1;
+    border-color: $border_color_1;
+    p {
+      /* 行内代码 */
+      code {
+        @include base-btn-1;
+      }
+    }
+    pre {
+      code {
+        color: #75bfff;
+        background: #2c3242;
+      }
+    }
+
+    /* 引用 */
+    blockquote {
+      color: #75bfff;
+      background: #2c3242;
+      border-left: 3px solid #409eff;
+    }
+    /*** Table Styles **/
+    /* 整个表格 */
+    table {
+      // background: white;
+      border: 1px solid #334464;
+    }
+
+    /* 表格标题 */
+    th {
+      color: #bedcf0;
+      background: #266bb4;
+      border-color: #2e354c;
+    }
+
+    tr {
+      border-top: 1px solid #334464;
+      border-bottom: 1px solid #334464;
+      color: #409eff;
+      text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
+    }
+
+    tr:hover td {
+      background: #4e5066;
+      color: #ffffff;
+    }
+
+    tr:nth-child(odd) td {
+      background: #2e354c;
+    }
+
+    tr:nth-child(odd):hover td {
+      background: #4e5066;
+    }
+
+    td {
+      background: #39405a;
+      border-right: 1px solid #2e354c;
+    }
+  }
+}
