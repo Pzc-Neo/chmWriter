@@ -130,7 +130,7 @@ export default {
 
       if (drapIndex === dropIndex) {
       } else {
-        let diffData = []
+        const diffData = []
         // drag down
         if (drapIndex < dropIndex) {
           const dropSort = this.itemList[dropIndex].sort
@@ -168,12 +168,6 @@ export default {
             diffData.push(diff)
           }
         }
-        let startSort = diffData[0].sort
-        diffData = diffData.map(data => {
-          data.sort = startSort
-          startSort++
-          return data
-        })
         this.$emit('updateSorts', diffData)
       }
     },

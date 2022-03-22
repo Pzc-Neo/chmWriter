@@ -15,12 +15,10 @@ export const getItems = function (groupId) {
 export const getAllChildItems = function (groupId) {
   let resultItemList = []
   const groupIdList = getAllChildGroups.call(this, groupId)
-  console.log('groupIdList: ', groupIdList)
   groupIdList.forEach(_gorupId => {
     const tempItemList = this.getItems(_gorupId)
     resultItemList = [...resultItemList, ...tempItemList]
   })
-  console.log(resultItemList)
   return resultItemList
 }
 
@@ -79,7 +77,7 @@ export const revealItem = function (item) {
 }
 export const updateItemSorts = function (diffData) {
   this.$db.updateItemSorts(this.itemTableName, diffData)
-  this.changeToGroup(this.currentGroup.id)
+  this.refreshItemList()
 }
 export const updateAttrItem = function (
   column,
