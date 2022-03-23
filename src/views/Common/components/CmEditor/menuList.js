@@ -38,7 +38,7 @@ export const cmEditorMenuList = function () {
       title: 'editor.cut',
       icon: 'fa fa-cut',
       func: () => {
-        const editor = this.codemirror
+        const editor = this.cmEditor
         let selectedText = editor.getSelection()
         // If nothing select, cut hold line
         if (selectedText === '') {
@@ -57,7 +57,7 @@ export const cmEditorMenuList = function () {
       title: 'editor.copy',
       icon: 'fa fa-copy',
       func: () => {
-        const editor = this.codemirror
+        const editor = this.cmEditor
         let selectedText = editor.getSelection()
         // If nothing select, copy hold line
         if (selectedText === '') {
@@ -74,7 +74,7 @@ export const cmEditorMenuList = function () {
       icon: 'fa fa-paste',
       func: () => {
         const text = clipboard.readText()
-        this.codemirror.replaceSelection(text)
+        this.cmEditor.replaceSelection(text)
         this.$message(`${this.$t('editor.paste')} ${this.$t('result.success')}`)
       }
     },
@@ -83,7 +83,7 @@ export const cmEditorMenuList = function () {
       title: 'editor.selectAll',
       icon: 'fa fa-file-text',
       func: () => {
-        this.codemirror.execCommand('selectAll')
+        this.cmEditor.execCommand('selectAll')
       }
     }
   ]
