@@ -141,9 +141,10 @@ export const newItem = function (sort) {
         this.currentGroup.id
       )
     }
-    const item = new Factory(title, this.currentGroup.id, sort)
-    this.$db.insert(item)
+    const item4db = new Factory(title, this.currentGroup.id, sort)
+    this.$db.insert(item4db)
     this.refreshItemList()
+    this.changeToItem(item4db.data.id)
   })
 }
 export const deleteItem = async function (targetItem) {
