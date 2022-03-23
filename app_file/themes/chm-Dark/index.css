@@ -447,6 +447,16 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     background: #39405a;
     border-right: 1px solid #2e354c; }
 
+#app .middle_bar .main .panel .outline_box {
+  border-color: #222225; }
+  #app .middle_bar .main .panel .outline_box /deep/.el-input__inner {
+    border-color: #222225; }
+  #app .middle_bar .main .panel .outline_box ul li:hover {
+    background-color: #2b313c; }
+  #app .middle_bar .main .panel .outline_box ul li.active {
+    border-color: #266bb4;
+    background-color: #2b313c; }
+
 #app {
   color: #a8b7c5;
   background-color: #282c34;
@@ -514,6 +524,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
         color: #a8b7c5;
         background-color: #266bb4; }
     #app .middle_bar .main .panel .item_bar .item_list .item.active {
+      border-color: #266bb4;
       background-color: #2b313c; }
     #app .middle_bar .main .panel .item_bar .item_list .item:hover {
       background-color: #2b313c; }

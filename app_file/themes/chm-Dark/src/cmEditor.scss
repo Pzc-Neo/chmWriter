@@ -1,0 +1,23 @@
+#app {
+  .middle_bar {
+    .main {
+      .panel {
+        .outline_box {
+          border-color: $border_color_1;
+          /deep/.el-input__inner {
+            border-color: $border_color_1;
+          }
+          ul {
+            li:hover {
+              background-color: $bg_color_2;
+            }
+            li.active {
+              border-color: $bg_color_4;
+              background-color: $bg_color_2;
+            }
+          }
+        }
+      }
+    }
+  }
+}

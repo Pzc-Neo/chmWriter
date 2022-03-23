@@ -264,6 +264,7 @@ export default {
       background-color: #f0f7ff;
     }
     .item.active {
+      border-left: 2px solid #409eff;
       background-color: #f0f7ff;
     }
     .el-empty {

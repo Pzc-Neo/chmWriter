@@ -4,6 +4,7 @@
 @import 'codemirror.scss';
 @import 'quill.scss';
 @import 'preview-box.scss';
+@import 'cmEditor.scss';
 
 #app {
   color: $color_1;
@@ -109,6 +110,7 @@
           }
           .item_list {
             .item.active {
+              border-color: $bg_color_4;
               background-color: $bg_color_2;
             }
             .item:hover {
@@ -129,28 +131,6 @@
                   @include base-btn-1;
                 }
               }
-              // .bottom {
-              //   .left {
-              //     .el-tag--light.el-tag--default {
-              //       @include el_default;
-              //     }
-              //     .el-tag--light.el-tag--primary {
-              //       @include el_primary;
-              //     }
-              //     .el-tag--light.el-tag--success {
-              //       @include el_success;
-              //     }
-              //     .el-tag--light.el-tag--info {
-              //       @include el_info;
-              //     }
-              //     .el-tag--light.el-tag--warning {
-              //       @include el_warning;
-              //     }
-              //     .el-tag--light.el-tag--danger {
-              //       @include el_danger;
-              //     }
-              //   }
-              // }
             }
           }
         }

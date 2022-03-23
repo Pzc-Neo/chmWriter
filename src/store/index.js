@@ -33,7 +33,10 @@ export default new Vuex.Store({
       isShow: false,
       type: 'search',
       param: {}
-    }
+    },
+
+    currentEditor: null,
+    headList: []
   },
   mutations: {
     SHOW_CONTEXTMENU(state, prama) {
@@ -70,6 +73,12 @@ export default new Vuex.Store({
       state.barVisible.groupBar = !state.barVisible.groupBar
       state.barVisible.itemBar = !state.barVisible.itemBar
       state.barVisible.detailBar = !state.barVisible.detailBar
+    },
+    SET_HEAD_LIST(state, headList) {
+      state.headList = headList
+    },
+    SET_CURRENT_EDITOR(state, editor) {
+      state.currentEditor = editor
     }
   },
   actions: {},

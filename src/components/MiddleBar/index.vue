@@ -2,9 +2,6 @@
   <div class="middle_bar">
     <ContextMenuBar />
     <CommandBox />
-    <el-drawer title="我是标题" :visible.sync="drawer" direction="ltr">
-      <span>我来啦!</span>
-    </el-drawer>
     <PereferenceBox :isShow.sync="isShowPereferenceBox" />
     <SideBar />
     <div class="main">
@@ -32,8 +29,7 @@ export default {
   },
   data() {
     return {
-      isShowPereferenceBox: false,
-      drawer: false
+      isShowPereferenceBox: false
     }
   },
   mounted() {

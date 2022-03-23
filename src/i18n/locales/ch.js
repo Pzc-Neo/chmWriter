@@ -143,7 +143,9 @@ export default {
     previewMarkdown: '预览markdown',
     previewPureText: '预览纯文本',
     hidePreviewBox: '隐藏预览框',
-    toggleEditorLayout: '切换编辑器布局'
+    toggleEditorLayout: '切换编辑器布局',
+    toggleOutlineBox: '显示/隐藏大纲',
+    searchOutline: '搜索大纲'
   },
   tables: {
     datas: '资料',

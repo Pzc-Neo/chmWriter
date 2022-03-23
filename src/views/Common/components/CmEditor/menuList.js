@@ -26,6 +26,14 @@ export const cmEditorMenuList = function () {
       }
     },
     {
+      id: 'toggleOutlineBox',
+      title: 'editor.toggleOutlineBox',
+      icon: 'fa fa-list-alt',
+      func: () => {
+        this.toggleOutlineBox()
+      }
+    },
+    {
       id: 'cut',
       title: 'editor.cut',
       icon: 'fa fa-cut',

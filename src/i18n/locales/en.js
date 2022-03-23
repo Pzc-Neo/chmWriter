@@ -147,7 +147,9 @@ export default {
     previewMarkdown: 'Preview markdown',
     previewPureText: 'Preview pure text',
     hidePreviewBox: 'Hide preview box',
-    toggleEditorLayout: 'Toggle Editor Layout'
+    toggleEditorLayout: 'Toggle Editor Layout',
+    toggleOutlineBox: 'Toggle outline box',
+    searchOutline: 'Search outline'
   },
   tables: {
     datas: 'Datas',

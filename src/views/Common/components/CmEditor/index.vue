@@ -1,34 +1,44 @@
 <template>
-  <div class="cm_editor_container" :style="styleEditorContainer">
+  <div class="cm_editor">
     <!-- Two-way Data-Binding -->
     <!-- <codemirror v-model="content" :options="cmOptions" /> -->
 
-    <!-- Or manually control the data synchronization -->
-    <codemirror
-      class="cm_editor"
-      ref="cmEditor"
-      :style="styleEditorContent"
-      :value="item[contentKey]"
-      :options="cmOptions"
-      @ready="onCmReady"
-      @focus="onCmFocus"
-      @changes="onCmChange"
-      @input="
-        newContent => {
-          onCmInput(newContent, item)
-        }
-      "
-      @beforeSelectionChange="onCmbeforeSelectionChange"
-      @keyHandled="onKeyHandled"
-      @contextmenu.native="showContextmenu"
-    />
-    <PreviewBox
-      ref="previewBox"
-      v-if="isShowPreviewBox"
-      :class="[classPreviewBox]"
-      :previewType.sync="previewType"
-      :content="item[contentKey]"
-      @hide="hidePreviewBox"
+    <div class="cm_editor_container" :style="styleEditorContainer">
+      <!-- Or manually control the data synchronization -->
+      <codemirror
+        class="editor"
+        ref="cmEditor"
+        :style="styleEditorContent"
+        :value="item[contentKey]"
+        :options="cmOptions"
+        @ready="onCmReady"
+        @focus="onCmFocus"
+        @changes="onCmChange"
+        @input="
+          newContent => {
+            onCmInput(newContent, item)
+          }
+        "
+        @beforeSelectionChange="onCmbeforeSelectionChange"
+        @keyHandled="onKeyHandled"
+        @cursorActivity="onCursorActivity"
+        @contextmenu.native="showContextmenu"
+      />
+      <PreviewBox
+        ref="previewBox"
+        v-if="isShowPreviewBox"
+        :class="[classPreviewBox]"
+        :previewType.sync="previewType"
+        :content="item[contentKey]"
+        @hide="hidePreviewBox"
+      />
+    </div>
+    <!-- <LeftFloatBar :headList="headList" /> -->
+    <OutlineBox
+      v-if="isShowOutlineBox"
+      :headList="headList"
+      :currentLine="currentLine"
+      @jump-to-line="jumpToLine"
     />
   </div>
 </template>
@@ -36,6 +46,8 @@
 <script>
 import { codemirror } from 'vue-codemirror'
 import './util/cmCommand'
+// import LeftFloatBar from '@/components/MiddleBar/LeftFloatBar'
+import OutlineBox from './OutlineBox'
 
 // import base style
 import 'codemirror/lib/codemirror.css'
@@ -90,6 +102,8 @@ import { countWords } from '@/util/text'
 import { debounce } from '@/util/base'
 import { cmEditorMenuList } from './menuList'
 import PreviewBox from './PreviewBox'
+import { getHeadList, jumpToLine } from './util/editor'
+import { scrollToView } from '@/util/dom'
 
 export default {
   name: 'CmEditor',
@@ -109,16 +123,21 @@ export default {
   },
   components: {
     codemirror,
-    PreviewBox
+    PreviewBox,
+    OutlineBox
+    // LeftFloatBar
   },
   data() {
     return {
+      headList: [],
       isChanged: false,
       isShowPreviewBox: false,
+      isShowOutlineBox: false,
       previewType: 'pureText',
       styleEditorContainer: {
         flexDirection: 'row'
       },
+      currentLine: 0,
       menuList: cmEditorMenuList.call(this),
       cmOptions: {
         tabSize: 4,
@@ -209,8 +228,14 @@ export default {
     onCmFocus(cm) {},
     wordCounter: debounce(countWords, 1000, function (words) {
       this.$emit('countWord', words)
+
+      if (this.isShowOutlineBox) {
+        this.headList = getHeadList(this.cmEditor)
+      }
+      // this.$store.commit('SET_HEAD_LIST', this.headList)
     }),
     onCmChange(cm, changes) {
+      console.log('change')
       this.updateByTypewriterMode(cm, changes)
     },
     onCmInput(newContent, item) {
@@ -223,10 +248,21 @@ export default {
     onKeyHandled(cm, name, event) {
       // console.log(cm, name, event)
     },
+    onCursorActivity(cm) {
+      if (this.isShowOutlineBox) {
+        // 如果当前行包含 # ，那么 大纲面板中相应的标题滚动到可视范围
+        const line = this.cmEditor.getCursor().line
+        const text = cm.getLine(line)
+        if (/^#+/.test(text)) {
+          scrollToView('.editor_head_list_item' + line)
+          this.currentLine = line
+        }
+      }
+    },
     showContextmenu(event) {
       const param = {
         event,
-        targetItem: this.codemirror,
+        targetItem: this.cmEditor,
         menuList: this.menuList
       }
       this.$store.commit('SHOW_CONTEXTMENU', param)
@@ -235,7 +271,7 @@ export default {
      * Select hold line
      */
     selectLine(line) {
-      const editor = this.codemirror
+      const editor = this.cmEditor
       if (line === undefined) {
         line = editor.getCursor().line
       }
@@ -267,6 +303,9 @@ export default {
         this.styleEditorContainer.flexDirection = 'row'
       }
     },
+    toggleOutlineBox() {
+      this.isShowOutlineBox = !this.isShowOutlineBox
+    },
     // 按照打字机模式更新视图
     updateByTypewriterMode: function (cm, changes) {
       if (cm.getSelection().length !== 0) {
@@ -281,13 +320,23 @@ export default {
           return
         }
       }
+    },
+    jumpToLine(head) {
+      jumpToLine(this.cmEditor, head)
     }
   },
   mounted() {
     this.wordCounter(this.item[this.contentKey], this.item.language)
+    /**
+     * If outline box
+     */
+    if (!this.isShowOutlineBox) {
+      this.headList = getHeadList(this.cmEditor)
+    }
+
     // vim的输入模式改变的时候，切换输入法(这个方法特卡, 而且时不时失灵)
     /*
-    CodeMirror.on(this.codemirror, 'vim-mode-change', function ({ mode }) {
+    CodeMirror.on(this.cmEditor, 'vim-mode-change', function ({ mode }) {
       function changeIm(imId) {
         const child = require('child_process')
         child.exec(
@@ -310,7 +359,7 @@ export default {
     */
   },
   computed: {
-    codemirror() {
+    cmEditor() {
       return this.$refs.cmEditor.codemirror
     },
     classPreviewBox() {
@@ -325,52 +374,67 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.cm_editor_container {
+.cm_editor {
   display: flex;
   overflow: hidden;
-  width: 100%;
-  .cm_editor {
+  flex: 1;
+  .cm_editor_container {
+    display: flex;
+    overflow: hidden;
     flex: 1;
-    // display: flex;
-    // flex-direction: column;
-    min-height: 10px;
-    min-width: 30px;
-    // border-right: 1px solid #e6e6e6;
-    /deep/.vue-codemirror {
-      height: 100%;
-    }
-    /deep/ .CodeMirror.cm-s-eclipse {
-      height: 100%;
-      // font-family: 'Microsoft YaHei';
-      font-family: 'none';
-      color: #383838;
-      /* h1-h6 */
-      span.cm-header-1 {
-        font-size: 1.8em;
+    .editor {
+      flex: 1;
+      // display: flex;
+      // flex-direction: column;
+      min-height: 10px;
+      min-width: 30px;
+      // border-right: 1px solid #e6e6e6;
+      /deep/.vue-codemirror {
+        height: 100%;
       }
+      /deep/ .CodeMirror.cm-s-eclipse {
+        height: 100%;
+        font-family: 'Microsoft YaHei';
+        // font-family: 'none';
+        color: #383838;
+        /* h1-h6 */
+        span.cm-header-1 {
+          font-size: 1.8em;
+        }
 
-      span.cm-header-2 {
-        font-size: 1.7em;
-      }
+        span.cm-header-2 {
+          font-size: 1.7em;
+        }
 
-      span.cm-header-3 {
-        font-size: 1.6em;
-      }
+        span.cm-header-3 {
+          font-size: 1.6em;
+        }
 
-      span.cm-header-4 {
-        font-size: 1.5em;
-      }
+        span.cm-header-4 {
+          font-size: 1.5em;
+        }
 
-      span.cm-header-5 {
-        font-size: 1.4em;
-      }
+        span.cm-header-5 {
+          font-size: 1.4em;
+        }
 
-      span.cm-header-6 {
-        font-size: 1.3em;
-      }
-      /* 打字机模式，底下留白50% */
-      .CodeMirror-lines {
-        padding-bottom: 50%;
+        span.cm-header-6 {
+          font-size: 1.3em;
+        }
+        /* 打字机模式，底下留白50% */
+        .CodeMirror-lines {
+          padding-bottom: 50%;
+        }
+        .CodeMirror-linenumber {
+          font-size: 13px;
+        }
+        .CodeMirror-gutters {
+          background-color: transparent;
+        }
+        .editor_focus_line {
+          // background-color: #ecf5ff;
+          color: #409eff;
+        }
       }
     }
   }
