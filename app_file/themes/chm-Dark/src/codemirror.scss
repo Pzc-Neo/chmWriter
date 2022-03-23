@@ -4,383 +4,385 @@
     Author:     Neo
 */
 
-  /* 编辑器的背景及默认字体颜色 */
-  .cm-s-eclipse.CodeMirror {
-    background: #ffffff00;
-    /* color: #363636; */
-    color: inherit;
-  }
+  .cm_editor_container {
+    /* 编辑器的背景及默认字体颜色 */
+    .cm-s-eclipse.CodeMirror {
+      background: #ffffff00;
+      /* color: #363636; */
+      color: inherit;
+    }
 
-  .cm-s-eclipse div.CodeMirror-selected {
-    background: #353b48;
-  }
+    .cm-s-eclipse div.CodeMirror-selected {
+      background: #353b48;
+    }
 
-  .cm-s-eclipse .CodeMirror-line::selection,
-  .cm-s-eclipse .CodeMirror-line > span::selection,
-  .cm-s-eclipse .CodeMirror-line > span > span::selection {
-    background: #353b48;
-  }
+    .cm-s-eclipse .CodeMirror-line::selection,
+    .cm-s-eclipse .CodeMirror-line > span::selection,
+    .cm-s-eclipse .CodeMirror-line > span > span::selection {
+      background: #353b48;
+    }
 
-  .cm-s-eclipse .CodeMirror-line::-moz-selection,
-  .cm-s-eclipse .CodeMirror-line > span::-moz-selection,
-  .cm-s-eclipse .CodeMirror-line > span > span::-moz-selection {
-    background: #353b48;
-  }
+    .cm-s-eclipse .CodeMirror-line::-moz-selection,
+    .cm-s-eclipse .CodeMirror-line > span::-moz-selection,
+    .cm-s-eclipse .CodeMirror-line > span > span::-moz-selection {
+      background: #353b48;
+    }
 
-  /* .cm-s-eclipse .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; } */
-  .cm-s-eclipse .CodeMirror-guttermarker {
-    color: #555;
-  }
+    /* .cm-s-eclipse .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; } */
+    .cm-s-eclipse .CodeMirror-guttermarker {
+      color: #555;
+    }
 
-  /* 显示行号面板的字体颜色 */
-  .cm-s-eclipse .CodeMirror-linenumber {
-    /* color: #939393; */
-    color: #49627785;
-    /* color: #b1b1b152; */
-    font-size: 12px;
-  }
+    /* 显示行号面板的字体颜色 */
+    .cm-s-eclipse .CodeMirror-linenumber {
+      /* color: #939393; */
+      color: #49627785;
+      /* color: #b1b1b152; */
+      font-size: 12px;
+    }
 
-  /* 显示行号的面板的背景颜色 */
-  .cm-s-eclipse .CodeMirror-gutters {
-    background: transparent !important;
-    border-right: $border_1;
-  }
+    /* 显示行号的面板的背景颜色 */
+    .cm-s-eclipse .CodeMirror-gutters {
+      background: transparent !important;
+      border-right: $border_1;
+    }
 
-  .cm-s-eclipse .CodeMirror-cursor {
-    border-left: 1px solid #fff;
-  }
+    .cm-s-eclipse .CodeMirror-cursor {
+      border-left: 1px solid #fff;
+    }
 
-  /* 备注颜色 */
-  .cm-s-eclipse span.cm-comment {
-    color: #56ad64;
-    /* color: #0AC4A0; */
-  }
+    /* 备注颜色 */
+    .cm-s-eclipse span.cm-comment {
+      color: #56ad64;
+      /* color: #0AC4A0; */
+    }
 
-  /* 属性后面的值 */
-  .cm-s-eclipse span.cm-atom {
-    color: #e69f7e;
-  }
+    /* 属性后面的值 */
+    .cm-s-eclipse span.cm-atom {
+      color: #e69f7e;
+    }
 
-  /* 还没确定是什么 */
-  .cm-s-eclipse span.cm-quote {
-    color: #735ace;
-  }
+    /* 还没确定是什么 */
+    .cm-s-eclipse span.cm-quote {
+      color: #735ace;
+    }
 
-  /* css id选择器 */
-  .cm-s-eclipse span.cm-builtin {
-    color: #fcdb9e;
-  }
+    /* css id选择器 */
+    .cm-s-eclipse span.cm-builtin {
+      color: #fcdb9e;
+    }
 
-  /* html属性 */
-  .cm-s-eclipse span.cm-attribute {
-    color: #a8dbfd;
-  }
+    /* html属性 */
+    .cm-s-eclipse span.cm-attribute {
+      color: #a8dbfd;
+    }
 
-  /* 关键词 var function */
-  .cm-s-eclipse span.cm-keyword {
-    color: #6bb6e7;
-  }
+    /* 关键词 var function */
+    .cm-s-eclipse span.cm-keyword {
+      color: #6bb6e7;
+    }
 
-  /* 还没确定是什么 */
-  .cm-s-eclipse span.cm-error {
-    color: #da6201;
-  }
+    /* 还没确定是什么 */
+    .cm-s-eclipse span.cm-error {
+      color: #da6201;
+    }
 
-  /* css属性的数字值 */
-  .cm-s-eclipse span.cm-number {
-    color: #cce9c1;
-  }
+    /* css属性的数字值 */
+    .cm-s-eclipse span.cm-number {
+      color: #cce9c1;
+    }
 
-  /* html属性的值 */
-  .cm-s-eclipse span.cm-string {
-    color: #f3ae8d;
-  }
+    /* html属性的值 */
+    .cm-s-eclipse span.cm-string {
+      color: #f3ae8d;
+    }
 
-  .cm-s-eclipse span.cm-string-2 {
-    color: #f3ae8d;
-  }
+    .cm-s-eclipse span.cm-string-2 {
+      color: #f3ae8d;
+    }
 
-  /* 还没确定是什么 */
-  .cm-s-eclipse span.cm-meta {
-    color: #939393;
-  }
+    /* 还没确定是什么 */
+    .cm-s-eclipse span.cm-meta {
+      color: #939393;
+    }
 
-  .cm-s-eclipse span.cm-hr {
-    color: #939393;
-  }
+    .cm-s-eclipse span.cm-hr {
+      color: #939393;
+    }
 
-  /* markdown标题*/
-  /* .cm-s-eclipse span.cm-header {
+    /* markdown标题*/
+    /* .cm-s-eclipse span.cm-header {
     color: #559cda;
     color: #aeb6c5;
 } */
 
-  /* h1-h5 */
-  .cm-s-eclipse span.cm-header-1 {
-    font-size: 24px;
-  }
+    /* h1-h5 */
+    .cm-s-eclipse span.cm-header-1 {
+      font-size: 24px;
+    }
 
-  .cm-s-eclipse span.cm-header-2 {
-    font-size: 22px;
-  }
+    .cm-s-eclipse span.cm-header-2 {
+      font-size: 22px;
+    }
 
-  .cm-s-eclipse span.cm-header-3 {
-    font-size: 20px;
-  }
+    .cm-s-eclipse span.cm-header-3 {
+      font-size: 20px;
+    }
 
-  .cm-s-eclipse span.cm-header-4 {
-    font-size: 18px;
-  }
+    .cm-s-eclipse span.cm-header-4 {
+      font-size: 18px;
+    }
 
-  .cm-s-eclipse span.cm-header-5 {
-    font-size: 16px;
-  }
+    .cm-s-eclipse span.cm-header-5 {
+      font-size: 16px;
+    }
 
-  .cm-s-eclipse span.cm-header-6 {
-    font-size: 14px;
-  }
+    .cm-s-eclipse span.cm-header-6 {
+      font-size: 14px;
+    }
 
-  /* 还没确定是什么 */
-  .cm-s-eclipse span.cm-qualifier {
-    color: #75bfff;
-  }
+    /* 还没确定是什么 */
+    .cm-s-eclipse span.cm-qualifier {
+      color: #75bfff;
+    }
 
-  .cm-s-eclipse span.cm-variable-2 {
-    color: #75bfff;
-  }
+    .cm-s-eclipse span.cm-variable-2 {
+      color: #75bfff;
+    }
 
-  /* js属性,比如vue中的el、data */
-  .cm-s-eclipse span.cm-property {
-    color: #b9e3ff;
-  }
+    /* js属性,比如vue中的el、data */
+    .cm-s-eclipse span.cm-property {
+      color: #b9e3ff;
+    }
 
-  /* js函数名、变量名等 */
-  .cm-s-eclipse span.cm-def {
-    color: #75bfff;
-  }
+    /* js函数名、变量名等 */
+    .cm-s-eclipse span.cm-def {
+      color: #75bfff;
+    }
 
-  /* js属性的值,比如vue中的el后面的 #app */
-  .cm-s-eclipse span.cm-bracket {
-    color: #c76b20;
-  }
+    /* js属性的值,比如vue中的el后面的 #app */
+    .cm-s-eclipse span.cm-bracket {
+      color: #c76b20;
+    }
 
-  /* html的标签 */
-  .cm-s-eclipse span.cm-tag {
-    color: #559cda;
-  }
+    /* html的标签 */
+    .cm-s-eclipse span.cm-tag {
+      color: #559cda;
+    }
 
-  /* 还没确定是什么 */
-  .cm-s-eclipse span.cm-link:visited {
-    color: #56ad64;
-  }
+    /* 还没确定是什么 */
+    .cm-s-eclipse span.cm-link:visited {
+      color: #56ad64;
+    }
 
-  /* new Vue 里面的Vue; console关键字等 */
-  .cm-s-eclipse span.cm-variable {
-    color: #85ec9f;
-  }
+    /* new Vue 里面的Vue; console关键字等 */
+    .cm-s-eclipse span.cm-variable {
+      color: #85ec9f;
+    }
 
-  /* hover等 */
-  .cm-s-eclipse span.cm-variable-3 {
-    color: #fcdb9e;
-  }
+    /* hover等 */
+    .cm-s-eclipse span.cm-variable-3 {
+      color: #fcdb9e;
+    }
 
-  /* 链接 
+    /* 链接 
    示例：[GitHub](https://chmwriter.com) */
-  .cm-s-eclipse span.cm-link {
-    color: #808392;
-  }
+    .cm-s-eclipse span.cm-link {
+      color: #808392;
+    }
 
-  /* 运算符 */
-  .cm-s-eclipse span.cm-operator {
-    color: #b1b1b3;
-  }
+    /* 运算符 */
+    .cm-s-eclipse span.cm-operator {
+      color: #b1b1b3;
+    }
 
-  /* 还没确定是什么 */
-  .cm-s-eclipse span.cm-special {
-    color: #d7d7db;
-  }
+    /* 还没确定是什么 */
+    .cm-s-eclipse span.cm-special {
+      color: #d7d7db;
+    }
 
-  .cm-s-eclipse .CodeMirror-matchingbracket {
-    outline: solid 1px #ffffff40;
-    color: white !important;
-  }
+    .cm-s-eclipse .CodeMirror-matchingbracket {
+      outline: solid 1px #ffffff40;
+      color: white !important;
+    }
 
-  /* 文字选中状态 */
-  .cm-s-eclipse div.CodeMirror-selected {
-    /* color: #ddd; */
-    background-color: #bfe0ff;
-    /* background-color: #343536; */
-  }
+    /* 文字选中状态 */
+    .cm-s-eclipse div.CodeMirror-selected {
+      /* color: #ddd; */
+      background-color: #bfe0ff;
+      /* background-color: #343536; */
+    }
 
-  /* vim光标样式 */
-  .cm-fat-cursor .CodeMirror-cursor {
-    background-color: #73b7ffc4;
-    color: transparent;
-    /* width: 0.5em; */
-  }
+    /* vim光标样式 */
+    .cm-fat-cursor .CodeMirror-cursor {
+      background-color: #73b7ffc4;
+      color: transparent;
+      /* width: 0.5em; */
+    }
 
-  .cm-animate-fat-cursor {
-    background-color: #73b7ffc4;
-  }
+    .cm-animate-fat-cursor {
+      background-color: #73b7ffc4;
+    }
 
-  /* vim输入光标颜色 */
-  .cm-s-eclipse .CodeMirror-cursor {
-    border-left: 2px solid #73b7ffc4;
-    color: transparent;
-  }
+    /* vim输入光标颜色 */
+    .cm-s-eclipse .CodeMirror-cursor {
+      border-left: 2px solid #73b7ffc4;
+      color: transparent;
+    }
 
-  /* .CodeMirror-gutter .CodeMirror-linenumbers{
+    /* .CodeMirror-gutter .CodeMirror-linenumbers{
     width: 25px !important;
 } */
-  /* .CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like{
+    /* .CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like{
     padding-left: 20px;
 } */
 
-  /* 内容 */
-  .CodeMirror-code {
-    /* line-height: 25px; */
-    /* padding: 5px; */
-    padding-right: 0px;
-    /* text-align: justify; */
-    /* text-indent: 2em; */
-  }
+    /* 内容 */
+    .CodeMirror-code {
+      /* line-height: 25px; */
+      /* padding: 5px; */
+      padding-right: 0px;
+      /* text-align: justify; */
+      /* text-indent: 2em; */
+    }
 
-  /* @font-face {
+    /* @font-face {
     font-family: 'Hack-Regular-4';
     src: url('./Hack-Regular-4.ttf');
 } */
 
-  /* 编辑器样式 */
-  .CodeMirror {
-    /* border-right: 1px solid #86cfb6; */
-    width: 100%;
-    height: 100%;
-    /* line-height: 24px; */
-    /* font-family: 'Hack-Regular-4'; */
-    font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑,
-      STHeiti, MingLiu;
-    /*  */
-    /* letter-spacing: 1px; */
-  }
+    /* 编辑器样式 */
+    .CodeMirror {
+      /* border-right: 1px solid #86cfb6; */
+      width: 100%;
+      height: 100%;
+      /* line-height: 24px; */
+      /* font-family: 'Hack-Regular-4'; */
+      font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑,
+        STHeiti, MingLiu;
+      /*  */
+      /* letter-spacing: 1px; */
+    }
 
-  /* 打字机模式，底下留白50% */
-  .CodeMirror-lines {
-    padding-bottom: 65%;
-  }
+    /* 打字机模式，底下留白50% */
+    .CodeMirror-lines {
+      padding-bottom: 65%;
+    }
 
-  /* 编辑器样式 -start */
+    /* 编辑器样式 -start */
 
-  /* 文字选中状态 */
-  .cm-s-eclipse div.CodeMirror-selected {
-    /* background: #16181D !important; */
-    background: #202531 !important;
-    /* background: #c7c55e !important; */
-  }
+    /* 文字选中状态 */
+    .cm-s-eclipse div.CodeMirror-selected {
+      /* background: #16181D !important; */
+      background: #202531 !important;
+      /* background: #c7c55e !important; */
+    }
 
-  /* 全屏 */
-  .CodeMirror-fullscreen {
-    background: var(--main_bg_color_4) !important;
-  }
+    /* 全屏 */
+    .CodeMirror-fullscreen {
+      background: var(--main_bg_color_4) !important;
+    }
 
-  /* 全屏的时候，文章内容的宽度等 */
-  .CodeMirror-fullscreen > .CodeMirror-scroll {
-    max-width: 650px !important;
-    margin: auto !important;
-  }
+    /* 全屏的时候，文章内容的宽度等 */
+    .CodeMirror-fullscreen > .CodeMirror-scroll {
+      max-width: 650px !important;
+      margin: auto !important;
+    }
 
-  /* 文本对比框-start */
-  /* 行号栏 */
-  // .CodeMirror-gutters {
-  //   border-right: 1px solid var(--main_border_color) !important;
-  //   background: var(--main_bg_color_4) !important;
-  // }
+    /* 文本对比框-start */
+    /* 行号栏 */
+    // .CodeMirror-gutters {
+    //   border-right: 1px solid var(--main_border_color) !important;
+    //   background: var(--main_bg_color_4) !important;
+    // }
 
-  /* 外框 */
-  .CodeMirror-merge {
-    border: 1px solid #37568e !important;
-  }
+    /* 外框 */
+    .CodeMirror-merge {
+      border: 1px solid #37568e !important;
+    }
 
-  /* 中间间隙 */
-  .CodeMirror-merge-gap {
-    border-left: 1px solid var(--main_border_color) !important;
-    border-right: 1px solid var(--main_border_color) !important;
-    background: var(--main_bg_color_4) !important;
-  }
+    /* 中间间隙 */
+    .CodeMirror-merge-gap {
+      border-left: 1px solid var(--main_border_color) !important;
+      border-right: 1px solid var(--main_border_color) !important;
+      background: var(--main_bg_color_4) !important;
+    }
 
-  /* 文本对比框-end */
+    /* 文本对比框-end */
 
-  /* 行尾空格样式 */
-  .cm-trailingspace {
-    /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==); */
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAEq2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQiCiAgIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSIyIgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iNCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iOTYuMCIKICAgdGlmZjpZUmVzb2x1dGlvbj0iOTYuMCIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIgogICB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIKICAgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCI+CiAgIDx4bXBNTTpIaXN0b3J5PgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaQogICAgICBzdEV2dDphY3Rpb249InByb2R1Y2VkIgogICAgICBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZmZpbml0eSBQaG90byAxLjkuMCIKICAgICAgc3RFdnQ6d2hlbj0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIvPgogICAgPC9yZGY6U2VxPgogICA8L3htcE1NOkhpc3Rvcnk+CiAgPC9yZGY6RGVzY3JpcHRpb24+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+O2b9CwAAAYNpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHPK0RRFMc/M36M/GgUC8ViCKuhMTSxsRgxFBZjlF+bmTe/1LyZ13szSbbKVlFi49eCv4CtslaKSMlOWRMb9Jw3MzWSObdzz+d+7z2ne88FeyilqEalB9R0Vg8G/K65+QWX45lqWmlkgPawYmhTM2MhytrHHTYr3vRYtcqf+9fqojFDAVuN8LCi6VnhceHJlaxm8bZws5IMR4VPhd26XFD41tIjBX6xOFHgL4v1UHAE7I3CrsQvjvxiJamrwvJyOtVUTinex3pJfSw9OyOxQ7wNgyAB/LiYYJQRfPQxJLOPHrz0yooy+Z58/jQZyVVk1lhFZ5kESbK4Rc1J9ZjEuOgxGSlWrf7/7asR7/cWqtf7oerJNN+6wLEF35um+Xlomt9HUPEIF+lSfuYABt9F3yxpnfvgXIezy5IW2YHzDWh50MJ6OC9ViNvjcXg9gYZ5aLqG2sVCz4r7HN9DaE2+6gp296BbzjuXfgC4wGgLIH1G5AAAAAlwSFlzAAAOxAAADsQBlSsOGwAAACJJREFUCJljZNFLYNFLYGBg+LHEkYEj5gADAwOLXgJHzAEARbIF3ac2qHcAAAAASUVORK5CYII=);
-    /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACBAMAAACNhmBQAAAAElBMVEWLyfOWz/ZXse0onu9/xPGn1vVlCrabAAAABnRSTlMF/vPRHxABGoCqAAAADklEQVQI12NgZWZgVAEAAFEALgLI4eEAAAAASUVORK5CYII=); */
-    background-position: bottom left;
-    background-repeat: repeat-x;
-  }
+    /* 行尾空格样式 */
+    .cm-trailingspace {
+      /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==); */
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAEq2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQiCiAgIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSIyIgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iNCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iOTYuMCIKICAgdGlmZjpZUmVzb2x1dGlvbj0iOTYuMCIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIgogICB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIKICAgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCI+CiAgIDx4bXBNTTpIaXN0b3J5PgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaQogICAgICBzdEV2dDphY3Rpb249InByb2R1Y2VkIgogICAgICBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZmZpbml0eSBQaG90byAxLjkuMCIKICAgICAgc3RFdnQ6d2hlbj0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIvPgogICAgPC9yZGY6U2VxPgogICA8L3htcE1NOkhpc3Rvcnk+CiAgPC9yZGY6RGVzY3JpcHRpb24+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+O2b9CwAAAYNpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHPK0RRFMc/M36M/GgUC8ViCKuhMTSxsRgxFBZjlF+bmTe/1LyZ13szSbbKVlFi49eCv4CtslaKSMlOWRMb9Jw3MzWSObdzz+d+7z2ne88FeyilqEalB9R0Vg8G/K65+QWX45lqWmlkgPawYmhTM2MhytrHHTYr3vRYtcqf+9fqojFDAVuN8LCi6VnhceHJlaxm8bZws5IMR4VPhd26XFD41tIjBX6xOFHgL4v1UHAE7I3CrsQvjvxiJamrwvJyOtVUTinex3pJfSw9OyOxQ7wNgyAB/LiYYJQRfPQxJLOPHrz0yooy+Z58/jQZyVVk1lhFZ5kESbK4Rc1J9ZjEuOgxGSlWrf7/7asR7/cWqtf7oerJNN+6wLEF35um+Xlomt9HUPEIF+lSfuYABt9F3yxpnfvgXIezy5IW2YHzDWh50MJ6OC9ViNvjcXg9gYZ5aLqG2sVCz4r7HN9DaE2+6gp296BbzjuXfgC4wGgLIH1G5AAAAAlwSFlzAAAOxAAADsQBlSsOGwAAACJJREFUCJljZNFLYNFLYGBg+LHEkYEj5gADAwOLXgJHzAEARbIF3ac2qHcAAAAASUVORK5CYII=);
+      /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACBAMAAACNhmBQAAAAElBMVEWLyfOWz/ZXse0onu9/xPGn1vVlCrabAAAABnRSTlMF/vPRHxABGoCqAAAADklEQVQI12NgZWZgVAEAAFEALgLI4eEAAAAASUVORK5CYII=); */
+      background-position: bottom left;
+      background-repeat: repeat-x;
+    }
 
-  /* 高亮与当前选择匹配的字符-start */
-  .CodeMirror-focused .cm-matchhighlight {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
-    background-position: bottom;
-    background-repeat: repeat-x;
-  }
+    /* 高亮与当前选择匹配的字符-start */
+    .CodeMirror-focused .cm-matchhighlight {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
+      background-position: bottom;
+      background-repeat: repeat-x;
+    }
 
-  .cm-matchhighlight {
-    /* background: var(--main_btn_bg_color) !important */
-    /* background: #1f4b7bdb !important */
-    background: #28486bb8 !important;
-  }
+    .cm-matchhighlight {
+      /* background: var(--main_btn_bg_color) !important */
+      /* background: #1f4b7bdb !important */
+      background: #28486bb8 !important;
+    }
 
-  .CodeMirror-selection-highlight-scrollbar {
-    background: #1f4b7bdb !important;
-  }
+    .CodeMirror-selection-highlight-scrollbar {
+      background: #1f4b7bdb !important;
+    }
 
-  /* 高亮与当前选择匹配的字符-end */
+    /* 高亮与当前选择匹配的字符-end */
 
-  /* 高亮当前行-start */
-  .CodeMirror-activeline {
-    background: #2e37446e;
-  }
+    /* 高亮当前行-start */
+    .CodeMirror-activeline {
+      background: #282c34;
+    }
 
-  .cm-s-eclipse .CodeMirror-activeline-background {
-    background: #2e37446e;
-  }
-  /* .CodeMirror-activeline-background{
+    .cm-s-eclipse .CodeMirror-activeline-background {
+      background: #2e37446e;
+    }
+    /* .CodeMirror-activeline-background{
 } */
-  .CodeMirror-activeline-gutter {
-    /* background: #2e37446e; */
-    background: #2e37442e;
+    .CodeMirror-activeline-gutter {
+      /* background: #2e37446e; */
+      background: #2e37442e;
+    }
+
+    /* 高亮当前行-end */
+
+    /* placeholder-start */
+    .CodeMirror-empty {
+      outline: 1px solid #c22;
+    }
+
+    .CodeMirror-empty.CodeMirror-focused {
+      outline: none;
+    }
+
+    .CodeMirror pre.CodeMirror-placeholder {
+      color: #989898;
+    }
+
+    /* placeholder-end */
+
+    /* 单行引用 */
+    .cm-s-eclipse span.cm-quote {
+      /* color: #6b8ef3 !important; */
+      color: #75bfff !important;
+    }
+
+    .CodeMirror-foldmarker {
+      color: #052496 !important;
+      text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px,
+        #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important;
+    }
+
+    /* 编辑器样式 -end */
+    /* ------------------------------------------------------ */
   }
-
-  /* 高亮当前行-end */
-
-  /* placeholder-start */
-  .CodeMirror-empty {
-    outline: 1px solid #c22;
-  }
-
-  .CodeMirror-empty.CodeMirror-focused {
-    outline: none;
-  }
-
-  .CodeMirror pre.CodeMirror-placeholder {
-    color: #989898;
-  }
-
-  /* placeholder-end */
-
-  /* 单行引用 */
-  .cm-s-eclipse span.cm-quote {
-    /* color: #6b8ef3 !important; */
-    color: #75bfff !important;
-  }
-
-  .CodeMirror-foldmarker {
-    color: #052496 !important;
-    text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px,
-      #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important;
-  }
-
-  /* 编辑器样式 -end */
-  /* ------------------------------------------------------ */
 }

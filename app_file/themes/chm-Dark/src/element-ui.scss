@@ -35,6 +35,10 @@
       border-bottom: 1px solid $bg_color_1;
       // border-bottom-color: red;
     }
+    .el-icon-close:hover {
+      color: $color_2;
+      background-color: $bg_color_5;
+    }
     .el-tabs__header {
       border-bottom: $border_2;
       .el-tabs__nav {
@@ -106,6 +110,9 @@
         fill: $color_1;
       }
     }
+  }
+  .el-divider {
+    background-color: $color_1;
   }
   /* element-ui -end */
 }

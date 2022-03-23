@@ -6,19 +6,19 @@
   #app .el-button--mini.el-button--primary.is-plain {
     color: #bedcf0;
     background: #266bb4;
-    border: 1px solid #4a9df81f; }
+    border-color: #4a9df81f; }
   #app .el-button--mini.is-plain {
     color: #409eff;
     background: #363f637d;
-    border: 1px solid #4a9df81f; }
+    border-color: #4a9df81f; }
   #app .el-input .el-input__inner {
     color: #a8b7c5;
     background-color: #252931;
-    border: 1px solid #222225; }
+    border-color: #222225; }
   #app .el-textarea .el-textarea__inner {
     color: #a8b7c5;
     background-color: #252931;
-    border: 1px solid #222225; }
+    border-color: #222225; }
   #app .el-tabs .el-tabs__item {
     color: #a8b7c5;
     border-radius: 5px 5px 0px 0px;
@@ -27,6 +27,9 @@
   #app .el-tabs .el-tabs__item.is-active {
     color: #409eff;
     border-bottom: 1px solid #282c34; }
+  #app .el-tabs .el-icon-close:hover {
+    color: #409eff;
+    background-color: #363f637d; }
   #app .el-tabs .el-tabs__header {
     border-bottom: 1px solid #4a9df81f; }
     #app .el-tabs .el-tabs__header .el-tabs__nav {
@@ -40,7 +43,7 @@
   #app .el-dialog {
     color: #a8b7c5;
     background-color: #2b313c;
-    border: 1px solid #4a9df81f;
+    border-color: #4a9df81f;
     box-shadow: 2px 3px 7px #111921d4; }
     #app .el-dialog .el-dialog__header .el-dialog__title {
       color: #a8b7c5; }
@@ -49,11 +52,11 @@
     #app .el-dialog .el-form .el-form-item .el-form-item__content .el-button--primary {
       color: #bedcf0;
       background: #266bb4;
-      border: 1px solid #4a9df81f; }
+      border-color: #4a9df81f; }
     #app .el-dialog .el-form .el-form-item .el-form-item__content .el-button--primary:hover {
       color: #409eff;
       background: #363f637d;
-      border: 1px solid #4a9df81f; }
+      border-color: #4a9df81f; }
   #app .el-progress-bar__outer {
     background-color: #252931; }
   #app .el-slider__runway {
@@ -86,11 +89,13 @@
   #app .el-empty .el-empty__image polygon,
   #app .el-empty .el-empty__image rect {
     fill: #a8b7c5; }
+  #app .el-divider {
+    background-color: #a8b7c5; }
 
 div.el-menu--horizontal .el-menu.el-menu--popup {
   color: #a8b7c5;
   background-color: #2b313c;
-  border: 1px solid #4a9df81f;
+  border-color: #4a9df81f;
   box-shadow: 2px 3px 7px #111921d4; }
   div.el-menu--horizontal .el-menu.el-menu--popup .el-menu-item,
   div.el-menu--horizontal .el-menu.el-menu--popup .el-submenu__title {
@@ -105,7 +110,7 @@ div.el-menu--horizontal .el-menu.el-menu--popup {
 div.el-select-dropdown.el-popper {
   color: #a8b7c5;
   background-color: #2b313c;
-  border: 1px solid #4a9df81f;
+  border-color: #4a9df81f;
   box-shadow: 2px 3px 7px #111921d4; }
   div.el-select-dropdown.el-popper .el-select-dropdown__item {
     color: #a8b7c5; }
@@ -121,7 +126,7 @@ div.el-select-dropdown.el-popper {
 div.el-message-box {
   color: #a8b7c5;
   background-color: #2b313c;
-  border: 1px solid #4a9df81f;
+  border-color: #4a9df81f;
   box-shadow: 2px 3px 7px #111921d4; }
   div.el-message-box .el-message-box__title {
     color: #a8b7c5; }
@@ -130,256 +135,257 @@ div.el-message-box {
     div.el-message-box .el-message-box__content .el-message-box__input .el-input__inner {
       color: #a8b7c5;
       background-color: #252931;
-      border: 1px solid #222225; }
+      border-color: #222225; }
     div.el-message-box .el-message-box__content .el-message-box__btns .el-button {
       color: #409eff;
       background: #363f637d;
-      border: 1px solid #4a9df81f; }
+      border-color: #4a9df81f; }
 
 #app {
   /*
     Name:       chmWriter_editor_light
     Author:     Neo
-*/
-  /* 编辑器的背景及默认字体颜色 */
-  /* .cm-s-eclipse .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; } */
-  /* 显示行号面板的字体颜色 */
-  /* 显示行号的面板的背景颜色 */
-  /* 备注颜色 */
-  /* 属性后面的值 */
-  /* 还没确定是什么 */
-  /* css id选择器 */
-  /* html属性 */
-  /* 关键词 var function */
-  /* 还没确定是什么 */
-  /* css属性的数字值 */
-  /* html属性的值 */
-  /* 还没确定是什么 */
-  /* markdown标题*/
-  /* .cm-s-eclipse span.cm-header {
+*/ }
+  #app .cm_editor_container {
+    /* 编辑器的背景及默认字体颜色 */
+    /* .cm-s-eclipse .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; } */
+    /* 显示行号面板的字体颜色 */
+    /* 显示行号的面板的背景颜色 */
+    /* 备注颜色 */
+    /* 属性后面的值 */
+    /* 还没确定是什么 */
+    /* css id选择器 */
+    /* html属性 */
+    /* 关键词 var function */
+    /* 还没确定是什么 */
+    /* css属性的数字值 */
+    /* html属性的值 */
+    /* 还没确定是什么 */
+    /* markdown标题*/
+    /* .cm-s-eclipse span.cm-header {
     color: #559cda;
     color: #aeb6c5;
 } */
-  /* h1-h5 */
-  /* 还没确定是什么 */
-  /* js属性,比如vue中的el、data */
-  /* js函数名、变量名等 */
-  /* js属性的值,比如vue中的el后面的 #app */
-  /* html的标签 */
-  /* 还没确定是什么 */
-  /* new Vue 里面的Vue; console关键字等 */
-  /* hover等 */
-  /* 链接 
+    /* h1-h5 */
+    /* 还没确定是什么 */
+    /* js属性,比如vue中的el、data */
+    /* js函数名、变量名等 */
+    /* js属性的值,比如vue中的el后面的 #app */
+    /* html的标签 */
+    /* 还没确定是什么 */
+    /* new Vue 里面的Vue; console关键字等 */
+    /* hover等 */
+    /* 链接 
    示例：[GitHub](https://chmwriter.com) */
-  /* 运算符 */
-  /* 还没确定是什么 */
-  /* 文字选中状态 */
-  /* vim光标样式 */
-  /* vim输入光标颜色 */
-  /* .CodeMirror-gutter .CodeMirror-linenumbers{
+    /* 运算符 */
+    /* 还没确定是什么 */
+    /* 文字选中状态 */
+    /* vim光标样式 */
+    /* vim输入光标颜色 */
+    /* .CodeMirror-gutter .CodeMirror-linenumbers{
     width: 25px !important;
 } */
-  /* .CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like{
+    /* .CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like{
     padding-left: 20px;
 } */
-  /* 内容 */
-  /* @font-face {
+    /* 内容 */
+    /* @font-face {
     font-family: 'Hack-Regular-4';
     src: url('./Hack-Regular-4.ttf');
 } */
-  /* 编辑器样式 */
-  /* 打字机模式，底下留白50% */
-  /* 编辑器样式 -start */
-  /* 文字选中状态 */
-  /* 全屏 */
-  /* 全屏的时候，文章内容的宽度等 */
-  /* 文本对比框-start */
-  /* 行号栏 */
-  /* 外框 */
-  /* 中间间隙 */
-  /* 文本对比框-end */
-  /* 行尾空格样式 */
-  /* 高亮与当前选择匹配的字符-start */
-  /* 高亮与当前选择匹配的字符-end */
-  /* 高亮当前行-start */
-  /* .CodeMirror-activeline-background{
+    /* 编辑器样式 */
+    /* 打字机模式，底下留白50% */
+    /* 编辑器样式 -start */
+    /* 文字选中状态 */
+    /* 全屏 */
+    /* 全屏的时候，文章内容的宽度等 */
+    /* 文本对比框-start */
+    /* 行号栏 */
+    /* 外框 */
+    /* 中间间隙 */
+    /* 文本对比框-end */
+    /* 行尾空格样式 */
+    /* 高亮与当前选择匹配的字符-start */
+    /* 高亮与当前选择匹配的字符-end */
+    /* 高亮当前行-start */
+    /* .CodeMirror-activeline-background{
 } */
-  /* 高亮当前行-end */
-  /* placeholder-start */
-  /* placeholder-end */
-  /* 单行引用 */
-  /* 编辑器样式 -end */
-  /* ------------------------------------------------------ */ }
-  #app .cm-s-eclipse.CodeMirror {
-    background: #ffffff00;
-    /* color: #363636; */
-    color: inherit; }
-  #app .cm-s-eclipse div.CodeMirror-selected {
-    background: #353b48; }
-  #app .cm-s-eclipse .CodeMirror-line::selection,
-  #app .cm-s-eclipse .CodeMirror-line > span::selection,
-  #app .cm-s-eclipse .CodeMirror-line > span > span::selection {
-    background: #353b48; }
-  #app .cm-s-eclipse .CodeMirror-line::-moz-selection,
-  #app .cm-s-eclipse .CodeMirror-line > span::-moz-selection,
-  #app .cm-s-eclipse .CodeMirror-line > span > span::-moz-selection {
-    background: #353b48; }
-  #app .cm-s-eclipse .CodeMirror-guttermarker {
-    color: #555; }
-  #app .cm-s-eclipse .CodeMirror-linenumber {
-    /* color: #939393; */
-    color: #49627785;
-    /* color: #b1b1b152; */
-    font-size: 12px; }
-  #app .cm-s-eclipse .CodeMirror-gutters {
-    background: transparent !important;
-    border-right: 1px solid #222225; }
-  #app .cm-s-eclipse .CodeMirror-cursor {
-    border-left: 1px solid #fff; }
-  #app .cm-s-eclipse span.cm-comment {
-    color: #56ad64;
-    /* color: #0AC4A0; */ }
-  #app .cm-s-eclipse span.cm-atom {
-    color: #e69f7e; }
-  #app .cm-s-eclipse span.cm-quote {
-    color: #735ace; }
-  #app .cm-s-eclipse span.cm-builtin {
-    color: #fcdb9e; }
-  #app .cm-s-eclipse span.cm-attribute {
-    color: #a8dbfd; }
-  #app .cm-s-eclipse span.cm-keyword {
-    color: #6bb6e7; }
-  #app .cm-s-eclipse span.cm-error {
-    color: #da6201; }
-  #app .cm-s-eclipse span.cm-number {
-    color: #cce9c1; }
-  #app .cm-s-eclipse span.cm-string {
-    color: #f3ae8d; }
-  #app .cm-s-eclipse span.cm-string-2 {
-    color: #f3ae8d; }
-  #app .cm-s-eclipse span.cm-meta {
-    color: #939393; }
-  #app .cm-s-eclipse span.cm-hr {
-    color: #939393; }
-  #app .cm-s-eclipse span.cm-header-1 {
-    font-size: 24px; }
-  #app .cm-s-eclipse span.cm-header-2 {
-    font-size: 22px; }
-  #app .cm-s-eclipse span.cm-header-3 {
-    font-size: 20px; }
-  #app .cm-s-eclipse span.cm-header-4 {
-    font-size: 18px; }
-  #app .cm-s-eclipse span.cm-header-5 {
-    font-size: 16px; }
-  #app .cm-s-eclipse span.cm-header-6 {
-    font-size: 14px; }
-  #app .cm-s-eclipse span.cm-qualifier {
-    color: #75bfff; }
-  #app .cm-s-eclipse span.cm-variable-2 {
-    color: #75bfff; }
-  #app .cm-s-eclipse span.cm-property {
-    color: #b9e3ff; }
-  #app .cm-s-eclipse span.cm-def {
-    color: #75bfff; }
-  #app .cm-s-eclipse span.cm-bracket {
-    color: #c76b20; }
-  #app .cm-s-eclipse span.cm-tag {
-    color: #559cda; }
-  #app .cm-s-eclipse span.cm-link:visited {
-    color: #56ad64; }
-  #app .cm-s-eclipse span.cm-variable {
-    color: #85ec9f; }
-  #app .cm-s-eclipse span.cm-variable-3 {
-    color: #fcdb9e; }
-  #app .cm-s-eclipse span.cm-link {
-    color: #808392; }
-  #app .cm-s-eclipse span.cm-operator {
-    color: #b1b1b3; }
-  #app .cm-s-eclipse span.cm-special {
-    color: #d7d7db; }
-  #app .cm-s-eclipse .CodeMirror-matchingbracket {
-    outline: solid 1px #ffffff40;
-    color: white !important; }
-  #app .cm-s-eclipse div.CodeMirror-selected {
-    /* color: #ddd; */
-    background-color: #bfe0ff;
-    /* background-color: #343536; */ }
-  #app .cm-fat-cursor .CodeMirror-cursor {
-    background-color: #73b7ffc4;
-    color: transparent;
-    /* width: 0.5em; */ }
-  #app .cm-animate-fat-cursor {
-    background-color: #73b7ffc4; }
-  #app .cm-s-eclipse .CodeMirror-cursor {
-    border-left: 2px solid #73b7ffc4;
-    color: transparent; }
-  #app .CodeMirror-code {
-    /* line-height: 25px; */
-    /* padding: 5px; */
-    padding-right: 0px;
-    /* text-align: justify; */
-    /* text-indent: 2em; */ }
-  #app .CodeMirror {
-    /* border-right: 1px solid #86cfb6; */
-    width: 100%;
-    height: 100%;
-    /* line-height: 24px; */
-    /* font-family: 'Hack-Regular-4'; */
-    font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑, STHeiti, MingLiu;
-    /*  */
-    /* letter-spacing: 1px; */ }
-  #app .CodeMirror-lines {
-    padding-bottom: 65%; }
-  #app .cm-s-eclipse div.CodeMirror-selected {
-    /* background: #16181D !important; */
-    background: #202531 !important;
-    /* background: #c7c55e !important; */ }
-  #app .CodeMirror-fullscreen {
-    background: var(--main_bg_color_4) !important; }
-  #app .CodeMirror-fullscreen > .CodeMirror-scroll {
-    max-width: 650px !important;
-    margin: auto !important; }
-  #app .CodeMirror-merge {
-    border: 1px solid #37568e !important; }
-  #app .CodeMirror-merge-gap {
-    border-left: 1px solid var(--main_border_color) !important;
-    border-right: 1px solid var(--main_border_color) !important;
-    background: var(--main_bg_color_4) !important; }
-  #app .cm-trailingspace {
-    /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==); */
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAEq2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQiCiAgIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSIyIgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iNCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iOTYuMCIKICAgdGlmZjpZUmVzb2x1dGlvbj0iOTYuMCIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIgogICB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIKICAgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCI+CiAgIDx4bXBNTTpIaXN0b3J5PgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaQogICAgICBzdEV2dDphY3Rpb249InByb2R1Y2VkIgogICAgICBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZmZpbml0eSBQaG90byAxLjkuMCIKICAgICAgc3RFdnQ6d2hlbj0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIvPgogICAgPC9yZGY6U2VxPgogICA8L3htcE1NOkhpc3Rvcnk+CiAgPC9yZGY6RGVzY3JpcHRpb24+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+O2b9CwAAAYNpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHPK0RRFMc/M36M/GgUC8ViCKuhMTSxsRgxFBZjlF+bmTe/1LyZ13szSbbKVlFi49eCv4CtslaKSMlOWRMb9Jw3MzWSObdzz+d+7z2ne88FeyilqEalB9R0Vg8G/K65+QWX45lqWmlkgPawYmhTM2MhytrHHTYr3vRYtcqf+9fqojFDAVuN8LCi6VnhceHJlaxm8bZws5IMR4VPhd26XFD41tIjBX6xOFHgL4v1UHAE7I3CrsQvjvxiJamrwvJyOtVUTinex3pJfSw9OyOxQ7wNgyAB/LiYYJQRfPQxJLOPHrz0yooy+Z58/jQZyVVk1lhFZ5kESbK4Rc1J9ZjEuOgxGSlWrf7/7asR7/cWqtf7oerJNN+6wLEF35um+Xlomt9HUPEIF+lSfuYABt9F3yxpnfvgXIezy5IW2YHzDWh50MJ6OC9ViNvjcXg9gYZ5aLqG2sVCz4r7HN9DaE2+6gp296BbzjuXfgC4wGgLIH1G5AAAAAlwSFlzAAAOxAAADsQBlSsOGwAAACJJREFUCJljZNFLYNFLYGBg+LHEkYEj5gADAwOLXgJHzAEARbIF3ac2qHcAAAAASUVORK5CYII=);
-    /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACBAMAAACNhmBQAAAAElBMVEWLyfOWz/ZXse0onu9/xPGn1vVlCrabAAAABnRSTlMF/vPRHxABGoCqAAAADklEQVQI12NgZWZgVAEAAFEALgLI4eEAAAAASUVORK5CYII=); */
-    background-position: bottom left;
-    background-repeat: repeat-x; }
-  #app .CodeMirror-focused .cm-matchhighlight {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
-    background-position: bottom;
-    background-repeat: repeat-x; }
-  #app .cm-matchhighlight {
-    /* background: var(--main_btn_bg_color) !important */
-    /* background: #1f4b7bdb !important */
-    background: #28486bb8 !important; }
-  #app .CodeMirror-selection-highlight-scrollbar {
-    background: #1f4b7bdb !important; }
-  #app .CodeMirror-activeline {
-    background: #2e37446e; }
-  #app .cm-s-eclipse .CodeMirror-activeline-background {
-    background: #2e37446e; }
-  #app .CodeMirror-activeline-gutter {
-    /* background: #2e37446e; */
-    background: #2e37442e; }
-  #app .CodeMirror-empty {
-    outline: 1px solid #c22; }
-  #app .CodeMirror-empty.CodeMirror-focused {
-    outline: none; }
-  #app .CodeMirror pre.CodeMirror-placeholder {
-    color: #989898; }
-  #app .cm-s-eclipse span.cm-quote {
-    /* color: #6b8ef3 !important; */
-    color: #75bfff !important; }
-  #app .CodeMirror-foldmarker {
-    color: #052496 !important;
-    text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px, #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important; }
+    /* 高亮当前行-end */
+    /* placeholder-start */
+    /* placeholder-end */
+    /* 单行引用 */
+    /* 编辑器样式 -end */
+    /* ------------------------------------------------------ */ }
+    #app .cm_editor_container .cm-s-eclipse.CodeMirror {
+      background: #ffffff00;
+      /* color: #363636; */
+      color: inherit; }
+    #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
+      background: #353b48; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-line::selection,
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-line > span::selection,
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-line > span > span::selection {
+      background: #353b48; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-line::-moz-selection,
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-line > span::-moz-selection,
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-line > span > span::-moz-selection {
+      background: #353b48; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-guttermarker {
+      color: #555; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-linenumber {
+      /* color: #939393; */
+      color: #49627785;
+      /* color: #b1b1b152; */
+      font-size: 12px; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-gutters {
+      background: transparent !important;
+      border-right: 1px solid #222225; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-cursor {
+      border-left: 1px solid #fff; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-comment {
+      color: #56ad64;
+      /* color: #0AC4A0; */ }
+    #app .cm_editor_container .cm-s-eclipse span.cm-atom {
+      color: #e69f7e; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-quote {
+      color: #735ace; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-builtin {
+      color: #fcdb9e; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-attribute {
+      color: #a8dbfd; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-keyword {
+      color: #6bb6e7; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-error {
+      color: #da6201; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-number {
+      color: #cce9c1; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-string {
+      color: #f3ae8d; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-string-2 {
+      color: #f3ae8d; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-meta {
+      color: #939393; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-hr {
+      color: #939393; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-header-1 {
+      font-size: 24px; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-header-2 {
+      font-size: 22px; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-header-3 {
+      font-size: 20px; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-header-4 {
+      font-size: 18px; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-header-5 {
+      font-size: 16px; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-header-6 {
+      font-size: 14px; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-qualifier {
+      color: #75bfff; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-variable-2 {
+      color: #75bfff; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-property {
+      color: #b9e3ff; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-def {
+      color: #75bfff; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-bracket {
+      color: #c76b20; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-tag {
+      color: #559cda; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-link:visited {
+      color: #56ad64; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-variable {
+      color: #85ec9f; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-variable-3 {
+      color: #fcdb9e; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-link {
+      color: #808392; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-operator {
+      color: #b1b1b3; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-special {
+      color: #d7d7db; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-matchingbracket {
+      outline: solid 1px #ffffff40;
+      color: white !important; }
+    #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
+      /* color: #ddd; */
+      background-color: #bfe0ff;
+      /* background-color: #343536; */ }
+    #app .cm_editor_container .cm-fat-cursor .CodeMirror-cursor {
+      background-color: #73b7ffc4;
+      color: transparent;
+      /* width: 0.5em; */ }
+    #app .cm_editor_container .cm-animate-fat-cursor {
+      background-color: #73b7ffc4; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-cursor {
+      border-left: 2px solid #73b7ffc4;
+      color: transparent; }
+    #app .cm_editor_container .CodeMirror-code {
+      /* line-height: 25px; */
+      /* padding: 5px; */
+      padding-right: 0px;
+      /* text-align: justify; */
+      /* text-indent: 2em; */ }
+    #app .cm_editor_container .CodeMirror {
+      /* border-right: 1px solid #86cfb6; */
+      width: 100%;
+      height: 100%;
+      /* line-height: 24px; */
+      /* font-family: 'Hack-Regular-4'; */
+      font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑, STHeiti, MingLiu;
+      /*  */
+      /* letter-spacing: 1px; */ }
+    #app .cm_editor_container .CodeMirror-lines {
+      padding-bottom: 65%; }
+    #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
+      /* background: #16181D !important; */
+      background: #202531 !important;
+      /* background: #c7c55e !important; */ }
+    #app .cm_editor_container .CodeMirror-fullscreen {
+      background: var(--main_bg_color_4) !important; }
+    #app .cm_editor_container .CodeMirror-fullscreen > .CodeMirror-scroll {
+      max-width: 650px !important;
+      margin: auto !important; }
+    #app .cm_editor_container .CodeMirror-merge {
+      border: 1px solid #37568e !important; }
+    #app .cm_editor_container .CodeMirror-merge-gap {
+      border-left: 1px solid var(--main_border_color) !important;
+      border-right: 1px solid var(--main_border_color) !important;
+      background: var(--main_bg_color_4) !important; }
+    #app .cm_editor_container .cm-trailingspace {
+      /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==); */
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAEq2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQiCiAgIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSIyIgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iNCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iOTYuMCIKICAgdGlmZjpZUmVzb2x1dGlvbj0iOTYuMCIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIgogICB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIKICAgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCI+CiAgIDx4bXBNTTpIaXN0b3J5PgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaQogICAgICBzdEV2dDphY3Rpb249InByb2R1Y2VkIgogICAgICBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZmZpbml0eSBQaG90byAxLjkuMCIKICAgICAgc3RFdnQ6d2hlbj0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIvPgogICAgPC9yZGY6U2VxPgogICA8L3htcE1NOkhpc3Rvcnk+CiAgPC9yZGY6RGVzY3JpcHRpb24+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+O2b9CwAAAYNpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHPK0RRFMc/M36M/GgUC8ViCKuhMTSxsRgxFBZjlF+bmTe/1LyZ13szSbbKVlFi49eCv4CtslaKSMlOWRMb9Jw3MzWSObdzz+d+7z2ne88FeyilqEalB9R0Vg8G/K65+QWX45lqWmlkgPawYmhTM2MhytrHHTYr3vRYtcqf+9fqojFDAVuN8LCi6VnhceHJlaxm8bZws5IMR4VPhd26XFD41tIjBX6xOFHgL4v1UHAE7I3CrsQvjvxiJamrwvJyOtVUTinex3pJfSw9OyOxQ7wNgyAB/LiYYJQRfPQxJLOPHrz0yooy+Z58/jQZyVVk1lhFZ5kESbK4Rc1J9ZjEuOgxGSlWrf7/7asR7/cWqtf7oerJNN+6wLEF35um+Xlomt9HUPEIF+lSfuYABt9F3yxpnfvgXIezy5IW2YHzDWh50MJ6OC9ViNvjcXg9gYZ5aLqG2sVCz4r7HN9DaE2+6gp296BbzjuXfgC4wGgLIH1G5AAAAAlwSFlzAAAOxAAADsQBlSsOGwAAACJJREFUCJljZNFLYNFLYGBg+LHEkYEj5gADAwOLXgJHzAEARbIF3ac2qHcAAAAASUVORK5CYII=);
+      /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACBAMAAACNhmBQAAAAElBMVEWLyfOWz/ZXse0onu9/xPGn1vVlCrabAAAABnRSTlMF/vPRHxABGoCqAAAADklEQVQI12NgZWZgVAEAAFEALgLI4eEAAAAASUVORK5CYII=); */
+      background-position: bottom left;
+      background-repeat: repeat-x; }
+    #app .cm_editor_container .CodeMirror-focused .cm-matchhighlight {
+      background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFklEQVQI12NgYGBgkKzc8x9CMDAwAAAmhwSbidEoSQAAAABJRU5ErkJggg==);
+      background-position: bottom;
+      background-repeat: repeat-x; }
+    #app .cm_editor_container .cm-matchhighlight {
+      /* background: var(--main_btn_bg_color) !important */
+      /* background: #1f4b7bdb !important */
+      background: #28486bb8 !important; }
+    #app .cm_editor_container .CodeMirror-selection-highlight-scrollbar {
+      background: #1f4b7bdb !important; }
+    #app .cm_editor_container .CodeMirror-activeline {
+      background: #282c34; }
+    #app .cm_editor_container .cm-s-eclipse .CodeMirror-activeline-background {
+      background: #2e37446e; }
+    #app .cm_editor_container .CodeMirror-activeline-gutter {
+      /* background: #2e37446e; */
+      background: #2e37442e; }
+    #app .cm_editor_container .CodeMirror-empty {
+      outline: 1px solid #c22; }
+    #app .cm_editor_container .CodeMirror-empty.CodeMirror-focused {
+      outline: none; }
+    #app .cm_editor_container .CodeMirror pre.CodeMirror-placeholder {
+      color: #989898; }
+    #app .cm_editor_container .cm-s-eclipse span.cm-quote {
+      /* color: #6b8ef3 !important; */
+      color: #75bfff !important; }
+    #app .cm_editor_container .CodeMirror-foldmarker {
+      color: #052496 !important;
+      text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px, #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important; }
 
 div.ql-snow .ql-stroke {
   stroke: #a8b7c5; }
@@ -417,7 +423,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     #app .preview_box p code {
       color: #409eff;
       background: #363f637d;
-      border: 1px solid #4a9df81f; }
+      border-color: #4a9df81f; }
   #app .preview_box pre code {
     color: #75bfff;
     background: #2c3242; }
@@ -447,13 +453,11 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     background: #39405a;
     border-right: 1px solid #2e354c; }
 
-#app .middle_bar .main .panel .outline_box {
+#app .middle_bar .panel .cm_editor .outline_box {
   border-color: #222225; }
-  #app .middle_bar .main .panel .outline_box /deep/.el-input__inner {
-    border-color: #222225; }
-  #app .middle_bar .main .panel .outline_box ul li:hover {
+  #app .middle_bar .panel .cm_editor .outline_box ul li:hover {
     background-color: #2b313c; }
-  #app .middle_bar .main .panel .outline_box ul li.active {
+  #app .middle_bar .panel .cm_editor .outline_box ul li.active {
     border-color: #266bb4;
     background-color: #2b313c; }
 
@@ -538,7 +542,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
       #app .middle_bar .main .panel .item_bar .item_list .detail_mode_item .top > .right {
         color: #409eff;
         background: #363f637d;
-        border: 1px solid #4a9df81f; }
+        border-color: #4a9df81f; }
   #app .middle_bar .main .panel .detail_bar {
     border-left: 1px solid #222225; }
     #app .middle_bar .main .panel .detail_bar .info_box {
@@ -548,7 +552,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
       #app .middle_bar .main .panel .detail_bar .info_box .el-tag {
         color: #409eff;
         background: #363f637d;
-        border: 1px solid #4a9df81f; }
+        border-color: #4a9df81f; }
       #app .middle_bar .main .panel .detail_bar .info_box .quill_editor_container .quill_editor_toolbar {
         color: #a8b7c5;
         border: 1px solid #222225; }
@@ -562,7 +566,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
   #app .middle_bar .contextmenu_bar {
     color: #a8b7c5;
     background-color: #2b313c;
-    border: 1px solid #4a9df81f;
+    border-color: #4a9df81f;
     box-shadow: 2px 3px 7px #111921d4; }
     #app .middle_bar .contextmenu_bar .el-menu {
       background-color: transparent;

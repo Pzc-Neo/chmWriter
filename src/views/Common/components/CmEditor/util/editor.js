@@ -44,7 +44,6 @@ export const getHeadList = function (cmEditor, isAddSerialNumber = false) {
       headList.push(head)
     }
   })
-  console.log(headList)
   return headList
 }
 

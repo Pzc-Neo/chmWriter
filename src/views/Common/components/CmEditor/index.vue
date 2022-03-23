@@ -235,7 +235,6 @@ export default {
       // this.$store.commit('SET_HEAD_LIST', this.headList)
     }),
     onCmChange(cm, changes) {
-      console.log('change')
       this.updateByTypewriterMode(cm, changes)
     },
     onCmInput(newContent, item) {

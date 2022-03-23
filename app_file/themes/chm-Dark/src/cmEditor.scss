@@ -1,12 +1,9 @@
 #app {
   .middle_bar {
-    .main {
-      .panel {
+    .panel {
+      .cm_editor {
         .outline_box {
           border-color: $border_color_1;
-          /deep/.el-input__inner {
-            border-color: $border_color_1;
-          }
           ul {
             li:hover {
               background-color: $bg_color_2;
