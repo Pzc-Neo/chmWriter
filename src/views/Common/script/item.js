@@ -152,6 +152,6 @@ export const deleteItem = async function (targetItem) {
   if (result === 'confirm') {
     this.$db.deleteById(this.itemTableName, targetItem.id)
     this.removeTab(targetItem.id)
-    this.changeToGroup(this.currentGroup.id, true)
+    this.refreshItemList()
   }
 }
