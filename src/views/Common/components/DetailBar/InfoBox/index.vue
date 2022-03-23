@@ -1,6 +1,6 @@
 <template>
   <div class="info_box" :style="isFixedMode ? styleFixedMode : styleNormalMode">
-    <div class="header" @click="handleClick">
+    <div class="header" @dblclick="handleClick" @contextmenu="toggleFixedMode">
       <span class="FixedModeIcon" @click.stop="toggleFixedMode">
         <i
           :class="'el-icon-' + (isFixedMode ? 'bottom-right' : 'top-left')"
@@ -55,8 +55,6 @@ export default {
     },
     toggleFixedMode() {
       this.isFixedMode = !this.isFixedMode
-      console.log(this.isFixedMode)
-      console.log('el-icon-' + (this.isFixedMode ? 'top-left' : 'bottom-right'))
     }
   }
 }
