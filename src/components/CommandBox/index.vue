@@ -5,7 +5,6 @@
       placeholder="test"
       v-model="command"
       autofocus
-      @change="handleChange"
       @input="handleInput"
       @keydown.native="handleKeyup"
     >
@@ -160,11 +159,12 @@ export default {
       this.resultList = []
     },
     handleKeyup(e) {
-      if (e.ctrlKey === true && e.key === 'j') {
+      if ((e.ctrlKey === true && e.key === 'j') || e.key === 'ArrowDown') {
         this.changeResultIndex()
-      }
-      if (e.ctrlKey === true && e.key === 'k') {
+      } else if ((e.ctrlKey === true && e.key === 'k') || e.key === 'ArrowUp') {
         this.changeResultIndex(false)
+      } else if (e.key === 'Enter') {
+        this.executeCommand()
       }
     },
     changeResultIndex(isIncrease = true) {
@@ -185,7 +185,7 @@ export default {
       }
       scrollToView('.item.active', 0)
     },
-    handleChange() {
+    executeCommand() {
       const targetItem = this.resultList[this.resultIndex]
       if (targetItem === undefined) return
 
@@ -213,11 +213,8 @@ export default {
       while (target.tagName !== 'LI') {
         target = target.parentNode
       }
-      console.log(this.resultIndex)
       this.resultIndex = target.getAttribute('index') * 1
-      console.log(this.resultIndex)
-      this.handleChange()
-      // console.log(target, target.getAttribute('index'))
+      this.executeCommand()
     },
     handleClick() {}
   },
@@ -268,6 +265,11 @@ export default {
   z-index: 10;
   transform: translateX(-50%);
 
+  border-radius: 5px;
+  border: 1px solid #dcdfe6;
+  border-top: 0;
+  background: white;
+  box-shadow: $main-shadow;
   /deep/ .el-input {
     width: 100%;
   }
@@ -275,17 +277,14 @@ export default {
     width: 100%;
     padding: 5px 8px;
     overflow: auto;
-    border: 1px solid #dcdfe6;
-    background: white;
   }
   .result_list {
     width: 100%;
     overflow: auto;
-    border: 1px solid #dcdfe6;
+    cursor: pointer;
     .item {
       display: flex;
       padding: 5px 8px;
-      background: white;
       .left {
         width: 50%;
         text-align: left;
