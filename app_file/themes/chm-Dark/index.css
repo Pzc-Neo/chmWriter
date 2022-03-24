@@ -42,7 +42,7 @@
     color: #a8b7c5; }
   #app .el-dialog {
     color: #a8b7c5;
-    background-color: #2b313c;
+    background-color: #2e323c;
     border-color: #4a9df81f;
     box-shadow: 2px 3px 7px #111921d4; }
     #app .el-dialog .el-dialog__header .el-dialog__title {
@@ -94,13 +94,13 @@
 
 div.el-menu--horizontal .el-menu.el-menu--popup {
   color: #a8b7c5;
-  background-color: #2b313c;
+  background-color: #2e323c;
   border-color: #4a9df81f;
   box-shadow: 2px 3px 7px #111921d4; }
   div.el-menu--horizontal .el-menu.el-menu--popup .el-menu-item,
   div.el-menu--horizontal .el-menu.el-menu--popup .el-submenu__title {
     color: #a8b7c5;
-    background-color: #2b313c; }
+    background-color: #2e323c; }
   div.el-menu--horizontal .el-menu.el-menu--popup .el-menu-item:hover,
   div.el-menu--horizontal .el-menu.el-menu--popup .el-submenu__title:hover {
     background-color: #266bb4; }
@@ -109,7 +109,7 @@ div.el-menu--horizontal .el-menu.el-menu--popup {
 
 div.el-select-dropdown.el-popper {
   color: #a8b7c5;
-  background-color: #2b313c;
+  background-color: #2e323c;
   border-color: #4a9df81f;
   box-shadow: 2px 3px 7px #111921d4; }
   div.el-select-dropdown.el-popper .el-select-dropdown__item {
@@ -121,11 +121,11 @@ div.el-select-dropdown.el-popper {
   div.el-select-dropdown.el-popper .popper__arrow {
     border-bottom-color: #4a9df81f; }
   div.el-select-dropdown.el-popper .popper__arrow::after {
-    border-bottom-color: #2b313c; }
+    border-bottom-color: #2e323c; }
 
 div.el-message-box {
   color: #a8b7c5;
-  background-color: #2b313c;
+  background-color: #2e323c;
   border-color: #4a9df81f;
   box-shadow: 2px 3px 7px #111921d4; }
   div.el-message-box .el-message-box__title {
@@ -148,7 +148,6 @@ div.el-message-box {
 */ }
   #app .cm_editor_container {
     /* 编辑器的背景及默认字体颜色 */
-    /* .cm-s-eclipse .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; } */
     /* 显示行号面板的字体颜色 */
     /* 显示行号的面板的背景颜色 */
     /* 备注颜色 */
@@ -182,27 +181,7 @@ div.el-message-box {
     /* 文字选中状态 */
     /* vim光标样式 */
     /* vim输入光标颜色 */
-    /* .CodeMirror-gutter .CodeMirror-linenumbers{
-    width: 25px !important;
-} */
-    /* .CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like{
-    padding-left: 20px;
-} */
-    /* 内容 */
-    /* @font-face {
-    font-family: 'Hack-Regular-4';
-    src: url('./Hack-Regular-4.ttf');
-} */
-    /* 编辑器样式 */
-    /* 打字机模式，底下留白50% */
     /* 编辑器样式 -start */
-    /* 文字选中状态 */
-    /* 全屏 */
-    /* 全屏的时候，文章内容的宽度等 */
-    /* 文本对比框-start */
-    /* 行号栏 */
-    /* 外框 */
-    /* 中间间隙 */
     /* 文本对比框-end */
     /* 行尾空格样式 */
     /* 高亮与当前选择匹配的字符-start */
@@ -220,8 +199,6 @@ div.el-message-box {
       background: transparent;
       /* color: #363636; */
       color: inherit; }
-    #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
-      background: #353b48; }
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-line::selection,
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-line > span::selection,
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-line > span > span::selection {
@@ -233,15 +210,11 @@ div.el-message-box {
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-guttermarker {
       color: #555; }
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-linenumber {
-      /* color: #939393; */
       color: #49627785;
-      /* color: #b1b1b152; */
       font-size: 12px; }
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-gutters {
-      background: transparent !important;
+      background: transparent;
       border-right: 1px solid #222225; }
-    #app .cm_editor_container .cm-s-eclipse .CodeMirror-cursor {
-      border-left: 1px solid #fff; }
     #app .cm_editor_container .cm-s-eclipse span.cm-comment {
       color: #56ad64;
       /* color: #0AC4A0; */ }
@@ -305,52 +278,19 @@ div.el-message-box {
       color: #d7d7db; }
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-matchingbracket {
       outline: solid 1px #ffffff40;
-      color: white !important; }
+      color: white; }
     #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
       /* color: #ddd; */
-      background-color: #bfe0ff;
-      /* background-color: #343536; */ }
+      background-color: #264f78; }
     #app .cm_editor_container .cm-fat-cursor .CodeMirror-cursor {
-      background-color: #73b7ffc4;
+      background-color: #1b66b5a6;
       color: transparent;
       /* width: 0.5em; */ }
     #app .cm_editor_container .cm-animate-fat-cursor {
-      background-color: #73b7ffc4; }
+      background-color: #1b66b5a6; }
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-cursor {
-      border-left: 2px solid #73b7ffc4;
+      border-left: 2px solid #1b66b5a6;
       color: transparent; }
-    #app .cm_editor_container .CodeMirror-code {
-      /* line-height: 25px; */
-      /* padding: 5px; */
-      padding-right: 0px;
-      /* text-align: justify; */
-      /* text-indent: 2em; */ }
-    #app .cm_editor_container .CodeMirror {
-      /* border-right: 1px solid #86cfb6; */
-      width: 100%;
-      height: 100%;
-      /* line-height: 24px; */
-      /* font-family: 'Hack-Regular-4'; */
-      font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑, STHeiti, MingLiu;
-      /*  */
-      /* letter-spacing: 1px; */ }
-    #app .cm_editor_container .CodeMirror-lines {
-      padding-bottom: 65%; }
-    #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
-      /* background: #16181D !important; */
-      background: #202531 !important;
-      /* background: #c7c55e !important; */ }
-    #app .cm_editor_container .CodeMirror-fullscreen {
-      background: var(--main_bg_color_4) !important; }
-    #app .cm_editor_container .CodeMirror-fullscreen > .CodeMirror-scroll {
-      max-width: 650px !important;
-      margin: auto !important; }
-    #app .cm_editor_container .CodeMirror-merge {
-      border: 1px solid #37568e !important; }
-    #app .cm_editor_container .CodeMirror-merge-gap {
-      border-left: 1px solid var(--main_border_color) !important;
-      border-right: 1px solid var(--main_border_color) !important;
-      background: var(--main_bg_color_4) !important; }
     #app .cm_editor_container .cm-trailingspace {
       /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==); */
       background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAIAAADwyuo0AAAEq2lUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4KPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNS41LjAiPgogPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgeG1sbnM6ZXhpZj0iaHR0cDovL25zLmFkb2JlLmNvbS9leGlmLzEuMC8iCiAgICB4bWxuczp0aWZmPSJodHRwOi8vbnMuYWRvYmUuY29tL3RpZmYvMS4wLyIKICAgIHhtbG5zOnBob3Rvc2hvcD0iaHR0cDovL25zLmFkb2JlLmNvbS9waG90b3Nob3AvMS4wLyIKICAgIHhtbG5zOnhtcD0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLyIKICAgIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIgogICAgeG1sbnM6c3RFdnQ9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZUV2ZW50IyIKICAgZXhpZjpQaXhlbFhEaW1lbnNpb249IjQiCiAgIGV4aWY6UGl4ZWxZRGltZW5zaW9uPSIyIgogICBleGlmOkNvbG9yU3BhY2U9IjEiCiAgIHRpZmY6SW1hZ2VXaWR0aD0iNCIKICAgdGlmZjpJbWFnZUxlbmd0aD0iMiIKICAgdGlmZjpSZXNvbHV0aW9uVW5pdD0iMiIKICAgdGlmZjpYUmVzb2x1dGlvbj0iOTYuMCIKICAgdGlmZjpZUmVzb2x1dGlvbj0iOTYuMCIKICAgcGhvdG9zaG9wOkNvbG9yTW9kZT0iMyIKICAgcGhvdG9zaG9wOklDQ1Byb2ZpbGU9InNSR0IgSUVDNjE5NjYtMi4xIgogICB4bXA6TW9kaWZ5RGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIKICAgeG1wOk1ldGFkYXRhRGF0ZT0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCI+CiAgIDx4bXBNTTpIaXN0b3J5PgogICAgPHJkZjpTZXE+CiAgICAgPHJkZjpsaQogICAgICBzdEV2dDphY3Rpb249InByb2R1Y2VkIgogICAgICBzdEV2dDpzb2Z0d2FyZUFnZW50PSJBZmZpbml0eSBQaG90byAxLjkuMCIKICAgICAgc3RFdnQ6d2hlbj0iMjAyMS0wNi0yOFQwMDo1Mzo0NyswODowMCIvPgogICAgPC9yZGY6U2VxPgogICA8L3htcE1NOkhpc3Rvcnk+CiAgPC9yZGY6RGVzY3JpcHRpb24+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgo8P3hwYWNrZXQgZW5kPSJyIj8+O2b9CwAAAYNpQ0NQc1JHQiBJRUM2MTk2Ni0yLjEAACiRdZHPK0RRFMc/M36M/GgUC8ViCKuhMTSxsRgxFBZjlF+bmTe/1LyZ13szSbbKVlFi49eCv4CtslaKSMlOWRMb9Jw3MzWSObdzz+d+7z2ne88FeyilqEalB9R0Vg8G/K65+QWX45lqWmlkgPawYmhTM2MhytrHHTYr3vRYtcqf+9fqojFDAVuN8LCi6VnhceHJlaxm8bZws5IMR4VPhd26XFD41tIjBX6xOFHgL4v1UHAE7I3CrsQvjvxiJamrwvJyOtVUTinex3pJfSw9OyOxQ7wNgyAB/LiYYJQRfPQxJLOPHrz0yooy+Z58/jQZyVVk1lhFZ5kESbK4Rc1J9ZjEuOgxGSlWrf7/7asR7/cWqtf7oerJNN+6wLEF35um+Xlomt9HUPEIF+lSfuYABt9F3yxpnfvgXIezy5IW2YHzDWh50MJ6OC9ViNvjcXg9gYZ5aLqG2sVCz4r7HN9DaE2+6gp296BbzjuXfgC4wGgLIH1G5AAAAAlwSFlzAAAOxAAADsQBlSsOGwAAACJJREFUCJljZNFLYNFLYGBg+LHEkYEj5gADAwOLXgJHzAEARbIF3ac2qHcAAAAASUVORK5CYII=);
@@ -362,11 +302,11 @@ div.el-message-box {
       background-position: bottom;
       background-repeat: repeat-x; }
     #app .cm_editor_container .cm-matchhighlight {
-      /* background: var(--main_btn_bg_color) !important */
-      /* background: #1f4b7bdb !important */
-      background: #28486bb8 !important; }
+      /* background: var(--main_btn_bg_color)  */
+      /* background: #1f4b7bdb  */
+      background: #28486bb8; }
     #app .cm_editor_container .CodeMirror-selection-highlight-scrollbar {
-      background: #1f4b7bdb !important; }
+      background: #1f4b7bdb; }
     #app .cm_editor_container .CodeMirror-activeline {
       background: #282c34; }
     #app .cm_editor_container .cm-s-eclipse .CodeMirror-activeline-background {
@@ -381,11 +321,11 @@ div.el-message-box {
     #app .cm_editor_container .CodeMirror pre.CodeMirror-placeholder {
       color: #989898; }
     #app .cm_editor_container .cm-s-eclipse span.cm-quote {
-      /* color: #6b8ef3 !important; */
-      color: #75bfff !important; }
+      /* color: #6b8ef3 ; */
+      color: #75bfff; }
     #app .cm_editor_container .CodeMirror-foldmarker {
-      color: #052496 !important;
-      text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px, #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important; }
+      color: #052496;
+      text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px, #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px; }
     #app .cm_editor_container .CodeMirror-dialog {
       background: #2b313c; }
     #app .cm_editor_container .CodeMirror-dialog-bottom {
@@ -406,7 +346,7 @@ div.ql-snow .ql-picker {
   color: #a8b7c5; }
 
 div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
-  background-color: #2b313c; }
+  background-color: #2e323c; }
 
 div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
   border-color: #222225; }
@@ -459,7 +399,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
 
 #app .middle_bar .panel .cm_editor .outline_box {
   border-color: #222225;
-  background-color: #2b313c; }
+  background-color: #2e323c; }
   #app .middle_bar .panel .cm_editor .outline_box ul li:hover {
     background-color: #282c34; }
   #app .middle_bar .panel .cm_editor .outline_box ul li.active {
@@ -490,13 +430,13 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
           color: #a8b7c5; }
       #app .middle_bar .side_bar .el-menu .el-menu-item:focus,
       #app .middle_bar .side_bar .el-menu .el-menu-item:hover {
-        background-color: #2b313c; }
+        background-color: #2e323c; }
       #app .middle_bar .side_bar .el-menu .el-menu-item.is-active {
         color: #409eff; }
         #app .middle_bar .side_bar .el-menu .el-menu-item.is-active i {
           color: #409eff; }
   #app .middle_bar .command_box {
-    background-color: #2b313c;
+    background-color: #2e323c;
     border-color: #222225; }
     #app .middle_bar .command_box .result_list .item.active {
       background: #282c34; }
@@ -506,7 +446,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
       background-color: #282c34; }
   #app .middle_bar .main .tool_bar {
     border-bottom: 1px solid #222225;
-    background-color: #2b313c; }
+    background-color: #2e323c; }
     #app .middle_bar .main .tool_bar .el-button {
       background-color: transparent; }
       #app .middle_bar .main .tool_bar .el-button i {
@@ -517,7 +457,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     border-right: 1px solid #222225; }
     #app .middle_bar .main .panel .group_bar .el-tree {
       color: #a8b7c5;
-      background-color: #2b313c; }
+      background-color: #2e323c; }
       #app .middle_bar .main .panel .group_bar .el-tree .el-tree-node__content:hover {
         background-color: #252931; }
       #app .middle_bar .main .panel .group_bar .el-tree .el-tree-node:focus > .el-tree-node__content {
@@ -543,9 +483,9 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
         background-color: #266bb4; }
     #app .middle_bar .main .panel .item_bar .item_list .item.active {
       border-color: #266bb4;
-      background-color: #2b313c; }
+      background-color: #2e323c; }
     #app .middle_bar .main .panel .item_bar .item_list .item:hover {
-      background-color: #2b313c; }
+      background-color: #2e323c; }
     #app .middle_bar .main .panel .item_bar .item_list .simple_mode_item {
       border-bottom: 0px; }
     #app .middle_bar .main .panel .item_bar .item_list .detail_mode_item {
@@ -562,7 +502,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     #app .middle_bar .main .panel .detail_bar .info_box {
       border: 1px solid #222225;
       color: #a8b7c5;
-      background-color: #2b313c; }
+      background-color: #2e323c; }
       #app .middle_bar .main .panel .detail_bar .info_box .el-tag {
         color: #409eff;
         background: #363f637d;
@@ -579,7 +519,7 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
         border: 1px solid #222225; }
   #app .middle_bar .contextmenu_bar {
     color: #a8b7c5;
-    background-color: #2b313c;
+    background-color: #2e323c;
     border-color: #4a9df81f;
     box-shadow: 2px 3px 7px #111921d4; }
     #app .middle_bar .contextmenu_bar .el-menu {

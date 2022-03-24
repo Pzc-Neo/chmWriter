@@ -12,10 +12,6 @@
       color: inherit;
     }
 
-    .cm-s-eclipse div.CodeMirror-selected {
-      background: #353b48;
-    }
-
     .cm-s-eclipse .CodeMirror-line::selection,
     .cm-s-eclipse .CodeMirror-line > span::selection,
     .cm-s-eclipse .CodeMirror-line > span > span::selection {
@@ -28,27 +24,20 @@
       background: #353b48;
     }
 
-    /* .cm-s-eclipse .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; } */
     .cm-s-eclipse .CodeMirror-guttermarker {
       color: #555;
     }
 
     /* 显示行号面板的字体颜色 */
     .cm-s-eclipse .CodeMirror-linenumber {
-      /* color: #939393; */
       color: #49627785;
-      /* color: #b1b1b152; */
       font-size: 12px;
     }
 
     /* 显示行号的面板的背景颜色 */
     .cm-s-eclipse .CodeMirror-gutters {
-      background: transparent !important;
+      background: transparent;
       border-right: $border_1;
-    }
-
-    .cm-s-eclipse .CodeMirror-cursor {
-      border-left: 1px solid #fff;
     }
 
     /* 备注颜色 */
@@ -203,110 +192,34 @@
 
     .cm-s-eclipse .CodeMirror-matchingbracket {
       outline: solid 1px #ffffff40;
-      color: white !important;
+      color: white;
     }
 
     /* 文字选中状态 */
     .cm-s-eclipse div.CodeMirror-selected {
       /* color: #ddd; */
-      background-color: #bfe0ff;
-      /* background-color: #343536; */
+      // background-color: $bg_color_5;
+      background-color: #264f78;
     }
 
     /* vim光标样式 */
     .cm-fat-cursor .CodeMirror-cursor {
-      background-color: #73b7ffc4;
+      background-color: #1b66b5a6;
       color: transparent;
       /* width: 0.5em; */
     }
 
     .cm-animate-fat-cursor {
-      background-color: #73b7ffc4;
+      background-color: #1b66b5a6;
     }
 
     /* vim输入光标颜色 */
     .cm-s-eclipse .CodeMirror-cursor {
-      border-left: 2px solid #73b7ffc4;
+      border-left: 2px solid #1b66b5a6;
       color: transparent;
     }
 
-    /* .CodeMirror-gutter .CodeMirror-linenumbers{
-    width: 25px !important;
-} */
-    /* .CodeMirror-wrap pre.CodeMirror-line, .CodeMirror-wrap pre.CodeMirror-line-like{
-    padding-left: 20px;
-} */
-
-    /* 内容 */
-    .CodeMirror-code {
-      /* line-height: 25px; */
-      /* padding: 5px; */
-      padding-right: 0px;
-      /* text-align: justify; */
-      /* text-indent: 2em; */
-    }
-
-    /* @font-face {
-    font-family: 'Hack-Regular-4';
-    src: url('./Hack-Regular-4.ttf');
-} */
-
-    /* 编辑器样式 */
-    .CodeMirror {
-      /* border-right: 1px solid #86cfb6; */
-      width: 100%;
-      height: 100%;
-      /* line-height: 24px; */
-      /* font-family: 'Hack-Regular-4'; */
-      font-family: 'Microsoft YaHei', 微软雅黑, 'Microsoft JhengHei', 华文细黑,
-        STHeiti, MingLiu;
-      /*  */
-      /* letter-spacing: 1px; */
-    }
-
-    /* 打字机模式，底下留白50% */
-    .CodeMirror-lines {
-      padding-bottom: 65%;
-    }
-
     /* 编辑器样式 -start */
-
-    /* 文字选中状态 */
-    .cm-s-eclipse div.CodeMirror-selected {
-      /* background: #16181D !important; */
-      background: #202531 !important;
-      /* background: #c7c55e !important; */
-    }
-
-    /* 全屏 */
-    .CodeMirror-fullscreen {
-      background: var(--main_bg_color_4) !important;
-    }
-
-    /* 全屏的时候，文章内容的宽度等 */
-    .CodeMirror-fullscreen > .CodeMirror-scroll {
-      max-width: 650px !important;
-      margin: auto !important;
-    }
-
-    /* 文本对比框-start */
-    /* 行号栏 */
-    // .CodeMirror-gutters {
-    //   border-right: 1px solid var(--main_border_color) !important;
-    //   background: var(--main_bg_color_4) !important;
-    // }
-
-    /* 外框 */
-    .CodeMirror-merge {
-      border: 1px solid #37568e !important;
-    }
-
-    /* 中间间隙 */
-    .CodeMirror-merge-gap {
-      border-left: 1px solid var(--main_border_color) !important;
-      border-right: 1px solid var(--main_border_color) !important;
-      background: var(--main_bg_color_4) !important;
-    }
 
     /* 文本对比框-end */
 
@@ -327,20 +240,20 @@
     }
 
     .cm-matchhighlight {
-      /* background: var(--main_btn_bg_color) !important */
-      /* background: #1f4b7bdb !important */
-      background: #28486bb8 !important;
+      /* background: var(--main_btn_bg_color)  */
+      /* background: #1f4b7bdb  */
+      background: #28486bb8;
     }
 
     .CodeMirror-selection-highlight-scrollbar {
-      background: #1f4b7bdb !important;
+      background: #1f4b7bdb;
     }
 
     /* 高亮与当前选择匹配的字符-end */
 
     /* 高亮当前行-start */
     .CodeMirror-activeline {
-      background: #282c34;
+      background: $bg_color_1;
     }
 
     .cm-s-eclipse .CodeMirror-activeline-background {
@@ -372,14 +285,14 @@
 
     /* 单行引用 */
     .cm-s-eclipse span.cm-quote {
-      /* color: #6b8ef3 !important; */
-      color: #75bfff !important;
+      /* color: #6b8ef3 ; */
+      color: #75bfff;
     }
 
     .CodeMirror-foldmarker {
-      color: #052496 !important;
+      color: #052496;
       text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px,
-        #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important;
+        #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px;
     }
     .CodeMirror-dialog {
       background: #2b313c;
