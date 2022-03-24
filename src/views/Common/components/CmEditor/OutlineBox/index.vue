@@ -12,34 +12,14 @@
         :class="[itemId + '_editor_head_list_item', getClass(head)]"
       >
         <span :style="{ paddingLeft: 8 * head.level + 'px' }">
-          {{ head.title }}
+          {{ head.num }} {{ head.title }}
         </span>
       </li>
     </ul>
-
-    <!-- <el-tree
-      class="filter-tree"
-      :data="data"
-      :props="defaultProps"
-      default-expand-all
-      :filter-node-method="filterNode"
-      ref="tree"
-    ></el-tree> -->
   </div>
-  <!-- <el-drawer
-    title="我是标题"
-    :visible.sync="drawer"
-    direction="rtl"
-    :modal="false"
-    :append-to-body="false"
-  >
-    <span>我来啦!</span>
-  </el-drawer> -->
 </template>
 
 <script>
-// import { mapState } from 'vuex'
-// import { jumpToLine } from '../util/editor'
 export default {
   props: {
     headList: {

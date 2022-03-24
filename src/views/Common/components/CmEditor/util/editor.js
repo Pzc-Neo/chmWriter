@@ -9,9 +9,10 @@ export const getHeadList = function (cmEditor, isAddSerialNumber = false) {
     return
   }
 
-  // let headNumList = [0, 0, 0, 0, 0, 0]
+  const headNumList = [0, 0, 0, 0, 0, 0]
   // 标题列表
   const headList = []
+  let lastIndex = -1
 
   const headerRegex = /^#+ [\s\S]+/g
   cmEditor.eachLine(line => {
@@ -30,15 +31,32 @@ export const getHeadList = function (cmEditor, isAddSerialNumber = false) {
       // 去除#后的空格
       const sharpe = sharpeMatchs[0].trim()
       // 几级标题
-      const headType = sharpe.split('').length
+      const headLevel = sharpe.split('').length
 
-      // headNumList[headType] += 1
-      // let headNum = headNumList.join('.').replace('\.0','')
-      // head.num = headNum
+      // 添加序号
+      if (isAddSerialNumber) {
+        const headIndex = headLevel - 1
+        if (lastIndex === -1) {
+          lastIndex = headIndex
+        }
+        if (headIndex < lastIndex) {
+          headNumList[headIndex] += 1
+          for (let index = headIndex + 1; index < headNumList.length; index++) {
+            headNumList[index] = 0
+          }
+        } else {
+          headNumList[headIndex] += 1
+        }
+        lastIndex = headIndex
+      }
+
+      const tempList = headNumList.filter(num => num !== 0)
+      const headNum = tempList.join('.')
+      head.num = headNum
 
       head.title = sourceTitle.replace(/^#+ /, '')
 
-      head.level = headType
+      head.level = headLevel
       head.startlineNumber = posLine
       head.endLineNumber = posLine
       if (headList.length > 0) {
