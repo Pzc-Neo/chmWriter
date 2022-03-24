@@ -36,6 +36,7 @@
     <!-- <LeftFloatBar :headList="headList" /> -->
     <OutlineBox
       v-if="isShowOutlineBox"
+      :itemId="item.id"
       :headList="headList"
       :currentLine="currentLine"
       @jump-to-line="jumpToLine"
@@ -249,13 +250,15 @@ export default {
     },
     onCursorActivity(cm) {
       if (this.isShowOutlineBox) {
-        // 如果当前行包含 # ，那么 大纲面板中相应的标题滚动到可视范围
-        const line = this.cmEditor.getCursor().line
-        const text = cm.getLine(line)
-        if (/^#+/.test(text)) {
-          scrollToView('.editor_head_list_item' + line)
-          this.currentLine = line
-        }
+        const line = cm.getCursor().line
+        this.currentLine = line
+        /**
+         * Must have item's id, otherwish when you open tow or more editor,
+         * scrollToView won't work correctly.
+         * Because the selector will match multiple target,
+         * but scrollToView only act on the first target.
+         */
+        scrollToView(`.${this.item.id}_editor_head_list_item.active`)
       }
     },
     showContextmenu(event) {

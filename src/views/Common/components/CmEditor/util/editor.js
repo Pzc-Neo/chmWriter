@@ -39,9 +39,16 @@ export const getHeadList = function (cmEditor, isAddSerialNumber = false) {
       head.title = sourceTitle.replace(/^#+ /, '')
 
       head.level = headType
-      head.lineNumber = posLine
+      head.startlineNumber = posLine
+      head.endLineNumber = posLine
+      if (headList.length > 0) {
+        headList[headList.length - 1].endLineNumber = posLine
+      }
 
       headList.push(head)
+    }
+    if (headList.length > 0) {
+      headList[headList.length - 1].endLineNumber = 999999
     }
   })
   return headList
@@ -74,7 +81,7 @@ export const searchHeadList = function (searchValue) {
 }
 
 export const jumpToLine = function (editor, head) {
-  const line = head.lineNumber
+  const line = head.startlineNumber
   const cm = editor
   cm.setCursor(line)
   cm.execCommand('editorCurrentLineScrollToTop')

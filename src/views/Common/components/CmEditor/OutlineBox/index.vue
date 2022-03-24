@@ -9,10 +9,7 @@
         v-for="(head, index) in editorHeadList"
         :key="index"
         @click="jumpToLine(head)"
-        :class="[
-          'editor_head_list_item' + head.lineNumber,
-          head.lineNumber === currentLine ? 'active' : ''
-        ]"
+        :class="[itemId + '_editor_head_list_item', getClass(head)]"
       >
         <span :style="{ paddingLeft: 8 * head.level + 'px' }">
           {{ head.title }}
@@ -60,6 +57,10 @@ export default {
       default() {
         return {}
       }
+    },
+    itemId: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -76,6 +77,16 @@ export default {
     jumpToLine(head) {
       // return jumpToLine(this.editor, head)
       this.$emit('jump-to-line', head)
+    },
+    getClass(head) {
+      if (
+        this.currentLine >= head.startlineNumber &&
+        this.currentLine < head.endLineNumber
+      ) {
+        return 'active'
+      } else {
+        return ''
+      }
     }
   },
   computed: {
@@ -126,6 +137,7 @@ export default {
     }
     li.active {
       border-left: 2px solid #409eff;
+      padding-left: 3px;
       background-color: #f0f7ff;
     }
   }
