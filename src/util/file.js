@@ -17,8 +17,10 @@ export const loadJsonFile = function (filePath, isRelative = true) {
       return obj
     } catch (err) {
       this.$alert('Parse json fail. detail:\n' + err)
+      return {}
     }
   } else {
-    this.$alert('File not exist.')
+    this.$alert('File not exist. path: ' + filePath)
+    return {}
   }
 }

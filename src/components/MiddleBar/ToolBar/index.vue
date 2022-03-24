@@ -6,7 +6,7 @@
       :icon="tool.icon"
       :title="$t(tool.title)"
       :key="tool.id"
-      @click="e => tool.func(tool, e)"
+      @click.stop="e => tool.func(tool, e)"
     ></el-button>
     <el-divider direction="vertical"></el-divider>
     <el-button

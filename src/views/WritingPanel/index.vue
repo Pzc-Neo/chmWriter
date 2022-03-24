@@ -356,7 +356,6 @@ export default {
       this.newGroup()
     })
     this.$bus.$on(this.panelName + ':new-item', () => {
-      console.log('writing:new-item')
       this.newItem()
     })
     this.$bus.$on(this.panelName + ':change-to-group', targetItem => {

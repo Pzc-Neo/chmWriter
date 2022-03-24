@@ -29,6 +29,7 @@ import MiddleBar from '@/components/MiddleBar'
 import BottomBar from '@/components/BottomBar'
 // import PopupBox from '@/components/PopupBox'
 // import HotKey from '@/components/HotKey'
+import { loadJsonFile } from '@/util/file'
 
 export default {
   components: {
@@ -39,48 +40,21 @@ export default {
     // PopupBox
   },
   data() {
-    return {
-      keyMap: {
-        showCommandSearch: 'ctrl+p',
-        showCommandCommand: 'shift+ctrl+p',
-        save: 'ctrl+s',
-        removeTab: 'ctrl+w'
-      },
-      hotKeyList: [
-        {
-          id: 'showCommandBoxSearch',
-          key: 'ctrl+p',
-          funcName: 'showCommandBox',
-          prama: ['search']
-        },
-        {
-          id: 'showCommandBoxCommand',
-          key: 'shift+ctrl+p',
-          funcName: 'showCommandBox',
-          prama: ['command']
-        },
-        {
-          id: 'removeTab',
-          key: 'ctrl+w',
-          funcName: 'removeTab',
-          prama: []
-        },
-        {
-          id: 'swtichTab',
-          key: 'ctrl+tab',
-          funcName: 'switchTab',
-          prama: []
-        },
-        {
-          id: 'swtichTabPrev',
-          key: 'shift+ctrl+tab',
-          funcName: 'switchTab',
-          prama: [false]
-        }
-      ]
-    }
+    return {}
   },
   methods: {
+    registerKeymap() {
+      const keymaps = loadJsonFile.call(this, 'keymap/app.json')
+
+      keymaps.forEach(key => {
+        hotkeys(key.key, () => {
+          this[key.funcName](...key.pramas)
+        })
+      })
+    },
+    /** function for registerKeymap -start
+     * key.funcName is function's name bellow.
+     */
     hideStuffByClick() {
       this.$store.commit('HIDE_CONTEXTMENU')
       this.$store.commit('HIDE_COMMANDBOX')
@@ -97,22 +71,20 @@ export default {
     },
     removeTab() {
       this.$bus.$emit(this.currentPanel + ':remove-tab')
+    },
+    saveContent() {
+      this.$bus.$emit(this.currentPanel + ':save-content')
+    },
+    newItem() {
+      this.$bus.$emit(this.currentPanel + ':new-item')
+    },
+    newGroup() {
+      this.$bus.$emit(this.currentPanel + ':new-group')
     }
+    /** function for registerKeymap -end */
   },
   mounted() {
-    // const { showCommandSearch, showCommandCommand, save, removeTab } =
-    //   this.keyMap
-
-    this.hotKeyList.forEach(key => {
-      hotkeys(key.key, () => {
-        this[key.funcName](...key.prama)
-      })
-    })
-
-    // hotkeys('ctrl+r', () => {
-    //   alert('stopped reload!')
-    //   return false
-    // })
+    this.registerKeymap()
   },
   computed: {
     ...mapState({

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "showCommandBoxSearch",
+    "key": "ctrl+p",
+    "funcName": "showCommandBox",
+    "pramas": ["search"]
+  },
+  {
+    "id": "showCommandBoxCommand",
+    "key": "shift+ctrl+p",
+    "funcName": "showCommandBox",
+    "pramas": ["command"]
+  },
+  {
+    "id": "removeTab",
+    "key": "ctrl+w",
+    "funcName": "removeTab",
+    "pramas": []
+  },
+  {
+    "id": "swtichTab",
+    "key": "ctrl+tab",
+    "funcName": "switchTab",
+    "pramas": []
+  },
+  {
+    "id": "swtichTabPrev",
+    "key": "shift+ctrl+tab",
+    "funcName": "switchTab",
+    "pramas": [false]
+  },
+  {
+    "id": "saveContent",
+    "key": "ctrl+s",
+    "funcName": "saveContent",
+    "pramas": []
+  },
+  {
+    "id": "newItem",
+    "key": "ctrl+n",
+    "funcName": "newItem",
+    "pramas": []
+  },
+  {
+    "id": "newGroup",
+    "key": "shift+ctrl+n",
+    "funcName": "newGroup",
+    "pramas": []
+  }
+]
