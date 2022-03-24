@@ -168,6 +168,8 @@ export default {
     border-right: 0;
     height: 100%;
     .el-menu-item {
+      height: 46px;
+      line-height: 46px;
       .badge {
         /deep/ .el-badge__content.is-fixed {
           top: 5px;
