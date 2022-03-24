@@ -217,7 +217,7 @@ div.el-message-box {
     /* 编辑器样式 -end */
     /* ------------------------------------------------------ */ }
     #app .cm_editor_container .cm-s-eclipse.CodeMirror {
-      background: #ffffff00;
+      background: transparent;
       /* color: #363636; */
       color: inherit; }
     #app .cm_editor_container .cm-s-eclipse div.CodeMirror-selected {
@@ -386,6 +386,10 @@ div.el-message-box {
     #app .cm_editor_container .CodeMirror-foldmarker {
       color: #052496 !important;
       text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px, #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important; }
+    #app .cm_editor_container .CodeMirror-dialog {
+      background: #2b313c; }
+    #app .cm_editor_container .CodeMirror-dialog-bottom {
+      border-top: 1px solid #222225; }
 
 div.ql-snow .ql-stroke {
   stroke: #a8b7c5; }
@@ -454,12 +458,13 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     border-right: 1px solid #2e354c; }
 
 #app .middle_bar .panel .cm_editor .outline_box {
-  border-color: #222225; }
+  border-color: #222225;
+  background-color: #2b313c; }
   #app .middle_bar .panel .cm_editor .outline_box ul li:hover {
-    background-color: #2b313c; }
+    background-color: #282c34; }
   #app .middle_bar .panel .cm_editor .outline_box ul li.active {
     border-color: #266bb4;
-    background-color: #2b313c; }
+    background-color: #282c34; }
 
 #app {
   color: #a8b7c5;
@@ -490,6 +495,15 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
         color: #409eff; }
         #app .middle_bar .side_bar .el-menu .el-menu-item.is-active i {
           color: #409eff; }
+  #app .middle_bar .command_box {
+    background-color: #2b313c;
+    border-color: #222225; }
+    #app .middle_bar .command_box .result_list .item.active {
+      background: #282c34; }
+    #app .middle_bar .command_box .el-input .el-input-group__append {
+      color: #a8b7c5;
+      border-color: #222225;
+      background-color: #282c34; }
   #app .middle_bar .main .tool_bar {
     border-bottom: 1px solid #222225;
     background-color: #2b313c; }

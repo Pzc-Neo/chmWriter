@@ -50,6 +50,22 @@
         }
       }
     }
+    .command_box {
+      background-color: $bg_color_2;
+      border-color: $border_color_1;
+      .result_list {
+        .item.active {
+          background: $bg_color_1;
+        }
+      }
+      .el-input {
+        .el-input-group__append {
+          color: $color_1;
+          border-color: $border_color_1;
+          background-color: $bg_color_1;
+        }
+      }
+    }
     .main {
       .tool_bar {
         border-bottom: $border_1;

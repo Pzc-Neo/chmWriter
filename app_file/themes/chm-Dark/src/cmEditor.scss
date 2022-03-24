@@ -4,13 +4,14 @@
       .cm_editor {
         .outline_box {
           border-color: $border_color_1;
+          background-color: $bg_color_2;
           ul {
             li:hover {
-              background-color: $bg_color_2;
+              background-color: $bg_color_1;
             }
             li.active {
               border-color: $bg_color_4;
-              background-color: $bg_color_2;
+              background-color: $bg_color_1;
             }
           }
         }

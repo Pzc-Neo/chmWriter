@@ -7,7 +7,7 @@
   .cm_editor_container {
     /* 编辑器的背景及默认字体颜色 */
     .cm-s-eclipse.CodeMirror {
-      background: #ffffff00;
+      background: transparent;
       /* color: #363636; */
       color: inherit;
     }
@@ -380,6 +380,12 @@
       color: #052496 !important;
       text-shadow: #99c2ff 1px 1px 2px, #99c2ff -1px -1px 2px,
         #99c2ff 1px -1px 2px, #99c2ff -1px 1px 2px !important;
+    }
+    .CodeMirror-dialog {
+      background: #2b313c;
+    }
+    .CodeMirror-dialog-bottom {
+      border-top: 1px solid #222225;
     }
 
     /* 编辑器样式 -end */
