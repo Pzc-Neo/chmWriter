@@ -249,8 +249,12 @@ export default {
       // console.log(cm, name, event)
     },
     onCursorActivity(cm) {
+      const cursor = cm.getCursor()
+      // 当前选择的文本
+      const selctionLen = cm.getSelection().length
+      this.$emit('update:cursor', cursor, selctionLen)
       if (this.isShowOutlineBox) {
-        const line = cm.getCursor().line
+        const line = cursor.line
         this.currentLine = line
         /**
          * Must have item's id, otherwish when you open tow or more editor,

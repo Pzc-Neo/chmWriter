@@ -66,6 +66,7 @@
             :item="item"
             @change="handleEditorContentChange"
             @update:content="saveContent"
+            @update:cursor="updateCursor"
             @switch:tab="isNext => switchTab(isNext)"
             @close="handleRemoveTab"
             @countWord="
@@ -146,6 +147,7 @@ import ChapterItem from './components/ChapterItem'
 
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
+import { getBottomBarData } from './bottomBarData'
 
 import {
   init,
@@ -180,7 +182,10 @@ import {
   updateAttrItem,
   updateItemSorts
 } from '@/views/Common/script/item'
-import { infoBoxCollapseHandler } from '@/views/Common/script/other'
+import {
+  infoBoxCollapseHandler,
+  updateCursor
+} from '@/views/Common/script/other'
 
 export default {
   name: 'WritingPanel',
@@ -213,6 +218,7 @@ export default {
       menuListItemBar: menuListFactory.call(this, 'itemBar'),
       menuListTab: menuListFactory.call(this, 'tab'),
       toolList: getToolList.call(this),
+      bottomBarData: getBottomBarData.call(this),
       groupList: [],
       itemList: [],
       currentGroup: {},
@@ -334,6 +340,9 @@ export default {
       } else {
         item.isChanged = false
       }
+    },
+    updateCursor(cursor, selctionLen) {
+      updateCursor.call(this, cursor, selctionLen)
     }
   },
   watch: {
@@ -347,6 +356,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(_this => {
       _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
+      _this.$store.commit('SET_BOTTOM_BAR_DATA', _this.bottomBarData)
     })
   },
   mounted() {

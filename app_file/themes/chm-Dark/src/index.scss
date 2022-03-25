@@ -198,6 +198,12 @@
   }
   .bottom_bar {
     background-color: $bg_color_4;
+    .default,
+    .section_box {
+      div:hover {
+        background-color: $bg_color_6;
+      }
+    }
   }
 
   /* 占位符颜色 */

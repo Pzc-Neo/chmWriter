@@ -15,3 +15,17 @@ export const infoBoxCollapseHandler = function (newData) {
     this.$alert(e)
   }
 }
+
+export const updateCursor = function (cursor, selctionLen) {
+  const cursorText = `${this.$t('editor.line')} ${cursor.line + 1}, ${this.$t(
+    'editor.column'
+  )} ${cursor.ch + 1} `
+  const selectedText = selctionLen
+    ? `(${selctionLen} ${this.$t('editor.selected')})`
+    : ''
+
+  this.$store.commit('UPDATE_BOTTOM_BAR_DATA', {
+    key: 'right.cursor.content',
+    value: cursorText + selectedText
+  })
+}

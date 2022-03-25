@@ -20,7 +20,6 @@
 <script>
 import { mapState } from 'vuex'
 import hotkeys from 'hotkeys-js'
-import 'normalize.css'
 // import './hotkeys-js'
 // import { ipcRenderer } from 'electron'
 

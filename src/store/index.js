@@ -36,7 +36,9 @@ export default new Vuex.Store({
     },
 
     currentEditor: null,
-    headList: []
+    headList: [],
+
+    bottomBarData: null
   },
   mutations: {
     SHOW_CONTEXTMENU(state, prama) {
@@ -62,6 +64,13 @@ export default new Vuex.Store({
     },
     SET_PANEL_TOOL_LIST(state, panelToolList) {
       state.panelToolList = panelToolList
+    },
+    SET_BOTTOM_BAR_DATA(state, bottomBarData) {
+      state.bottomBarData = bottomBarData
+    },
+    UPDATE_BOTTOM_BAR_DATA(state, { key, value }) {
+      const [area, item, _key] = key.split('.')
+      state.bottomBarData[area][item][_key] = value
     },
     TOGGLE_SIMPLE_MODE(state) {
       state.isSimpleMode = !state.isSimpleMode

@@ -17,6 +17,8 @@ import { loadTheme } from '@/util/theme'
 // 可以根据需要选用只用到的渲染器
 import { SVGRenderer, CanvasRenderer } from 'echarts/renderers'
 
+import 'normalize.css'
+
 echarts.use([SVGRenderer, CanvasRenderer])
 
 Vue.prototype.$db = new Db()

@@ -164,6 +164,7 @@ import QuillEditor from '@/views/Common/components/QuillEditor'
 
 import { menuListFactory } from './menuList/index'
 import { getToolList } from './toolList'
+import { getBottomBarData } from './bottomBarData'
 import { convertToRelationData, convertToRelationLink } from './util/converter'
 import {
   newRelation,
@@ -244,6 +245,7 @@ export default {
       menuListTab: menuListFactory.call(this, 'tab'),
       menulistRelation: menuListFactory.call(this, 'relationChart'),
       toolList: getToolList.call(this),
+      bottomBarData: getBottomBarData.call(this),
       groupList: [],
       itemList: [],
       currentGroup: {},
@@ -414,6 +416,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(_this => {
       _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
+      _this.$store.commit('SET_BOTTOM_BAR_DATA', _this.bottomBarData)
     })
   },
   mounted() {
