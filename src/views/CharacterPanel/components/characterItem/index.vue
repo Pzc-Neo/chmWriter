@@ -15,7 +15,7 @@
       </div> -->
     </div>
     <div class="col middle">
-      {{ item.description }}
+      {{ item.descriptionText || item.description }}
     </div>
     <div class="col bottom">
       <div class="left">
@@ -113,6 +113,11 @@ export default {
   .middle {
     margin-top: 2px;
     margin-bottom: 7px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: 1.5em;
+    overflow: hidden;
   }
   .bottom {
     display: flex;

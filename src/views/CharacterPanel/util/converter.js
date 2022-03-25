@@ -4,7 +4,7 @@ export const convertToRelationData = function (itemList) {
     const newItem = {
       id: item.id,
       name: item.title,
-      des: item.description,
+      des: item.descriptionText || item.description,
       SymbolSize: item?.symbol_size || 70
     }
     result.push(newItem)

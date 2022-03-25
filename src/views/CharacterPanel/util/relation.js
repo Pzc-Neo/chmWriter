@@ -45,13 +45,15 @@ export const getRelationLink = function () {
 }
 
 export const getRelationDate = function (groupId) {
-  const allChildItems = getAllChildItems.call(this, groupId)
+  let allChildItems = getAllChildItems.call(this, groupId)
 
   let resultList = []
   if (allChildItems.length === 0) {
-    const tempItemList = this.getItems(groupId)
+    let tempItemList = this.getItems(groupId)
+    tempItemList = this.addAttrDescriptionText(tempItemList)
     resultList = convertToRelationData(tempItemList)
   } else {
+    allChildItems = this.addAttrDescriptionText(allChildItems)
     resultList = convertToRelationData(allChildItems)
   }
   return resultList

@@ -76,9 +76,15 @@ export const getGroupFromLocal = function (groupId) {
  * @param {String} groupId
  * @param {Boolean} force If truly, change to group anyway.
  * even if target group is current group.
+ * @param {Function} itemListHandler hava one param: itemList,
+ * you can do something to it and you must return an itemList.
  * @returns
  */
-export const changeToGroup = function (groupId, force = false) {
+export const changeToGroup = function (
+  groupId,
+  force = false,
+  itemListHandler
+) {
   if (this.currentGroup.id === groupId && !force) return
 
   let group = this.getGroupFromDb(groupId)
@@ -91,8 +97,12 @@ export const changeToGroup = function (groupId, force = false) {
     }
     return
   }
-
-  this.itemList = this.getItems(groupId)
+  const tempItemList = this.getItems(groupId)
+  if (itemListHandler instanceof Function) {
+    this.itemList = itemListHandler(tempItemList)
+  } else {
+    this.itemList = tempItemList
+  }
   this.currentGroup = group
   this.$db.setConfig(makeLastId(this.groupTableName), groupId)
   this.$store.commit('HIDE_CONTEXTMENU')

@@ -279,7 +279,35 @@ export default {
       return getGroups.call(this)
     },
     changeToGroup(groupId) {
-      return changeToGroup.call(this, groupId)
+      return changeToGroup.call(this, groupId, false, itemList => {
+        return this.addAttrDescriptionText(itemList)
+      })
+    },
+    /**
+     * Add 'descriptionText' attribute to every item.
+     * DescriptionText is pure text of description.
+     * Description is quill editor format txt.
+     * @param {Array} itemList
+     * @return itemList
+     */
+    addAttrDescriptionText(itemList) {
+      itemList.forEach(item => {
+        try {
+          const delta = JSON.parse(item.description)
+          let result = ''
+          delta.ops.forEach(item => {
+            let text = ''
+            if (!(item.insert instanceof Object)) {
+              text = item.insert
+            }
+            result += text
+          })
+          item.descriptionText = result
+        } catch (error) {
+          item.descriptionText = item.description
+        }
+      })
+      return itemList
     },
     /**
      * Show current group's relation chart.

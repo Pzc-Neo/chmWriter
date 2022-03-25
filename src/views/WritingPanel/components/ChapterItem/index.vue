@@ -96,6 +96,11 @@ export default {
   .middle {
     margin-bottom: 4px;
     line-height: 1.4em;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-height: 1.5em;
+    overflow: hidden;
   }
   .bottom {
     display: flex;
