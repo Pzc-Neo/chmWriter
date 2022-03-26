@@ -2,22 +2,22 @@
 
 ## Screenshot
 
-### Data Panel
-
-![Data Panel](./screenshot/data_panel.png)
-
 ### Writing Panel
 
 ![Writing Panel](./screenshot/writing_panel.png)
-![Writing Panel dark](./screenshot/writing_panel_dark.png)
+![Writing Panel pure](./screenshot/writing_panel_pure.png)
+
+### Data Panel
+
+![Data Panel](./screenshot/data_panel.png)
 
 ### Character Panel
 
 ![Character Panel](./screenshot/character_panel.png)
 
-### Command_box
+### Search/Command box
 
-![Command box](./screenshot/command_box.png)
+![Search/Command box](./screenshot/command_box.png)
 
 ## Project setup
 
