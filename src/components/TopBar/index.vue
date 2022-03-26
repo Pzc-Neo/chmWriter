@@ -2,7 +2,7 @@
   <div class="top_bar">
     <span class="left">
       <img :src="logo" alt="logo" />
-      <MenuBar />
+      <MenuBar :historyItemList="historyItemList" />
     </span>
     <span class="center">
       <span class="file_name">默认文件</span>
@@ -26,6 +26,9 @@
 import MenuBar from './MenuBar'
 import { ipcRenderer } from 'electron'
 export default {
+  components: {
+    MenuBar
+  },
   data() {
     return {
       logo: require('@/assets/logo.svg')
@@ -36,8 +39,10 @@ export default {
       ipcRenderer.sendSync(command)
     }
   },
-  components: {
-    MenuBar
+  computed: {
+    historyItemList() {
+      return this.$store.state.historyItemList
+    }
   }
 }
 </script>

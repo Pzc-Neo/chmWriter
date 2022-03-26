@@ -132,9 +132,12 @@ import {
 } from '@/views/Common/script/tab'
 
 import {
+  beforeRouteEnter,
   infoBoxCollapseHandler,
   makeLastId,
-  updateCursor
+  updateCursor,
+  addToHistoryList,
+  setHistoryList
 } from '@/views/Common/script/other'
 
 export default {
@@ -156,6 +159,7 @@ export default {
       itemTableName: 'data1s',
       // Will use by event, i18n
       panelName: 'setting',
+      historyColumnName: 'history_settings',
 
       currentTabId: '',
       tabList: [],
@@ -168,6 +172,7 @@ export default {
       bottomBarData: getBottomBarData.call(this),
       groupList: [],
       itemList: [],
+      historyItemList: [],
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
@@ -223,6 +228,13 @@ export default {
       this.currentGroup = group
       this.$db.setConfig(makeLastId(this.groupTableName), groupId)
       this.$store.commit('HIDE_CONTEXTMENU')
+      this.addToHistoryList(group)
+    },
+    addToHistoryList(item) {
+      return addToHistoryList.call(this, item)
+    },
+    setHistoryList(mode) {
+      return setHistoryList.call(this, mode)
     },
     getGroupFromDb(groupId) {
       return getGroupFromDb.call(this, groupId)
@@ -297,10 +309,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    next(_this => {
-      _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
-      _this.$store.commit('SET_BOTTOM_BAR_DATA', _this.bottomBarData)
-    })
+    beforeRouteEnter(to, from, next)
   },
   mounted() {
     this.init()
@@ -309,6 +318,9 @@ export default {
       this.newGroup()
     })
     this.$bus.$on(this.panelName + ':change-to-group', targetItem => {
+      this.changeToGroup(targetItem.id)
+    })
+    this.$bus.$on(this.panelName + ':change-to-item', targetItem => {
       this.changeToGroup(targetItem.id)
     })
     this.$bus.$on(this.panelName + ':switch-tab', isNext => {

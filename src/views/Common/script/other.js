@@ -29,3 +29,50 @@ export const updateCursor = function (cursor, selctionLen) {
     value: cursorText + selectedText
   })
 }
+
+export const beforeRouteEnter = function (to, from, next) {
+  next(_this => {
+    _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
+    _this.$store.commit('SET_BOTTOM_BAR_DATA', _this.bottomBarData)
+    _this.$store.commit('SET_HISTORY_LIST', _this.historyItemList)
+  })
+}
+
+export const setHistoryList = function () {
+  const historyItemStr = this.$db.getConfig(this.historyColumnName)
+  if (historyItemStr !== undefined) {
+    try {
+      const historyItemList = JSON.parse(historyItemStr)
+      this.historyItemList = historyItemList
+      this.$store.commit('SET_HISTORY_LIST', historyItemList)
+    } catch (error) {
+      this.$alert(error)
+      this.$db.setConfig(this.historyColumnName)
+    }
+  }
+}
+export const addToHistoryList = function (item) {
+  const historyItem = {
+    id: item.id,
+    title: item.title,
+    openTime: Date.now()
+  }
+  // 查询是否已在列表中
+  const index = this.historyItemList.findIndex(_historyItem => {
+    return _historyItem.id === historyItem.id
+  })
+  // 如果在就删除
+  if (index !== -1) {
+    this.historyItemList.splice(index, 1)
+  }
+  // 添加到列表
+  this.historyItemList.unshift(historyItem)
+
+  // 超过10的时候，删除最先添加的那个
+  if (this.historyItemList.length > 10) {
+    this.historyItemList.pop()
+  }
+  this.$store.commit('SET_HISTORY_LIST', this.historyItemList)
+  const historyItemListStr = JSON.stringify(this.historyItemList)
+  this.$db.setConfig(this.historyColumnName, historyItemListStr)
+}

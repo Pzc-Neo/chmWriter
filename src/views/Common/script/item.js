@@ -64,6 +64,8 @@ export const changeToItem = function (itemId, isAddToTab = true) {
 
   this.currentItem = item
   this.$db.setConfig(makeLastId(this.itemTableName), item.id)
+
+  this.addToHistoryList(item)
 }
 export const revealItem = function (item) {
   this.changeToGroup(item.group_id)

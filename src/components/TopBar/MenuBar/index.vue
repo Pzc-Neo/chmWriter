@@ -27,11 +27,14 @@
       <el-submenu index="history">
         <template slot="title">{{ $t('menuBar.history') }}</template>
         <el-menu-item
-          v-for="history in historys"
+          v-for="history in historyItemList"
           :index="history.id"
           :key="history.id"
         >
-          {{ history.title }}
+          <div class="history_item">
+            <div class="left">{{ history.title }}</div>
+            <div class="right">{{ $formatTime(history.openTime) }}</div>
+          </div>
         </el-menu-item>
       </el-submenu>
       <el-submenu index="help">
@@ -50,7 +53,7 @@
 <script>
 export default {
   props: {
-    historys: {
+    historyItemList: {
       type: Array,
       default() {
         return []
@@ -66,18 +69,50 @@ export default {
     handleSelect(key, keyPath) {
       console.log(key, keyPath)
       const [index0, index1] = keyPath
-      if (index0 === 'help') {
-        if (index1 === 'language') {
-          this.changeLocale(key)
-        }
-      } else if (index0 === 'file') {
-        if (index1 === 'new-file') {
-          console.log('new file')
-          // this.$db.createDb()
-        } else if (index1 === 'pereferences') {
-          this.$bus.$emit('pereferences-box:show')
-        }
+      switch (index0) {
+        case 'file':
+          switch (index1) {
+            case 'new-file':
+              console.log('new file')
+              break
+            case 'pereferences':
+              this.$bus.$emit('pereferences-box:show')
+              break
+          }
+          break
+        case 'history':
+          this.$bus.$emit(`${this.$store.state.currentPanel}:change-to-item`, {
+            id: index1
+          })
+          break
+        case 'help':
+          switch (index1) {
+            case 'language':
+              this.changeLocale(key)
+              break
+          }
+          break
+
+        default:
+          break
       }
+      // const menuMap = {
+      //   file: {
+      //     'new-file': () => {
+      //       console.log('new file ')
+      //     },
+      //     pereferences: () => {
+      //       this.$bus.$emit('pereferences-box:show')
+      //     }
+      //   },
+      //   history: {},
+      //   help: {
+      //     language: () => {
+      //       this.changeLocale(key)
+      //     }
+      //   }
+      // }
+      // menuMap[index0][index1]()
     },
     changeLocale(local) {
       this.$i18n.locale = local
@@ -129,6 +164,18 @@ export default {
       .el-submenu__title {
         border-bottom: 2px solid transparent;
       }
+    }
+  }
+}
+.el-menu--horizontal {
+  .history_item {
+    display: flex;
+    justify-content: space-between;
+    .left {
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-right: 8px;
     }
   }
 }

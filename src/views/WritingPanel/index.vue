@@ -184,7 +184,10 @@ import {
 } from '@/views/Common/script/item'
 import {
   infoBoxCollapseHandler,
-  updateCursor
+  updateCursor,
+  beforeRouteEnter,
+  addToHistoryList,
+  setHistoryList
 } from '@/views/Common/script/other'
 
 export default {
@@ -209,6 +212,7 @@ export default {
       itemTableName: 'chapters',
       // Will use by event, i18n
       panelName: 'writing',
+      historyColumnName: 'history_chapters',
 
       currentTabId: '',
       tabList: [],
@@ -221,6 +225,7 @@ export default {
       bottomBarData: getBottomBarData.call(this),
       groupList: [],
       itemList: [],
+      historyItemList: [],
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
@@ -276,6 +281,12 @@ export default {
     },
     changeToItem(itemId) {
       return changeToItem.call(this, itemId)
+    },
+    addToHistoryList(item) {
+      return addToHistoryList.call(this, item)
+    },
+    setHistoryList(mode) {
+      return setHistoryList.call(this, mode)
     },
     revealItem(item) {
       return revealItem.call(this, item)
@@ -354,10 +365,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    next(_this => {
-      _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
-      _this.$store.commit('SET_BOTTOM_BAR_DATA', _this.bottomBarData)
-    })
+    beforeRouteEnter(to, from, next)
   },
   mounted() {
     this.init()

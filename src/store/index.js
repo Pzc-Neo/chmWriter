@@ -15,6 +15,7 @@ export default new Vuex.Store({
     /* Panel's name ('/' + Panel's name === Panel's path  === route) */
     currentPanel: 'writing',
     panelToolList: [],
+    historyItemList: [],
 
     barVisible: {
       groupBar: true,
@@ -64,6 +65,9 @@ export default new Vuex.Store({
     },
     SET_PANEL_TOOL_LIST(state, panelToolList) {
       state.panelToolList = panelToolList
+    },
+    SET_HISTORY_LIST(state, historyItemList) {
+      state.historyItemList = historyItemList
     },
     SET_BOTTOM_BAR_DATA(state, bottomBarData) {
       state.bottomBarData = bottomBarData

@@ -12,6 +12,8 @@ import { makeLastId } from './other'
 export const init = function (mode = 'all') {
   this.$changePanel('/' + this.panelName)
 
+  this.setHistoryList()
+
   if (mode === 'all' || mode === 'group') {
     this.groupList = this.getGroups()
     const lastGroupId = this.$db.getConfig(makeLastId(this.groupTableName))

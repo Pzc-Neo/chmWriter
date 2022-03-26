@@ -205,7 +205,13 @@ import {
   updateAttrItem,
   updateItemSorts
 } from '@/views/Common/script/item'
-import { infoBoxCollapseHandler, makeLastId } from '@/views/Common/script/other'
+import {
+  beforeRouteEnter,
+  infoBoxCollapseHandler,
+  makeLastId,
+  addToHistoryList,
+  setHistoryList
+} from '@/views/Common/script/other'
 
 export default {
   name: 'CharacterPanel',
@@ -231,6 +237,8 @@ export default {
       relationTableName: 'character_relation',
       // Will use by event, i18n
       panelName: 'character',
+      historyColumnName: 'history_characters',
+
       addRelationMode: {
         isOn: false,
         params: {}
@@ -248,6 +256,7 @@ export default {
       bottomBarData: getBottomBarData.call(this),
       groupList: [],
       itemList: [],
+      historyItemList: [],
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
@@ -365,6 +374,12 @@ export default {
     changeToItem(itemId) {
       return changeToItem.call(this, itemId, false)
     },
+    addToHistoryList(item) {
+      return addToHistoryList.call(this, item)
+    },
+    setHistoryList(mode) {
+      return setHistoryList.call(this, mode)
+    },
     revealItem(item) {
       return revealItem.call(this, item)
     },
@@ -442,10 +457,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next) {
-    next(_this => {
-      _this.$store.commit('SET_PANEL_TOOL_LIST', _this.toolList)
-      _this.$store.commit('SET_BOTTOM_BAR_DATA', _this.bottomBarData)
-    })
+    beforeRouteEnter(to, from, next)
   },
   mounted() {
     this.init()
