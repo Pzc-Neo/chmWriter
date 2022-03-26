@@ -24,7 +24,10 @@ export const getAllChildItems = function (groupId) {
 }
 
 export const getItemFromDb = function (itemId) {
-  return this.$db.getItem(this.itemTableName, itemId)
+  const item = this.$db.getItem(this.itemTableName, itemId)
+  item.newContent = item.content
+  item.isChanged = false
+  return item
 }
 export const getItemFromLocal = function (itemId) {
   const index = this.itemList.findIndex(item => {
@@ -36,6 +39,18 @@ export const getItemFromLocal = function (itemId) {
     return this.getItemFromDb(itemId)
   }
 }
+
+export const getItemFromTabList = function (tabId) {
+  const index = this.tabList.findIndex(_tab => _tab.id === tabId)
+  if (index !== -1) {
+    const tab = this.tabList[index]
+    return tab
+  } else {
+    this.$alert('tab not exit')
+    return null
+  }
+}
+
 /**
  * @param {String} itemId
  * @param {Boolean} isAddToTab Sometime you may want to add group to tab not item
@@ -156,4 +171,20 @@ export const deleteItem = async function (targetItem) {
     this.removeTab(targetItem.id)
     this.refreshItemList()
   }
+}
+export const saveContent = function (content, itemId) {
+  let item = {}
+  if (itemId === undefined) {
+    item = this.currentItem
+  } else {
+    item = this.getItemFromTabList(itemId)
+  }
+
+  if (content === undefined) {
+    content = item.newContent
+  }
+
+  this.updateAttrItem('content', content, item)
+
+  item.isChanged = false
 }

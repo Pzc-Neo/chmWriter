@@ -175,10 +175,12 @@ import {
   deleteItem,
   getItemFromDb,
   getItemFromLocal,
+  getItemFromTabList,
   getItems,
   newItem,
   refreshItemList,
   revealItem,
+  saveContent,
   updateAttrItem,
   updateItemSorts
 } from '@/views/Common/script/item'
@@ -279,6 +281,9 @@ export default {
     getItemFromLocal(itemId) {
       return getItemFromLocal.call(this, itemId)
     },
+    getItemFromTabList(itemId) {
+      return getItemFromTabList.call(this, itemId)
+    },
     changeToItem(itemId) {
       return changeToItem.call(this, itemId)
     },
@@ -311,7 +316,8 @@ export default {
     },
     handleEditorContentChange(item, newContent) {
       item.newContent = newContent
-      item.isChanged = true
+      // item.isChanged = true
+      this.$set(item, 'isChanged', true)
     },
     handleRemoveTab(targetId) {
       return handleRemoveTab.call(this, targetId)
@@ -332,25 +338,8 @@ export default {
     showTabContextMenu(event, targetItem) {
       return showTabContextMenu.call(this, event, targetItem)
     },
-
     saveContent(content, itemId) {
-      let item = {}
-      if (itemId === undefined) {
-        item = this.currentItem
-      } else {
-        item = this.getItemFromLocal(itemId)
-      }
-
-      if (content === undefined) {
-        content = item.newContent
-      }
-
-      this.updateAttrItem('content', content, item)
-      if (item?.isChanged === undefined) {
-        this.$set(item, 'isChanged', false)
-      } else {
-        item.isChanged = false
-      }
+      return saveContent.call(this, content, itemId)
     },
     updateCursor(cursor, selctionLen) {
       updateCursor.call(this, cursor, selctionLen)

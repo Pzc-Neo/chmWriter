@@ -155,6 +155,7 @@ import {
   newItem,
   refreshItemList,
   revealItem,
+  saveContent,
   updateAttrItem,
   updateItemSorts
 } from '@/views/Common/script/item'
@@ -322,20 +323,8 @@ export default {
     showTabContextMenu(event, targetItem) {
       return showTabContextMenu.call(this, event, targetItem)
     },
-
     saveContent(content, itemId) {
-      let item = {}
-      if (itemId === undefined) {
-        item = this.currentItem
-      } else {
-        item = this.getItemFromLocal(itemId)
-      }
-
-      if (content === undefined) {
-        content = item.newContent
-      }
-      this.updateAttrItem('content', content, item)
-      item.isChanged = false
+      return saveContent.call(this, content, itemId)
     },
     updateCursor(cursor, selctionLen) {
       updateCursor.call(this, cursor, selctionLen)

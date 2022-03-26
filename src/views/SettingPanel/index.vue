@@ -139,6 +139,7 @@ import {
   addToHistoryList,
   setHistoryList
 } from '@/views/Common/script/other'
+import { getItemFromTabList } from '../Common/script/item'
 
 export default {
   name: 'SettingPanel',
@@ -224,6 +225,14 @@ export default {
         }
         return
       }
+
+      if (!Object.hasOwnProperty.call(group, 'isChanged')) {
+        this.$set(group, 'isChanged', false)
+      }
+      if (!Object.hasOwnProperty.call(group, 'newContent')) {
+        // Will update when editor content change
+        this.$set(group, 'newContent', group.content)
+      }
       addToTab.call(this, group)
       this.currentGroup = group
       this.$db.setConfig(makeLastId(this.groupTableName), groupId)
@@ -241,6 +250,9 @@ export default {
     },
     getGroupFromLocal(groupId) {
       return getGroupFromLocal.call(this, groupId)
+    },
+    getItemFromTabList(itemId) {
+      return getItemFromTabList.call(this, itemId)
     },
     updateGroupSorts(diffData) {
       return updateGroupSorts.call(this, diffData)
@@ -280,13 +292,12 @@ export default {
     showTabContextMenu(event, targetItem) {
       return showTabContextMenu.call(this, event, targetItem)
     },
-
     saveContent(content, itemId) {
       let item = {}
       if (itemId === undefined) {
-        item = this.currentGroup
+        item = this.currentItem
       } else {
-        item = this.getGroupFromDb(itemId)
+        item = this.getItemFromTabList(itemId)
       }
 
       if (content === undefined) {
@@ -294,6 +305,7 @@ export default {
       }
 
       this.updateAttrGroup('description', content, item)
+
       item.isChanged = false
     },
     updateCursor(cursor, selctionLen) {
