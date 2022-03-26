@@ -73,6 +73,10 @@ export const addToHistoryList = function (item) {
     this.historyItemList.pop()
   }
   this.$store.commit('SET_HISTORY_LIST', this.historyItemList)
-  const historyItemListStr = JSON.stringify(this.historyItemList)
-  this.$db.setConfig(this.historyColumnName, historyItemListStr)
+  setTimeout(() => {
+    const historyItemListStr = JSON.stringify(this.historyItemList)
+    // 下面这行会让tab的切换变慢很多。
+    // 如果把这行放到setTimeout函数里面的话，tab的切换会变得正常。
+    this.$db.setConfig(this.historyColumnName, historyItemListStr)
+  }, 0)
 }
