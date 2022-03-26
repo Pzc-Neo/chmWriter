@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, session } from 'electron'
+import { app, protocol, BrowserWindow, session, shell } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import path from 'path'
 import createMenu from '@/electronMain/Menu'
@@ -79,6 +79,16 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+})
+
+/**
+ * Open all link in default browser.
+ */
+app.on('web-contents-created', (e, webContents) => {
+  webContents.on('new-window', (event, url) => {
+    event.preventDefault()
+    shell.openExternal(url)
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.
