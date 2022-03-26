@@ -151,6 +151,7 @@ import {
   deleteItem,
   getItemFromDb,
   getItemFromLocal,
+  getItemFromTabList,
   getItems,
   newItem,
   refreshItemList,
@@ -269,6 +270,9 @@ export default {
     },
     getItemFromLocal(itemId) {
       return getItemFromLocal.call(this, itemId)
+    },
+    getItemFromTabList(itemId) {
+      return getItemFromTabList.call(this, itemId)
     },
     changeToItem(itemId) {
       return changeToItem.call(this, itemId)
