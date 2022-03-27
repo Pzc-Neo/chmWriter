@@ -81,3 +81,18 @@ export const listToTree = (list, root, parentId) => {
   })
   return result
 }
+
+/**
+ * Show contextmenu
+ * @param {Object} event
+ * @param {Array} menuList
+ * @param {Object} targetItem
+ */
+export const showContextmenu = function (event, menuList, targetItem = {}) {
+  const param = {
+    event,
+    targetItem,
+    menuList
+  }
+  this.$store.commit('SHOW_CONTEXTMENU', param)
+}
