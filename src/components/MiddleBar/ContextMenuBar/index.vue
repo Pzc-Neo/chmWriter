@@ -1,15 +1,20 @@
 <template>
-  <div v-show="isShow" class="contextmenu_bar" :style="styleMenu">
+  <div
+    v-show="isShow"
+    ref="contextmenuBar"
+    class="contextmenu_bar"
+    :style="styleMenuBar"
+  >
     <el-menu menu-trigger="hover">
       <el-menu-item
-        :index="menu.id"
-        v-for="menu in menuList"
-        :key="menu.id"
-        @click="handleClick(menu)"
+        v-for="menuItem in menuList"
+        :index="menuItem.id"
+        :key="menuItem.id"
+        @click="handleMenuItemClick(menuItem)"
       >
-        <i v-if="menu.icon" :class="menu.icon"></i>
+        <i v-if="menuItem.icon" :class="menuItem.icon"></i>
         <i v-else class="el-icon-cloudy"></i>
-        <span slot="title">{{ $t(menu.title) }}</span>
+        <span slot="title">{{ $t(menuItem.title) }}</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -18,10 +23,55 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+  data() {
+    return {
+      /**
+       * The style of ContextMenuBar about position
+       */
+      styleMenuBar: {
+        top: 0,
+        left: 0
+      }
+    }
+  },
   methods: {
-    handleClick(menu) {
-      menu.func(this.targetItem)
+    handleMenuItemClick(menuItem) {
+      menuItem.func(this.targetItem)
       this.$store.commit('HIDE_CONTEXTMENU')
+    },
+    getStyleMenuBar(event) {
+      const elMenuBar = this.$refs.contextmenuBar
+
+      let mouseX = event?.pageX || 0
+      let mouseY = event?.pageY || 0
+
+      const menuBarWidth = elMenuBar.offsetWidth
+      const menuBarHeight = elMenuBar.offsetHeight
+
+      const clientHeight = document.body.clientHeight
+      const clienWidth = document.body.clientWidth
+
+      // If mouse's position lower than half of clientHeight,then show the menu over mouse
+      if (mouseY > clientHeight / 2) {
+        mouseY = mouseY - menuBarHeight
+      }
+      // 右边溢出
+      if (mouseX + menuBarWidth > clienWidth) {
+        mouseX = mouseX - menuBarWidth
+      }
+
+      const menuStyle = {
+        top: mouseY + 'px',
+        left: mouseX + 'px'
+      }
+      return menuStyle
+    }
+  },
+  watch: {
+    event(newEvent) {
+      this.$nextTick(() => {
+        this.styleMenuBar = this.getStyleMenuBar(newEvent)
+      })
     }
   },
   computed: {
@@ -30,31 +80,7 @@ export default {
       menuList: state => state.contextmenu.prama.menuList,
       event: state => state.contextmenu.prama.event,
       targetItem: state => state.contextmenu.prama.targetItem
-    }),
-    /**
-     * The style of ContextMenuBar about position
-     */
-    styleMenu() {
-      const x = this.event?.pageX
-      let y = this.event?.pageY
-
-      // If mouse's position lower than half of clientHeight's height,then show the menu over mouse
-      const height = document.body.clientHeight
-      if (y > height / 2) {
-        const menuBar = document.querySelector('.contextmenu_bar')
-        if (menuBar !== null) {
-          const h = window.getComputedStyle(menuBar, null).height
-          if (h !== 'auto') {
-            y = y - parseInt(h)
-          }
-        }
-      }
-      const menuStyle = {
-        top: y + 'px',
-        left: x + 'px'
-      }
-      return menuStyle
-    }
+    })
   }
 }
 </script>
