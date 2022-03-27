@@ -52,7 +52,7 @@ export default {
       const clienWidth = document.body.clientWidth
 
       // If mouse's position lower than half of clientHeight,then show the menu over mouse
-      if (mouseY > clientHeight / 2) {
+      if (mouseY + menuBarHeight > clientHeight) {
         mouseY = mouseY - menuBarHeight
       }
       // 右边溢出
