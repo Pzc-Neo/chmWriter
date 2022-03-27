@@ -63,14 +63,37 @@ export const getGroupFromDb = function (groupId) {
 }
 
 export const getGroupFromLocal = function (groupId) {
-  const index = this.groupList.findIndex(group => {
-    return group.id === groupId
+  return new Promise((resolve, reject) => {
+    const groupQueue = [this.groupList]
+    while (groupQueue.length) {
+      const groupList = groupQueue.shift()
+      groupList.forEach(_group => {
+        if (_group.id === groupId) {
+          resolve(_group)
+        } else {
+          if (_group.children) {
+            groupQueue.push(_group.children)
+          }
+        }
+      })
+    }
   })
-  if (index !== -1) {
-    return this.groupList[index]
-  } else {
-    return this.getGroupFromDb(groupId)
-  }
+}
+export const getGroupFromLocalTemp = function (groupId) {
+  return new Promise((resolve, reject) => {
+    getGroup(this.groupList)
+    function getGroup(groupList) {
+      groupList.forEach(_group => {
+        if (_group.id === groupId) {
+          resolve(_group)
+        } else {
+          if (_group.children) {
+            getGroup(_group.children)
+          }
+        }
+      })
+    }
+  })
 }
 
 /**
@@ -82,14 +105,14 @@ export const getGroupFromLocal = function (groupId) {
  * you can do something to it and you must return an itemList.
  * @returns
  */
-export const changeToGroup = function (
+export const changeToGroup = async function (
   groupId,
   force = false,
   itemListHandler
 ) {
   if (this.currentGroup.id === groupId && !force) return
 
-  let group = this.getGroupFromDb(groupId)
+  let group = await this.getGroupFromLocal(groupId)
   if (group === undefined) {
     group = this.getGroupFromDb('default')
     if (group !== undefined) {
