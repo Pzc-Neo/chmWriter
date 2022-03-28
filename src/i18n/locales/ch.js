@@ -145,8 +145,11 @@ export default {
     showPreviewBox: '显示预览框',
     previewMarkdown: '预览markdown',
     previewPureText: '预览纯文本',
-    hidePreviewBox: '隐藏预览框',
-    toggleEditorLayout: '切换编辑器布局',
+    preview: '预览',
+    pureText: '纯文本',
+    text: '文本',
+    hidePreviewBox: '隐藏',
+    toggleEditorLayout: '切换布局',
     toggleOutlineBox: '显示/隐藏大纲',
     searchOutline: '搜索大纲'
   },

@@ -139,7 +139,7 @@ export default {
         flexDirection: 'row'
       },
       currentLine: 0,
-      menuList: cmEditorMenuList.call(this),
+      menuList: [],
       cmOptions: {
         tabSize: 4,
         mode: 'markdown',
@@ -300,7 +300,7 @@ export default {
       this.previewType = previewType
     },
     hidePreviewBox() {
-      this.isShowPreviewBox = !this.isShowPreviewBox
+      this.isShowPreviewBox = false
     },
     toggleEditorLayout() {
       if (this.styleEditorContainer.flexDirection === 'row') {
@@ -329,10 +329,14 @@ export default {
     },
     jumpToLine(head) {
       jumpToLine(this.cmEditor, head)
+    },
+    loadMenuList() {
+      this.menuList = cmEditorMenuList.call(this)
     }
   },
   mounted() {
     this.wordCounter(this.item[this.contentKey], this.item.language)
+    this.loadMenuList()
     /**
      * If outline box
      */

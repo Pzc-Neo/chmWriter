@@ -5,24 +5,18 @@
     class="contextmenu_bar"
     :style="styleMenuBar"
   >
-    <el-menu menu-trigger="hover">
-      <el-menu-item
-        v-for="menuItem in menuList"
-        :index="menuItem.id"
-        :key="menuItem.id"
-        @click="handleMenuItemClick(menuItem)"
-      >
-        <i v-if="menuItem.icon" :class="menuItem.icon"></i>
-        <i v-else class="el-icon-cloudy"></i>
-        <span slot="title">{{ $t(menuItem.title) }}</span>
-      </el-menu-item>
-    </el-menu>
+    <MenuList :menuList="menuList" :targetItem="targetItem" />
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import MenuList from './components/MenuList'
 export default {
+  name: 'ContextmenuBar',
+  components: {
+    MenuList
+  },
   data() {
     return {
       /**
@@ -35,10 +29,6 @@ export default {
     }
   },
   methods: {
-    handleMenuItemClick(menuItem) {
-      menuItem.func(this.targetItem)
-      this.$store.commit('HIDE_CONTEXTMENU')
-    },
     getStyleMenuBar(event) {
       const elMenuBar = this.$refs.contextmenuBar
 
@@ -87,23 +77,12 @@ export default {
 
 <style lang="scss" scoped>
 .contextmenu_bar {
+  width: 190px;
   display: inline-block;
   position: fixed;
   border-radius: 5px;
   z-index: 100;
-  /deep/ .el-menu {
-    border: solid 1px #e6e6e6;
-    .el-menu-item,
-    .el-submenu .el-submenu__title {
-      height: 30px;
-      line-height: 30px;
-    }
-    .el-menu-item {
-      i.not_show {
-        color: transparent;
-        background-color: transparent;
-      }
-    }
-  }
+  border: 1px solid #e6e6e6;
+  box-shadow: $main-shadow;
 }
 </style>

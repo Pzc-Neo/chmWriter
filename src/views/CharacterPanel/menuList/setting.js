@@ -1,7 +1,7 @@
 /**
  * title: Use i18n's string.
  */
-export const groupBar = function () {
+export const settingBar = function () {
   return [
     {
       type: 'item',
@@ -21,8 +21,19 @@ export const groupBar = function () {
   ]
 }
 
-export const group = function () {
+export const setting = function () {
   return [
+    {
+      type: 'item',
+      menuItem: {
+        id: 'showGroupChart',
+        title: 'contextMenuBar.showGroupChart',
+        icon: 'el-icon-orange',
+        func: targetItem => {
+          this.showGroupChart(targetItem.id)
+        }
+      }
+    },
     {
       type: 'item',
       menuItem: {

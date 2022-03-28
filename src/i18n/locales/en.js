@@ -149,8 +149,11 @@ export default {
     column: 'Col',
     previewMarkdown: 'Preview markdown',
     previewPureText: 'Preview pure text',
-    hidePreviewBox: 'Hide preview box',
-    toggleEditorLayout: 'Toggle Editor Layout',
+    preview: 'Preview',
+    pureText: 'Pure Text',
+    text: 'Text',
+    hidePreviewBox: 'Hide',
+    toggleEditorLayout: 'Toggle Layout',
     toggleOutlineBox: 'Toggle outline box',
     searchOutline: 'Search outline'
   },
