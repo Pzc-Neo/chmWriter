@@ -47,13 +47,17 @@ export default {
       default() {
         return {}
       }
+    },
+    event: {
+      type: MouseEvent,
+      require: true
     }
   },
   methods: {
     handleMenuItemClick(menuItem) {
       if (menuItem?.disable === true) return
 
-      menuItem.func(this.targetItem, menuItem)
+      menuItem.func(this.targetItem, menuItem, this.event)
 
       if (menuItem?.hideOnClick !== false) {
         this.$store.commit('HIDE_CONTEXTMENU')

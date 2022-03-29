@@ -58,7 +58,9 @@ export default {
     closeOthers: 'Close others',
     reveal: 'Reveal in side bar',
     addEdge: 'Add edge',
-    showGroupChart: 'Show group chart'
+    showGroupChart: 'Show group chart',
+    addSettingTag: 'Add setting tag',
+    refreshSettingTree: 'Refresh setting tree'
   },
   sideBar: {
     data: 'Data',

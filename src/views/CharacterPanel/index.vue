@@ -18,7 +18,7 @@
       <ItemBar
         :itemList="itemList"
         :currentItem="currentItem"
-        :enuListBar="menuListItemBar"
+        :menuListBar="menuListItemBar"
         :menuList="menuListItem"
         @changeTo="changeToItem"
         @updateSorts="updateItemSorts"
@@ -29,51 +29,62 @@
         </template>
       </ItemBar>
     </div>
-    <ContentBar>
-      <el-empty
-        :image-size="200"
-        :description="$t('info.empty')"
-        v-if="tabList.length === 0"
-        style="height: 100%"
-      ></el-empty>
-      <el-tabs
-        v-else
-        closable
-        v-model="currentTabId"
-        type="card"
-        class="tab_bar"
-        @tab-remove="handleRemoveTab"
-        @tab-click="handleTabClick"
-      >
-        <el-tab-pane
-          v-for="item in tabList"
-          :key="item.id"
-          :label="item.title"
-          :name="item.id"
-          class="editor_container"
-          :style="{ width: editorWidth }"
+
+    <div class="middle">
+      <ContentBar :customStyle="{ flex: 5 }">
+        <el-empty
+          :image-size="200"
+          :description="$t('info.empty')"
+          v-if="tabList.length === 0"
+          style="height: 100%"
+        ></el-empty>
+        <el-tabs
+          v-else
+          closable
+          v-model="currentTabId"
+          type="card"
+          class="tab_bar"
+          @tab-remove="handleRemoveTab"
+          @tab-click="handleTabClick"
         >
-          <span
-            slot="label"
-            @dblclick="handleRemoveTab(item.id)"
-            @contextmenu.prevent="showTabContextMenu($event, item)"
+          <el-tab-pane
+            v-for="item in tabList"
+            :key="item.id"
+            :label="item.title"
+            :name="item.id"
+            class="editor_container"
+            :style="{ width: editorWidth }"
           >
-            <span v-show="item.isChanged">*</span>
-            {{ item.title }}
-          </span>
-          <RelationChart
-            :relationData="relationData"
-            :linkData="relationLink"
-            :menuList="menulistRelation"
-            :addRelationMode="addRelationMode"
-            :relationTableName="relationTableName"
-            @change-to-item="changeToItem"
-            @new-relation="newRelation"
-            @update-relation="updateRelation"
-          />
-        </el-tab-pane>
-      </el-tabs>
-    </ContentBar>
+            <span
+              slot="label"
+              @dblclick="handleRemoveTab(item.id)"
+              @contextmenu.prevent="showTabContextMenu($event, item)"
+            >
+              <span v-show="item.isChanged">*</span>
+              {{ item.title }}
+            </span>
+            <RelationChart
+              :relationData="relationData"
+              :linkData="relationLink"
+              :menuList="menulistRelation"
+              :addRelationMode="addRelationMode"
+              :relationTableName="relationTableName"
+              @change-to-item="changeToItem"
+              @new-relation="newRelation"
+              @update-relation="updateRelation"
+            />
+          </el-tab-pane>
+        </el-tabs>
+      </ContentBar>
+      <SettingBar
+        :menulistSettingBar="menulistSettingBar"
+        :menulistSettingTag="menulistSettingTag"
+        :settingTree="settingTree"
+        :settingTagList="settingTagList"
+        @update-setting="updateSetting"
+        @update-sorts="updateSettingTagSorts"
+      />
+    </div>
     <DetailBar :item="currentItem">
       <InfoBox
         :title="$t('detailBar.baseAttribute')"
@@ -159,6 +170,7 @@ import AttrBoxOther from './components/AttrBoxOther'
 import AttrBoxBase from './components/AttrBoxBase'
 import CharacterItem from './components/CharacterItem'
 import RelationChart from './components/RelationChart'
+import SettingBar from './components/SettingBar'
 
 import QuillEditor from '@/views/Common/components/QuillEditor'
 
@@ -172,6 +184,12 @@ import {
   getRelationDate,
   getRelationLink
 } from './util/relation'
+
+import {
+  addSettingTag,
+  delectSettingTag,
+  openAddSettingTagMenu
+} from './util/setting'
 
 import {
   init,
@@ -189,7 +207,6 @@ import {
   handleRemoveTab,
   removeOtherTabs,
   removeTab,
-  showTabContextMenu,
   switchTab
 } from '@/views/Common/script/tab'
 import {
@@ -212,6 +229,7 @@ import {
   addToHistoryList,
   setHistoryList
 } from '@/views/Common/script/other'
+import { listToTree, showContextmenu } from '@/util/base'
 
 export default {
   name: 'CharacterPanel',
@@ -226,10 +244,12 @@ export default {
     AttrBoxBase,
     TextareaBox,
     RelationChart,
-    QuillEditor
+    QuillEditor,
+    SettingBar
   },
   data() {
     return {
+      value: '',
       // Group table's name on datebase
       groupTableName: 'character_groups',
       // Item table's name on datebase
@@ -252,11 +272,15 @@ export default {
       menuListItemBar: menuListFactory.call(this, 'itemBar'),
       menuListTab: menuListFactory.call(this, 'tab'),
       menulistRelation: menuListFactory.call(this, 'relationChart'),
+      menulistSettingBar: menuListFactory.call(this, 'settingBar'),
+      menulistSettingTag: menuListFactory.call(this, 'settingTag'),
       toolList: getToolList.call(this),
       bottomBarData: getBottomBarData.call(this),
       groupList: [],
       itemList: [],
       historyItemList: [],
+      settingTree: {},
+      settingTagList: [],
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
@@ -372,7 +396,18 @@ export default {
       return getItemFromLocal.call(this, itemId)
     },
     changeToItem(itemId) {
-      return changeToItem.call(this, itemId, false)
+      return changeToItem.call(this, itemId, false, () => {
+        try {
+          const tempList = JSON.parse(this.currentItem.settingInfo)
+          if (tempList === null) {
+            this.settingTagList = []
+          } else {
+            this.settingTagList = tempList
+          }
+        } catch (error) {
+          this.settingTagList = []
+        }
+      })
     },
     addToHistoryList(item) {
       return addToHistoryList.call(this, item)
@@ -387,7 +422,6 @@ export default {
       return updateItemSorts.call(this, diffData)
     },
     updateAttrItem(column, value, item, isShowMessage = true) {
-      console.log(column, value, item)
       return updateAttrItem.call(this, column, value, item, isShowMessage)
     },
     updateConfig(property, value) {
@@ -426,7 +460,7 @@ export default {
       this.changeToGroup(tab.name)
     },
     showTabContextMenu(event, targetItem) {
-      return showTabContextMenu.call(this, event, targetItem)
+      showContextmenu.call(this, event, this.menuListTab, targetItem)
     },
     updateRelation(targetItem) {
       updateRelation.call(this, targetItem)
@@ -446,6 +480,49 @@ export default {
     renderAll() {
       const itemList = this.$db.getAllFromTable(this.itemTableName)
       this.relationData = convertToRelationData(itemList)
+    },
+    getSettingTree() {
+      const groups = this.$db.getGroups('settings')
+      const tempMap = listToTree(groups, undefined, undefined, false)
+      const rootObj = {}
+      for (const key in tempMap) {
+        if (Object.hasOwnProperty.call(tempMap, key)) {
+          const obj = tempMap[key]
+          if (obj.pid === 'root') {
+            rootObj[key] = obj
+          }
+        }
+      }
+      return rootObj
+    },
+    refreshSettingTree() {
+      this.settingTree = this.getSettingTree()
+      this.$message(
+        `${this.$t('contextMenuBar.refreshSettingTree')} ${this.$t(
+          'result.success'
+        )}`
+      )
+    },
+    updateSetting(settingTagList) {
+      try {
+        const settingStr = JSON.stringify(settingTagList)
+        this.updateAttrItem('settingInfo', settingStr, this.currentItem)
+      } catch (error) {
+        this.$alert(error)
+      }
+    },
+    updateSettingTagSorts(resultSettingList) {
+      this.settingTagList = resultSettingList
+      this.updateSetting(this.settingTagList)
+    },
+    openAddSettingTagMenu(targetItem, menuItem, event) {
+      return openAddSettingTagMenu.call(this, targetItem, menuItem, event)
+    },
+    addSettingTag(setting) {
+      return addSettingTag.call(this, setting)
+    },
+    deleteSettingTag(settingTag) {
+      return delectSettingTag.call(this, settingTag)
     }
   },
   watch: {
@@ -462,11 +539,12 @@ export default {
   mounted() {
     this.init()
 
+    this.settingTree = this.getSettingTree()
+
     this.$bus.$on(this.panelName + ':new-group', () => {
       this.newGroup()
     })
     this.$bus.$on(this.panelName + ':new-item', () => {
-      console.log('writing:new-item')
       this.newItem()
     })
     this.$bus.$on(this.panelName + ':change-to-group', targetItem => {
@@ -549,6 +627,15 @@ export default {
   .group_and_item_bar_container {
     display: flex;
     flex-direction: column;
+  }
+  .middle {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    .content_bar {
+      flex: 3;
+    }
   }
   .tab_bar {
     display: flex;

@@ -141,6 +141,23 @@ div.el-message-box {
       background: #363f637d;
       border-color: #4a9df81f; }
 
+div.el-popper.el-cascader__dropdown {
+  background: #2b313c;
+  border: 1px solid #4a9df81f; }
+  div.el-popper.el-cascader__dropdown .el-cascader-menu {
+    color: #a8b7c5;
+    border-right: 1px solid #4a9df81f; }
+  div.el-popper.el-cascader__dropdown .el-cascader-menu__wrap ul li:focus,
+  div.el-popper.el-cascader__dropdown .el-cascader-menu__wrap ul li:hover {
+    color: #a8b7c5;
+    background: #266bb4; }
+  div.el-popper.el-cascader__dropdown div.popper__arrow {
+    border-top-color: #4a9df81f;
+    border-bottom-color: #4a9df81f; }
+  div.el-popper.el-cascader__dropdown div.popper__arrow::after {
+    border-top-color: #2b313c;
+    border-bottom-color: #2b313c; }
+
 #app {
   /*
     Name:       chmWriter_editor_light
@@ -405,6 +422,13 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
   #app .middle_bar .panel .cm_editor .outline_box ul li.active {
     border-color: #266bb4;
     background-color: #282c34; }
+
+#app .middle_bar .main .panel .setting_bar {
+  border-top: 1px solid #222225; }
+  #app .middle_bar .main .panel .setting_bar .el-tag {
+    color: #409eff;
+    background: #363f637d;
+    border-color: #4a9df81f; }
 
 #app {
   color: #a8b7c5;

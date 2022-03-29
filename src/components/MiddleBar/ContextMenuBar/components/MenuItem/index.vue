@@ -39,6 +39,7 @@ export default {
   display: flex;
   align-items: center;
   padding: 6px 8px;
+  border-radius: 5px;
   cursor: pointer;
   .icon {
     font-size: 1.3em;

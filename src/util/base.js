@@ -52,9 +52,10 @@ export const debounceVue = function (funcName, time, callback) {
  * @param {Array} list The array you want to convert
  * @param {String} root Tree root's id
  * @param {String} parentId The column key of item's parent's id
+ * @param {Boolean} isReturnArray The column key of item's parent's id
  * @returns result json tree
  */
-export const listToTree = (list, root, parentId) => {
+export const listToTree = (list, root, parentId, isReturnArray = true) => {
   root = root || 'root'
   parentId = parentId || 'pid'
 
@@ -79,7 +80,11 @@ export const listToTree = (list, root, parentId) => {
       parent.children.push(item)
     }
   })
-  return result
+  if (isReturnArray) {
+    return result
+  } else {
+    return map
+  }
 }
 
 /**

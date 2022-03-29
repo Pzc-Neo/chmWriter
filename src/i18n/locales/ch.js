@@ -58,7 +58,9 @@ export default {
     closeOthers: '关闭其他',
     reveal: '在侧栏显示',
     addEdge: '添加连线',
-    showGroupChart: '打开本组关系图'
+    showGroupChart: '打开本组关系图',
+    addSettingTag: '添加设定标签',
+    refreshSettingTree: '刷新设定树'
   },
   sideBar: {
     data: '资料',

@@ -174,3 +174,30 @@ div.el-message-box {
     }
   }
 }
+
+div.el-popper.el-cascader__dropdown {
+  background: $bg_color_2;
+  border: $border_2;
+  .el-cascader-menu {
+    color: $color_1;
+    border-right: $border_2;
+  }
+
+  .el-cascader-menu__wrap {
+    ul {
+      li:focus,
+      li:hover {
+        color: $color_1;
+        background: $bg_color_4;
+      }
+    }
+  }
+  div.popper__arrow {
+    border-top-color: $border_color_2;
+    border-bottom-color: $border_color_2;
+  }
+  div.popper__arrow::after {
+    border-top-color: $bg_color_2;
+    border-bottom-color: $bg_color_2;
+  }
+}

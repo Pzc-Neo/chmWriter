@@ -1,0 +1,14 @@
+#app {
+  .middle_bar {
+    .main {
+      .panel {
+        .setting_bar {
+          border-top: $border_1;
+          .el-tag {
+            @include base-btn-1;
+          }
+        }
+      }
+    }
+  }
+}

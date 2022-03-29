@@ -5,7 +5,7 @@
     class="contextmenu_bar"
     :style="styleMenuBar"
   >
-    <MenuList :menuList="menuList" :targetItem="targetItem" />
+    <MenuList :menuList="menuList" :targetItem="targetItem" :event="event" />
   </div>
 </template>
 
@@ -77,7 +77,8 @@ export default {
 
 <style lang="scss" scoped>
 .contextmenu_bar {
-  width: 190px;
+  max-width: 200px;
+  padding: 5px;
   display: inline-block;
   position: fixed;
   border-radius: 5px;

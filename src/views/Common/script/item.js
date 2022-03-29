@@ -56,7 +56,11 @@ export const getItemFromTabList = function (tabId) {
  * @param {Boolean} isAddToTab Sometime you may want to add group to tab not item
  * @returns
  */
-export const changeToItem = function (itemId, isAddToTab = true) {
+export const changeToItem = function (
+  itemId,
+  isAddToTab = true,
+  callback = null
+) {
   if (this.currentItem.id === itemId) return
 
   const item = this.getItemFromLocal(itemId)
@@ -78,9 +82,15 @@ export const changeToItem = function (itemId, isAddToTab = true) {
   }
 
   this.currentItem = item
-  this.$db.setConfig(makeLastId(this.itemTableName), item.id)
 
-  this.addToHistoryList(item)
+  if (callback instanceof Function) {
+    callback.call(this)
+  }
+
+  this.$nextTick(() => {
+    this.$db.setConfig(makeLastId(this.itemTableName), item.id)
+    this.addToHistoryList(item)
+  })
 }
 export const revealItem = function (item) {
   this.changeToGroup(item.group_id)

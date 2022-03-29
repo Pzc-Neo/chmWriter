@@ -2,7 +2,7 @@ import { group, groupBar } from './group'
 import { item, itemBar } from './item'
 import { tab, tabBar } from './tab'
 import { relationChart } from './relationChart'
-import { settingBar } from './setting'
+import { settingBar, settingTag } from './setting'
 
 export const menuListFactory = function (type) {
   switch (type) {
@@ -22,7 +22,10 @@ export const menuListFactory = function (type) {
       return relationChart.call(this)
     case 'settingBar':
       return settingBar.call(this)
+    case 'settingTag':
+      return settingTag.call(this)
     default:
+      console.error(`There is no factory match: ${type} `)
       break
   }
 }
