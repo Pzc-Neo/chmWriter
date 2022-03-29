@@ -60,15 +60,26 @@ export const cmEditorMenuList = function () {
       menuItem: {}
     },
     {
-      type: 'toggle',
+      type: 'item',
       menuItem: {
         id: 'toggleOutlineBox',
         title: 'editor.toggleOutlineBox',
         icon: 'fa fa-list-alt',
-        isOn: this.isShowOutlineBox,
-        hideOnClick: false,
         func: (targetItem, menuItem) => {
           this.toggleOutlineBox()
+        }
+      }
+    },
+    {
+      type: 'toggle',
+      menuItem: {
+        id: 'toggleAutoOpenOutlineBox',
+        title: 'editor.AutoOpenOutlineBox',
+        icon: 'fa fa-list-alt',
+        isOn: this.autoOpenOutlineBox,
+        hideOnClick: false,
+        func: (targetItem, menuItem) => {
+          this.toggleAutoOpenOutlineBox()
           menuItem.isOn = !menuItem.isOn
         }
       }

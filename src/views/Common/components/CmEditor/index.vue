@@ -113,6 +113,10 @@ export default {
       type: Object,
       require: true
     },
+    autoOpenOutlineBox: {
+      type: Boolean,
+      default: false
+    },
     contentKey: {
       type: String,
       default: 'content'
@@ -312,6 +316,9 @@ export default {
     toggleOutlineBox() {
       this.isShowOutlineBox = !this.isShowOutlineBox
     },
+    toggleAutoOpenOutlineBox() {
+      this.$emit('toggleAutoOpenOutlineBox', !this.autoOpenOutlineBox)
+    },
     // 按照打字机模式更新视图
     updateByTypewriterMode: function (cm, changes) {
       if (cm.getSelection().length !== 0) {
@@ -337,6 +344,9 @@ export default {
   mounted() {
     this.wordCounter(this.item[this.contentKey], this.item.language)
     this.loadMenuList()
+    if (this.autoOpenOutlineBox) {
+      this.isShowOutlineBox = true
+    }
     /**
      * If outline box
      */

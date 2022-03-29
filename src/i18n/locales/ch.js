@@ -151,7 +151,8 @@ export default {
     hidePreviewBox: '隐藏',
     toggleEditorLayout: '切换布局',
     toggleOutlineBox: '显示/隐藏大纲',
-    searchOutline: '搜索大纲'
+    searchOutline: '搜索大纲',
+    AutoOpenOutlineBox: '自动打开大纲'
   },
   tables: {
     datas: '资料',

@@ -82,6 +82,7 @@ export default {
   position: fixed;
   border-radius: 5px;
   z-index: 100;
+  background-color: #fff;
   border: 1px solid #e6e6e6;
   box-shadow: $main-shadow;
 }

@@ -155,7 +155,8 @@ export default {
     hidePreviewBox: 'Hide',
     toggleEditorLayout: 'Toggle Layout',
     toggleOutlineBox: 'Toggle outline box',
-    searchOutline: 'Search outline'
+    searchOutline: 'Search outline',
+    AutoOpenOutlineBox: 'Auto open outline box'
   },
   tables: {
     datas: 'Datas',

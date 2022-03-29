@@ -65,7 +65,6 @@ export default {
 
 <style lang="scss" scoped>
 .menu_list {
-  background-color: #fff;
   .menu_toggle {
     display: flex;
     align-items: center;

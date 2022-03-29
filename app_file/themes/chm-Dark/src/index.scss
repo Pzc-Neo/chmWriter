@@ -181,6 +181,20 @@
     }
     .contextmenu_bar {
       @include base-popup-1;
+      .menu_list {
+        .menu_item:hover {
+          background-color: $bg_color_4;
+        }
+
+        .menu_divider {
+          background-color: $border_color_2;
+        }
+        .menu_group {
+          .group_title {
+            color: $color_5;
+          }
+        }
+      }
       .el-menu {
         background-color: transparent;
         border: 0;
