@@ -13,17 +13,17 @@ export const handleRemoveTab = function (targetId, type = 'item') {
   targetId = targetId || this.currentTabId
   return new Promise((resolve, reject) => {
     let item = null
+    switch (type) {
+      case 'item':
+        item = this.getItemFromLocal(targetId)
+        this.changeToItem(item.id)
+        break
+      case 'group':
+        item = this.getGroupFromDb(targetId)
+        this.changeToGroup(item.id)
+        break
+    }
     if (item?.isChanged) {
-      switch (type) {
-        case 'item':
-          item = this.getItemFromLocal(targetId)
-          this.changeToItem(item.id)
-          break
-        case 'group':
-          item = this.getGroupFromDb(targetId)
-          this.changeToGroup(item.id)
-          break
-      }
       ;(async function () {
         const result = await this.$confirmSync(
           item.title,
