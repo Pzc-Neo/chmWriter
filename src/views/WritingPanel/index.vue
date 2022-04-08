@@ -64,8 +64,6 @@
           </span>
           <CmEditor
             :item="item"
-            :autoOpenOutlineBox="autoOpenOutlineBox"
-            @toggleAutoOpenOutlineBox="toggleAutoOpenOutlineBox"
             @change="handleEditorContentChange"
             @update:content="saveContent"
             @update:cursor="updateCursor"
@@ -233,7 +231,6 @@ export default {
       currentGroup: {},
       currentItem: {},
       editorWidth: '100%',
-      autoOpenOutlineBox: false,
       infoBoxCollapse: {
         attribute: false,
         note: false,
@@ -346,9 +343,6 @@ export default {
     },
     updateCursor(cursor, selctionLen) {
       updateCursor.call(this, cursor, selctionLen)
-    },
-    toggleAutoOpenOutlineBox(newValue) {
-      this.autoOpenOutlineBox = newValue
     }
   },
   watch: {

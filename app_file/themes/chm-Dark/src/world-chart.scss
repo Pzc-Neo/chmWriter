@@ -1,0 +1,41 @@
+#app {
+  .middle_bar {
+    .panel {
+      .world_chart {
+        .chart_content {
+          box-shadow: 0 0 10px 1px #111921d4;
+          .x6-widget-transform {
+            border-color: #7b7a8a;
+          }
+        }
+        .chart_minimap {
+          border: $border_1;
+          box-shadow: $box_shadow_1;
+          .x6-widget-minimap {
+            background-color: $bg_color_2;
+          }
+          .x6-widget-minimap .x6-graph {
+            box-shadow: $box_shadow_1;
+          }
+        }
+        .chart_stencil {
+          border: $border_1;
+          .x6-widget-stencil {
+            color: $color_2;
+            background-color: $bg_color_2;
+            .x6-widget-stencil-title {
+              color: $color_2;
+              background-color: $bg_color_5;
+            }
+            .x6-widget-stencil-group {
+              .x6-widget-stencil-group-title {
+                color: $color_2;
+                background-color: $bg_color_5;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

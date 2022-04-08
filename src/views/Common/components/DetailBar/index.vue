@@ -79,10 +79,12 @@ export default {
     .el-slider {
       position: relative;
       top: -8px;
-      width: 50%;
+      // width: 50%;
       height: $dtb-height;
       line-height: $dtb-line-height;
       margin-left: $dtb-margin;
+      flex: 1;
+      padding-right: 10px;
     }
     .el-progress {
       flex: 1;

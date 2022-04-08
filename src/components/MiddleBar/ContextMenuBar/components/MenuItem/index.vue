@@ -3,8 +3,8 @@
     :class="['menu_item', menuItem.disable ? 'disable' : '']"
     @click.stop="handleMenuItemClick(menuItem)"
   >
-    <div class="icon">
-      <i v-if="menuItem.icon" :class="menuItem.icon"></i>
+    <div v-if="menuItem.icon" class="icon">
+      <i :class="menuItem.icon"></i>
       <!-- <i v-else class="el-icon-cloudy"></i> -->
     </div>
     <div class="title">
@@ -43,10 +43,11 @@ export default {
   cursor: pointer;
   .icon {
     font-size: 1.3em;
+    margin-right: 5px;
   }
-  .title {
-    margin-left: 5px;
-  }
+  // .title {
+  //   margin-left: 5px;
+  // }
   .slot_wrapper {
     margin-left: 3px;
   }

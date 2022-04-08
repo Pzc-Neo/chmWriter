@@ -1,5 +1,5 @@
 <template>
-  <div class="cm_editor">
+  <div :class="['cm_editor', isShowOutLineBoxOnLeft ? 'OutlineBoxOnLeft' : '']">
     <!-- Two-way Data-Binding -->
     <!-- <codemirror v-model="content" :options="cmOptions" /> -->
 
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { codemirror } from 'vue-codemirror'
 import './util/cmCommand'
 // import LeftFloatBar from '@/components/MiddleBar/LeftFloatBar'
@@ -105,6 +106,7 @@ import { cmEditorMenuList } from './menuList'
 import PreviewBox from './PreviewBox'
 import { getHeadList, jumpToLine } from './util/editor'
 import { scrollToView } from '@/util/dom'
+import { removeNote, removeSign } from './util/markdown'
 
 export default {
   name: 'CmEditor',
@@ -112,10 +114,6 @@ export default {
     item: {
       type: Object,
       require: true
-    },
-    autoOpenOutlineBox: {
-      type: Boolean,
-      default: false
     },
     contentKey: {
       type: String,
@@ -239,12 +237,20 @@ export default {
       }
       // this.$store.commit('SET_HEAD_LIST', this.headList)
     }),
+    /**
+     * count word  without note and sign.
+     */
+    wordCounterPure(content, language) {
+      let resultContent = removeNote.call(this, content)
+      resultContent = removeSign.call(this, resultContent)
+      this.wordCounter(resultContent, language)
+    },
     onCmChange(cm, changes) {
       this.updateByTypewriterMode(cm, changes)
     },
     onCmInput(newContent, item) {
       if (this.isCountWord) {
-        this.wordCounter(newContent, item.language)
+        this.wordCounterPure(newContent, item.language)
       }
       this.$emit('change', item, newContent)
     },
@@ -306,6 +312,12 @@ export default {
     hidePreviewBox() {
       this.isShowPreviewBox = false
     },
+    toggleAutoOpenPreviewBox() {
+      this.$store.commit(
+        'TOGGLE_AUTO_OPEN_PREVIEW_BOX',
+        !this.isAutoOpenPreviewBox
+      )
+    },
     toggleEditorLayout() {
       if (this.styleEditorContainer.flexDirection === 'row') {
         this.styleEditorContainer.flexDirection = 'column'
@@ -317,7 +329,17 @@ export default {
       this.isShowOutlineBox = !this.isShowOutlineBox
     },
     toggleAutoOpenOutlineBox() {
-      this.$emit('toggleAutoOpenOutlineBox', !this.autoOpenOutlineBox)
+      this.$store.commit(
+        'TOGGLE_AUTO_OPEN_OUTLINE_BOX',
+        !this.isAutoOpenOutlineBox
+      )
+    },
+    toggleOutlineBoxOnLeft() {
+      // this.$emit('toggleOutlineBoxOnLeft', !this.isShowOutLineBoxOnLeft)
+      this.$store.commit(
+        'TOGGLE_SHOW_OUTLINE_BOX_ON_LEFT',
+        !this.isShowOutLineBoxOnLeft
+      )
     },
     // 按照打字机模式更新视图
     updateByTypewriterMode: function (cm, changes) {
@@ -341,12 +363,22 @@ export default {
       this.menuList = cmEditorMenuList.call(this)
     }
   },
+  watch: {
+    isShowOutLineBoxOnLeft123(newValue) {
+      console.log(newValue)
+    }
+  },
   mounted() {
-    this.wordCounter(this.item[this.contentKey], this.item.language)
-    this.loadMenuList()
-    if (this.autoOpenOutlineBox) {
+    this.wordCounterPure(this.item[this.contentKey], this.item.language)
+
+    if (this.isAutoOpenOutlineBox) {
       this.isShowOutlineBox = true
     }
+    if (this.isAutoOpenPreviewBox) {
+      this.showPreviewBox()
+    }
+
+    this.loadMenuList()
     /**
      * If outline box
      */
@@ -379,6 +411,11 @@ export default {
     */
   },
   computed: {
+    ...mapState({
+      isAutoOpenOutlineBox: state => state.cmEditor.isAutoOpenOutlineBox,
+      isAutoOpenPreviewBox: state => state.cmEditor.isAutoOpenPreviewBox,
+      isShowOutLineBoxOnLeft: state => state.cmEditor.isShowOutLineBoxOnLeft
+    }),
     cmEditor() {
       return this.$refs.cmEditor.codemirror
     },
@@ -458,5 +495,8 @@ export default {
       }
     }
   }
+}
+.cm_editor.OutlineBoxOnLeft {
+  flex-direction: row-reverse;
 }
 </style>

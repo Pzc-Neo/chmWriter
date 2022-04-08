@@ -52,6 +52,20 @@ export const cmEditorMenuList = function () {
               this.toggleEditorLayout()
             }
           }
+        },
+        {
+          type: 'toggle',
+          menuItem: {
+            id: 'toggleAutoOpenPreviewBox',
+            title: 'editor.autoOpen',
+            icon: 'fa fa-list-alt',
+            isOn: this.isAutoOpenPreviewBox,
+            hideOnClick: false,
+            func: (targetItem, menuItem) => {
+              this.toggleAutoOpenPreviewBox()
+              menuItem.isOn = !menuItem.isOn
+            }
+          }
         }
       ]
     },
@@ -60,29 +74,52 @@ export const cmEditorMenuList = function () {
       menuItem: {}
     },
     {
-      type: 'item',
-      menuItem: {
-        id: 'toggleOutlineBox',
-        title: 'editor.toggleOutlineBox',
-        icon: 'fa fa-list-alt',
-        func: (targetItem, menuItem) => {
-          this.toggleOutlineBox()
+      type: 'group',
+      title: 'editor.outline',
+      menuItems: [
+        {
+          type: 'toggle',
+          menuItem: {
+            id: 'toggleOutlineBox',
+            title: 'editor.show',
+            icon: '',
+            isOn: this.isShowOutlineBox,
+            hideOnClick: false,
+            func: (targetItem, menuItem) => {
+              this.toggleOutlineBox()
+              menuItem.isOn = !menuItem.isOn
+            }
+          }
+        },
+        {
+          type: 'toggle',
+          menuItem: {
+            id: 'toggleOutlineBoxOnLeft',
+            title: 'editor.isShowOutLineBoxOnLeft',
+            icon: '',
+            isOn: this.isShowOutLineBoxOnLeft,
+            hideOnClick: false,
+            func: (targetItem, menuItem) => {
+              this.toggleOutlineBoxOnLeft()
+              menuItem.isOn = !menuItem.isOn
+            }
+          }
+        },
+        {
+          type: 'toggle',
+          menuItem: {
+            id: 'toggleAutoOpenOutlineBox',
+            title: 'editor.autoOpen',
+            icon: 'fa fa-list-alt',
+            isOn: this.isAutoOpenOutlineBox,
+            hideOnClick: false,
+            func: (targetItem, menuItem) => {
+              this.toggleAutoOpenOutlineBox()
+              menuItem.isOn = !menuItem.isOn
+            }
+          }
         }
-      }
-    },
-    {
-      type: 'toggle',
-      menuItem: {
-        id: 'toggleAutoOpenOutlineBox',
-        title: 'editor.AutoOpenOutlineBox',
-        icon: 'fa fa-list-alt',
-        isOn: this.autoOpenOutlineBox,
-        hideOnClick: false,
-        func: (targetItem, menuItem) => {
-          this.toggleAutoOpenOutlineBox()
-          menuItem.isOn = !menuItem.isOn
-        }
-      }
+      ]
     },
     {
       type: 'divider',

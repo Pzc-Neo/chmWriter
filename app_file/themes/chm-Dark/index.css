@@ -430,6 +430,31 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
     background: #363f637d;
     border-color: #4a9df81f; }
 
+#app .middle_bar .panel .world_chart .chart_content {
+  box-shadow: 0 0 10px 1px #111921d4; }
+  #app .middle_bar .panel .world_chart .chart_content .x6-widget-transform {
+    border-color: #7b7a8a; }
+
+#app .middle_bar .panel .world_chart .chart_minimap {
+  border: 1px solid #222225;
+  box-shadow: 2px 3px 7px #111921d4; }
+  #app .middle_bar .panel .world_chart .chart_minimap .x6-widget-minimap {
+    background-color: #2b313c; }
+  #app .middle_bar .panel .world_chart .chart_minimap .x6-widget-minimap .x6-graph {
+    box-shadow: 2px 3px 7px #111921d4; }
+
+#app .middle_bar .panel .world_chart .chart_stencil {
+  border: 1px solid #222225; }
+  #app .middle_bar .panel .world_chart .chart_stencil .x6-widget-stencil {
+    color: #409eff;
+    background-color: #2b313c; }
+    #app .middle_bar .panel .world_chart .chart_stencil .x6-widget-stencil .x6-widget-stencil-title {
+      color: #409eff;
+      background-color: #363f637d; }
+    #app .middle_bar .panel .world_chart .chart_stencil .x6-widget-stencil .x6-widget-stencil-group .x6-widget-stencil-group-title {
+      color: #409eff;
+      background-color: #363f637d; }
+
 #app {
   color: #a8b7c5;
   background-color: #282c34;

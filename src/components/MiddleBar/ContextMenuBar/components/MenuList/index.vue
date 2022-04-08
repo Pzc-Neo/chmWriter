@@ -49,7 +49,6 @@ export default {
       }
     },
     event: {
-      type: MouseEvent,
       require: true
     }
   },

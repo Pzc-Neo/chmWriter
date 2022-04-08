@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import writing from './module/writing'
+import cmEditor from './module/cmEditor'
 
 Vue.use(Vuex)
 
@@ -35,9 +36,6 @@ export default new Vuex.Store({
       type: 'search',
       param: {}
     },
-
-    currentEditor: null,
-    headList: [],
 
     bottomBarData: null
   },
@@ -86,16 +84,11 @@ export default new Vuex.Store({
       state.barVisible.groupBar = !state.barVisible.groupBar
       state.barVisible.itemBar = !state.barVisible.itemBar
       state.barVisible.detailBar = !state.barVisible.detailBar
-    },
-    SET_HEAD_LIST(state, headList) {
-      state.headList = headList
-    },
-    SET_CURRENT_EDITOR(state, editor) {
-      state.currentEditor = editor
     }
   },
   actions: {},
   modules: {
+    cmEditor,
     writing
   }
 })
