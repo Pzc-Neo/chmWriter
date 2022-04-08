@@ -51,6 +51,8 @@ export default {
     newGroup: '新建分组',
     newSilbling: '新建同级',
     newChild: '新建子级',
+    undo: '撤销',
+    redo: '重做',
     rename: '重命名',
     detail: '详细信息',
     delete: '删除',
@@ -60,7 +62,8 @@ export default {
     addEdge: '添加连线',
     showGroupChart: '打开本组关系图',
     addSettingTag: '添加设定标签',
-    refreshSettingTree: '刷新设定树'
+    refreshSettingTree: '刷新设定树',
+    toCenter: '视图居中'
   },
   sideBar: {
     data: '资料',
@@ -152,9 +155,14 @@ export default {
     text: '文本',
     hidePreviewBox: '隐藏',
     toggleEditorLayout: '切换布局',
+    outline: '大纲',
     toggleOutlineBox: '显示/隐藏大纲',
+    show: '显示',
     searchOutline: '搜索大纲',
-    AutoOpenOutlineBox: '自动打开大纲'
+    autoOpen: '自动打开',
+    autoOpenOutlineBox: '自动打开大纲',
+    autoOpenPreviewBox: '自动打开预览',
+    isShowOutLineBoxOnLeft: '左侧'
   },
   tables: {
     datas: '资料',

@@ -12,18 +12,17 @@ export const addToTab = function (item) {
 export const handleRemoveTab = function (targetId, type = 'item') {
   targetId = targetId || this.currentTabId
   return new Promise((resolve, reject) => {
-    let item = null
-    switch (type) {
-      case 'item':
-        item = this.getItemFromLocal(targetId)
-        this.changeToItem(item.id)
-        break
-      case 'group':
-        item = this.getGroupFromDb(targetId)
-        this.changeToGroup(item.id)
-        break
-    }
+    const item = getTab.call(this, targetId)
     if (item?.isChanged) {
+      switch (type) {
+        case 'item':
+          this.changeToItem(item.id)
+          break
+        case 'group':
+          this.changeToGroup(item.id)
+          break
+      }
+
       ;(async function () {
         const result = await this.$confirmSync(
           item.title,
@@ -96,7 +95,16 @@ export const removeTab = function (targetId, type = 'item') {
   this.tabList = tabs.filter(tab => tab.id !== targetId)
 
   if (this.tabList.length === 0) {
-    this.currentItem = {}
+    switch (type) {
+      case 'group':
+        this.currentGroup = {}
+        break
+      case 'item':
+        this.currentItem = {}
+        break
+      default:
+        break
+    }
   }
 }
 
@@ -166,4 +174,15 @@ export const showTabContextMenu = function (event, targetItem) {
     menuList: this.menuListTab
   }
   this.$store.commit('SHOW_CONTEXTMENU', param)
+}
+
+export const getTab = function (tabId) {
+  const index = this.tabList.findIndex(_tab => _tab.id === tabId)
+  if (index !== -1) {
+    const tab = this.tabList[index]
+    return tab
+  } else {
+    this.$alert('tab not exit')
+    return null
+  }
 }

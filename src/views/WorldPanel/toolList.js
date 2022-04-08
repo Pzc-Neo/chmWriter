@@ -5,7 +5,7 @@ export const getToolList = function () {
       title: 'action.save',
       icon: 'fa fa-save',
       func: () => {
-        this.saveContent()
+        this.$bus.$emit(this.panelName + ':save-content')
       }
     },
     {

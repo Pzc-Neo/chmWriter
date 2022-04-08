@@ -10,10 +10,11 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps",
     "postuninstall": "electron-builder install-app-deps",
-    "theme:watch": "npx node-sass -w app_file\\themes\\chm-Dark\\src -o app_file\\themes\\chm-Dark"
+    "theme:watch": "npx node-sass -w app_file\\themes\\chm-Dark\\src\\index.scss -o app_file\\themes\\chm-Dark"
   },
   "main": "background.js",
   "dependencies": {
+    "@antv/x6": "^1.31.0",
     "aws-sdk": "^2.1048.0",
     "better-sqlite3": "^7.4.6",
     "core-js": "^3.6.5",

@@ -51,6 +51,8 @@ export default {
     newGroup: 'New gruop',
     newSilbling: 'New silbling',
     newChild: 'New Child',
+    undo: 'Undo',
+    redo: 'Redo',
     rename: 'Rename',
     detail: 'Detail',
     delete: 'Delete',
@@ -60,7 +62,8 @@ export default {
     addEdge: 'Add edge',
     showGroupChart: 'Show group chart',
     addSettingTag: 'Add setting tag',
-    refreshSettingTree: 'Refresh setting tree'
+    refreshSettingTree: 'Refresh setting tree',
+    toCenter: 'To center'
   },
   sideBar: {
     data: 'Data',
@@ -156,9 +159,14 @@ export default {
     text: 'Text',
     hidePreviewBox: 'Hide',
     toggleEditorLayout: 'Toggle Layout',
+    outline: 'Outline',
+    show: 'Show',
     toggleOutlineBox: 'Toggle outline box',
     searchOutline: 'Search outline',
-    AutoOpenOutlineBox: 'Auto open outline box'
+    autoOpen: 'Auto open',
+    autoOpenOutlineBox: 'Auto open outline box',
+    autoOpenPreviewBox: 'Auto open preivew box',
+    isShowOutLineBoxOnLeft: 'Left'
   },
   tables: {
     datas: 'Datas',
