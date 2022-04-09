@@ -21,7 +21,11 @@
         <div class="group_title">
           {{ menuObj.isI18n !== false ? $t(menuObj.title) : menuObj.title }}
         </div>
-        <MenuList :menuList="menuObj.menuItems" />
+        <MenuList
+          :menuList="menuObj.menuItems"
+          :targetItem="targetItem"
+          :event="event"
+        />
       </div>
       <div v-else-if="menuObj.type === 'divider'" class="menu_divider"></div>
     </div>
@@ -38,15 +42,11 @@ export default {
   props: {
     menuList: {
       type: Array,
-      default() {
-        return []
-      }
+      require: true
     },
     targetItem: {
       type: Object,
-      default() {
-        return {}
-      }
+      require: true
     },
     event: {
       require: true
