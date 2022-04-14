@@ -2,18 +2,19 @@
 
 ## Screenshot
 
+### Data Panel
+
+![Data Panel](./screenshot/data_panel.png)
+
 ### Writing Panel
 
 ![Writing Panel](./screenshot/writing_panel.png)
+
 ![Writing Panel pure](./screenshot/writing_panel_pure.png)
 
 ### World Panel
 
 ![World Panel](./screenshot/world_panel.png)
-
-### Data Panel
-
-![Data Panel](./screenshot/data_panel.png)
 
 ### Character Panel
 
@@ -22,6 +23,10 @@
 ### Search/Command box
 
 ![Search/Command box](./screenshot/command_box.png)
+
+### History menu
+
+![History menu](./screenshot//history_menu.png)
 
 ## Project setup
 
