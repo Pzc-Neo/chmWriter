@@ -37,7 +37,7 @@ export const blank = function () {
             title: 'contextMenuBar.undo',
             icon: 'el-icon-edit',
             func: () => {
-              this.graph.undo()
+              this.undo()
             }
           }
         },
@@ -49,7 +49,7 @@ export const blank = function () {
             title: 'contextMenuBar.redo',
             icon: 'el-icon-edit',
             func: () => {
-              this.graph.redo()
+              this.redo()
             }
           }
         }
@@ -62,7 +62,21 @@ export const blank = function () {
         title: 'contextMenuBar.toCenter',
         icon: 'el-icon-edit',
         func: (targetitem, menuitem, event) => {
-          this.graph.centerContent()
+          this.centerContent()
+        }
+      }
+    },
+    {
+      type: 'toggle',
+      menuItem: {
+        id: 'toggleShowTools',
+        title: 'contextMenuBar.showTools',
+        icon: 'el-icon-edit',
+        isOn: this.isShowTools,
+        hideOnClick: false,
+        func: (targetitem, menuItem, event) => {
+          this.toggleIsShowTools()
+          menuItem.isOn = !menuItem.isOn
         }
       }
     }

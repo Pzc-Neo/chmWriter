@@ -455,6 +455,22 @@ div.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
       color: #409eff;
       background-color: #363f637d; }
 
+#app .middle_bar .panel .world_chart .tool_bar .tools .el-tag {
+  color: #409eff;
+  background: #363f637d;
+  border-color: #4a9df81f; }
+
+#app .middle_bar .panel .world_chart .tool_bar .tools .el-input-number .el-input .el-input__inner {
+  border: 0; }
+
+#app .middle_bar .panel .world_chart .tool_bar .tools .el-input-number span {
+  color: #409eff;
+  background: #363f637d;
+  border-color: #4a9df81f; }
+
+#app .middle_bar .panel .world_chart .tool_bar .tools .el-color-picker.el-color-picker--small .el-color-picker__trigger .el-color-picker__color {
+  border: 0; }
+
 #app {
   color: #a8b7c5;
   background-color: #282c34;

@@ -1,25 +1,44 @@
 <template>
   <div class="world_chart">
-    <div class="chart_content" ref="container"></div>
+    <div class="main">
+      <div class="chart_content" ref="container"></div>
+      <ToolBar
+        :currentCellType="currentCellType"
+        :currentCell="currentCell"
+        @setFillColor="setFillColor"
+        @setStrokeColor="setStrokeColor"
+        @setNodeAttr="setNodeAttr"
+        @setTextColor="setTextColor"
+        @setEdgeStrokeColor="setEdgeStrokeColor"
+        @setEdgeAttr="setEdgeAttr"
+        @setGraphAttr="setGraphAttr"
+        @setEdgeConnector="setEdgeConnector"
+      />
+    </div>
     <div class="side">
-      <div class="chart_stencil" ref="stencilContainer"></div>
+      <StencilBar :graph="graph" />
       <div class="chart_minimap" ref="minimapContainer"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { Graph, Shape, Addon } from '@antv/x6'
+import { Graph, Color } from '@antv/x6'
 import { getGraphOption } from './graphOption'
 import { showContextmenu } from '@/util/base'
 
 import { menuListFactory } from './menuList/index'
+import { registerKey } from './script/keyboard'
 
-const { Stencil } = Addon
-const { Rect, Circle } = Shape
+import ToolBar from './components/ToolBar'
+import StencilBar from './components/StencilBar'
 
 export default {
   name: 'WorldChart',
+  components: {
+    ToolBar,
+    StencilBar
+  },
   props: {
     panelName: {
       type: String,
@@ -33,9 +52,12 @@ export default {
   data() {
     return {
       graph: {},
+      isShowTools: false,
       menuListNode: menuListFactory.call(this, 'node'),
       menuListEdge: menuListFactory.call(this, 'edge'),
-      menuListBlank: menuListFactory.call(this, 'graph')
+      menuListBlank: menuListFactory.call(this, 'graph'),
+      currentCellType: '',
+      currentCell: {}
     }
   },
   computed: {
@@ -61,10 +83,6 @@ export default {
   mounted() {
     this.init()
 
-    // this.$bus.$on('world-chart:centerContent', () => {
-    //   this.graph.centerContent()
-    // })
-
     this.$bus.$on(this.panelName + ':save-content', () => {
       this.saveContent()
     })
@@ -74,19 +92,38 @@ export default {
       const graphOption = getGraphOption.call(this)
       const graph = new Graph(graphOption)
       this.graph = graph
+      window.gp = graph
+      registerKey.call(this, this.graph)
+
+      graph.on('cell:click', ({ cell }) => {
+        this.currentCellType = cell.shape
+        this.currentCell = cell
+      })
+      graph.on('blank:click', () => {
+        this.currentCellType = ''
+        this.currentCell = {}
+      })
+      graph.on('blank:mouseup', () => {
+        const cells = this.graph.getSelectedCells()
+        if (cells.length > 0) {
+          this.currentCellType = 'node'
+        } else {
+          this.currentCellType = ''
+        }
+      })
 
       // 双击修改
       graph.on('cell:dblclick', ({ cell, e }) => {
         const isNode = cell.isNode()
-        const name = cell.isNode() ? 'node-editor' : 'edge-editor'
+        const name = isNode ? 'node-editor' : 'edge-editor'
         cell.removeTool(name)
         cell.addTools({
           name,
           args: {
-            event: e,
-            attrs: {
-              backgroundColor: isNode ? '#EFF4FF' : '#FFF'
-            }
+            event: e
+            // attrs: {
+            //   backgroundColor: isNode ? '#EFF4FF' : '#FFF'
+            // }
           }
         })
       })
@@ -99,98 +136,129 @@ export default {
           y
         })
       })
+
+      graph.on('edge:contextmenu', ({ e, x, y, edge, view }) => {
+        showContextmenu.call(this, e, this.menuListEdge, {
+          id: edge.id,
+          edge,
+          x,
+          y
+        })
+      })
       graph.on('blank:contextmenu', ({ e, x, y }) => {
         showContextmenu.call(this, e, this.menuListBlank, {
           x,
           y
         })
       })
+      // add tool
+      graph.on('cell:mouseenter', ({ cell }) => {
+        if (this.isShowTools) {
+          if (cell.isNode()) {
+            // add node tool
+            cell.addTools([
+              {
+                name: 'button-remove',
+                args: {
+                  x: 0,
+                  y: 0,
+                  offset: { x: 10, y: 10 }
+                }
+              },
+              {
+                name: 'button',
+                args: {
+                  markup: [
+                    {
+                      tagName: 'circle',
+                      selector: 'button',
+                      attrs: {
+                        r: 14,
+                        stroke: '#fe854f',
+                        'stroke-width': 3,
+                        fill: 'white',
+                        cursor: 'pointer'
+                      }
+                    },
+                    {
+                      tagName: 'text',
+                      textContent: '>',
+                      selector: 'icon',
+                      attrs: {
+                        fill: '#fe854f',
+                        'font-size': 8,
+                        'text-anchor': 'middle',
+                        'pointer-events': 'none',
+                        y: '0.3em'
+                      }
+                    }
+                  ],
+                  x: '100%',
+                  y: '100%',
+                  offset: { x: -18, y: -18 },
+                  onClick({ view }) {
+                    const node = view.cell
+                    const fill = Color.randomHex()
+                    node.attr({
+                      body: {
+                        fill
+                      },
+                      label: {
+                        fill: Color.invert(fill, true)
+                      }
+                    })
+                  }
+                }
+              }
+            ])
+          } else {
+            // add edge tool
+            cell.addTools([
+              'vertices',
+              'segments',
+              'button-remove',
+              {
+                name: 'source-arrowhead',
+                args: {
+                  attrs: {
+                    fill: '#266BB4'
+                  }
+                }
+              },
+              {
+                name: 'target-arrowhead',
+                args: {
+                  attrs: {
+                    fill: '#266BB4'
+                  }
+                }
+              }
+            ])
+          }
+        }
+      })
+
+      graph.on('cell:mouseleave', ({ cell }) => {
+        if (this.isShowTools) {
+          cell.removeTools()
+        }
+      })
 
       graph.fromJSON(this.chartData)
 
       graph.centerContent()
-
-      const stencil = new Stencil({
-        title: 'Components',
-        target: graph,
-        search: true,
-        collapsable: true,
-        stencilGraphWidth: 200,
-        stencilGraphHeight: 180,
-        groups: [
-          {
-            name: 'group1',
-            title: 'Group(Collapsable)'
-          },
-          {
-            name: 'group2',
-            title: 'Group',
-            collapsable: false
-          }
-        ]
-      })
-
-      this.$refs.stencilContainer.appendChild(stencil.container)
-
-      const r = new Rect({
-        width: 70,
-        height: 40,
-        attrs: {
-          rect: { fill: '#31D0C6', stroke: '#4B4A67', strokeWidth: 2 },
-          text: { text: 'rect', fill: 'white' }
-        }
-      })
-
-      const c = new Circle({
-        width: 60,
-        height: 60,
-        attrs: {
-          circle: { fill: '#FE854F', strokeWidth: 2, stroke: '#4B4A67' },
-          text: { text: 'ellipse', fill: 'white' }
-        }
-      })
-
-      const c2 = new Circle({
-        width: 60,
-        height: 60,
-        attrs: {
-          circle: { fill: '#4B4A67', 'stroke-width': 2, stroke: '#FE854F' },
-          text: { text: 'ellipse', fill: 'white' }
-        }
-      })
-
-      const r2 = new Rect({
-        width: 70,
-        height: 40,
-        attrs: {
-          rect: { fill: '#4B4A67', stroke: '#31D0C6', strokeWidth: 2 },
-          text: { text: 'rect', fill: 'white' }
-        }
-      })
-
-      const r3 = new Rect({
-        width: 70,
-        height: 40,
-        attrs: {
-          rect: { fill: '#31D0C6', stroke: '#4B4A67', strokeWidth: 2 },
-          text: { text: 'rect', fill: 'white' }
-        }
-      })
-
-      const c3 = new Circle({
-        width: 60,
-        height: 60,
-        attrs: {
-          circle: { fill: '#FE854F', strokeWidth: 2, stroke: '#4B4A67' },
-          text: { text: 'ellipse', fill: 'white' }
-        }
-      })
-
-      stencil.load([r, c, c2, r2.clone()], 'group1')
-      stencil.load([c2.clone(), r2, r3, c3], 'group2')
     },
     saveContent() {
       this.$emit('saveContent', JSON.stringify(this.graph.toJSON()))
+    },
+    cut() {
+      const cells = this.graph.getSelectedCells()
+      if (cells && cells.length) {
+        this.graph.cut(cells, { deep: true })
+        this.$message(this.$t('action.cut') + this.$t('result.success'))
+      } else {
+        this.$message('请先选中节点再复制')
+      }
     },
     copy() {
       const cells = this.graph.getSelectedCells()
@@ -210,7 +278,121 @@ export default {
         this.graph.select(cells)
         this.$message(this.$t('action.paste') + this.$t('result.success'))
       }
+    },
+    removeCells() {
+      const cells = this.graph.getSelectedCells()
+      if (cells && cells.length) {
+        this.graph.removeCells(cells)
+      }
+    },
+    undo() {
+      this.graph.undo()
+    },
+    redo() {
+      this.graph.redo()
+    },
+    centerContent() {
+      this.graph.centerContent()
+    },
+    toggleIsShowTools() {
+      this.isShowTools = !this.isShowTools
+    },
+    addPort(node, position) {
+      const tempGroups = node?.port?.groups
+      // A node Object have four port group: left, right, top, bottom
+      // If group is not exist, then add it.
+      if (tempGroups[position] === undefined) {
+        node.prop('ports/groups', {
+          [position]: {
+            position: {
+              name: position
+            },
+            attrs: {
+              circle: {
+                r: 6,
+                magnet: true,
+                stroke: '#31d0c6',
+                strokeWidth: 2,
+                fill: '#fff'
+              }
+            }
+          }
+        })
+      }
+      node.addPort({
+        group: position,
+        attrs: {
+          circle: {
+            r: 6,
+            magnet: true,
+            stroke: '#409EFF',
+            strokeWidth: 2,
+            fill: '#fff'
+          }
+        }
+      })
+    },
+    removePort(node, position) {
+      const ports = node.getPortsByGroup(position)
+      node.removePorts(ports)
+    },
+    setAttr(cells, attr, key, value) {
+      cells.forEach(cell => {
+        cell.attr(attr, {
+          [key]: value
+        })
+      })
+    },
+    // setNodeAttr(attr, key, value) {
+    //   const cells = this.graph.getSelectedCells()
+    //   this.setAttr(cells, attr, key, value)
+    // },
+
+    // tool bar methods
+    setFillColor(color) {
+      const cells = this.graph.getSelectedCells()
+      this.setAttr(cells, 'body', 'fill', color)
+    },
+    setStrokeColor(color) {
+      const cells = this.graph.getSelectedCells()
+      this.setAttr(cells, 'body', 'stroke', color)
+    },
+    setTextColor(color) {
+      const cells = this.graph.getSelectedCells()
+      this.setAttr(cells, 'text', 'fill', color)
+    },
+    setEdgeStrokeColor(color) {
+      this.currentCell.attr('line', {
+        stroke: color
+      })
+      this.currentCell.attr('line', {
+        targetMarker: '',
+        sourceMarker: ''
+      })
+    },
+    setNodeAttr(type, value) {
+      this.currentCell.attr('body', {
+        [type]: value
+      })
+    },
+    setEdgeAttr(type, value) {
+      this.currentCell.attr('line', {
+        [type]: value
+      })
+    },
+    setGraphAttr(type, value) {
+      if (type === 'bgColor') {
+        this.graph.drawBackground({
+          color: value
+        })
+      }
+    },
+    setEdgeConnector(type) {
+      this.currentCell.setConnector(type)
     }
+  },
+  beforeDestroy() {
+    this.graph.dispose()
   }
 }
 </script>
@@ -224,39 +406,23 @@ export default {
   .chart_scroller {
     flex: 1;
   }
-  .chart_content {
+  .main {
     flex: 1;
-    height: 520px;
-    margin-left: 8px;
-    margin-right: 8px;
-    box-shadow: $box-shadow-1;
+    overflow: hidden;
+    .chart_content {
+      flex: 1;
+      height: 520px;
+      margin-left: 8px;
+      margin-right: 8px;
+      box-shadow: $box-shadow-1;
+    }
   }
   .side {
     display: flex;
-    .chart_stencil {
-      width: 200px;
-      border: 1px solid $border-color;
-      position: relative;
-      /deep/.x6-widget-stencil {
-        background-color: #fff;
-        .x6-widget-stencil-title {
-          color: #409eff;
-          background: #ecf5ff;
-        }
-        .x6-widget-stencil-group {
-          .x6-widget-stencil-group-title {
-            color: #409eff;
-            background: #ecf5ff;
-          }
-        }
-      }
-    }
+    flex-direction: column;
     .chart_minimap {
-      position: absolute;
-      bottom: 0px;
-      right: 198px;
       border: 1px solid $border-color;
-      box-shadow: $box-shadow-1;
+      box-shadow: 0px 0px 0px;
     }
   }
   .x6-graph-scroller {

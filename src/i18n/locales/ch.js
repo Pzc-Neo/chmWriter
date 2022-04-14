@@ -16,6 +16,7 @@ export default {
     modify: '修改',
     search: '搜索',
     command: '命令',
+    cut: '剪切',
     copy: '复制',
     copyPure: '复制纯净文本',
     paste: '粘贴'
@@ -63,7 +64,15 @@ export default {
     showGroupChart: '打开本组关系图',
     addSettingTag: '添加设定标签',
     refreshSettingTree: '刷新设定树',
-    toCenter: '视图居中'
+    toCenter: '视图居中',
+    showTools: '显示工具',
+    appendLabel: '添加标签',
+    removePort: '移除连接桩',
+    addPort: '添加连接桩',
+    left: '左',
+    right: '右',
+    top: '上',
+    bottom: '下'
   },
   sideBar: {
     data: '资料',
@@ -138,6 +147,9 @@ export default {
     birthplace: '出生地',
     residence: '所在地',
     description: '描述'
+  },
+  world: {
+    chart_data: '图表数据'
   },
   editor: {
     cut: '剪切',

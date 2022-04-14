@@ -15,6 +15,7 @@ export default {
     modify: 'Modify',
     search: 'Search',
     command: 'Command',
+    cut: 'Cut',
     copy: 'Copy',
     copyPure: 'CopyPure',
     paste: 'Paste'
@@ -63,7 +64,15 @@ export default {
     showGroupChart: 'Show group chart',
     addSettingTag: 'Add setting tag',
     refreshSettingTree: 'Refresh setting tree',
-    toCenter: 'To center'
+    toCenter: 'To center',
+    showTools: 'Show tools',
+    appendLabel: 'Append label',
+    removePort: 'Remove port',
+    addPort: 'Add port',
+    left: 'Left',
+    right: 'Right',
+    top: 'Top',
+    bottom: 'Bottom'
   },
   sideBar: {
     data: 'Data',
@@ -143,6 +152,9 @@ export default {
     birthplace: 'Birthplace',
     residence: 'Residence',
     description: 'Description'
+  },
+  world: {
+    chart_data: 'Chart data'
   },
   editor: {
     cut: 'Cut',

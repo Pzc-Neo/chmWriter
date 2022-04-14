@@ -1,0 +1,109 @@
+{
+  "groupName": "basicGraphGroup",
+  "graphList": [
+    {
+      "type": "Rect",
+      "data": {
+        "width": 50,
+        "height": 20,
+        "attrs": {
+          "rect": { "fill": "#558ff9", "stroke": "#a3d2ff", "strokeWidth": 2 },
+          "text": { "text": "rect", "fill": "#fff" },
+          "body": {
+            "rx": 6,
+            "ry": 6
+          }
+        }
+      }
+    },
+    {
+      "type": "Circle",
+      "data": {
+        "width": 50,
+        "height": 50,
+        "attrs": {
+          "circle": {
+            "fill": "#558ff9",
+            "strokeWidth": 2,
+            "stroke": "#a3d2ff"
+          },
+          "text": { "text": "circle", "fill": "#fff" }
+        }
+      }
+    },
+    {
+      "type": "Ellipse",
+      "data": {
+        "x": 200,
+        "y": 40,
+        "width": 120,
+        "height": 60,
+        "label": "ellipse",
+        "attrs": {
+          "body": {
+            "fill": "#558ff9",
+            "stroke": "#a3d2ff"
+          },
+          "text": { "fill": "#fff" }
+        }
+      }
+    },
+    {
+      "type": "Polygon",
+      "data": {
+        "shape": "polygon",
+        "x": 40,
+        "y": 40,
+        "width": 50,
+        "height": 50,
+        "label": "poly",
+        "attrs": {
+          "body": {
+            "fill": "#558ff9",
+            "stroke": "#a3d2ff",
+            "refPoints": "50,5 100,5 125,30 125,80 100,105 50,105 25,80 25, 30"
+          },
+          "text": { "fill": "#fff" }
+        }
+      }
+    },
+    {
+      "type": "Polygon",
+      "data": {
+        "shape": "polygon",
+        "x": 40,
+        "y": 40,
+        "width": 50,
+        "height": 50,
+        "label": "poly",
+        "attrs": {
+          "body": {
+            "fill": "#558ff9",
+            "stroke": "#a3d2ff",
+            "refPoints": "0,10 10,0 20,10 10,20"
+          },
+          "text": { "fill": "#fff" }
+        }
+      }
+    },
+    {
+      "type": "Path",
+      "data": {
+        "shape": "path",
+        "x": 40,
+        "y": 40,
+        "width": 65,
+        "height": 50,
+        "label": "path",
+        "path": "m114.00371,177.19286l19.88567,-38.66655l53.02844,0l19.88566,38.66655l-19.88566,38.66655l-53.02844,0l-19.88567,-38.66655z",
+        "attrs": {
+          "body": {
+            "fill": "#558ff9",
+            "stroke": "#a3d2ff"
+          },
+          "text": { "fill": "#fff" }
+        }
+      }
+    }
+  ]
+}

@@ -45,6 +45,8 @@ export const getGraphOption = function () {
     },
     minimap: {
       enabled: true,
+      width: 200,
+      height: 180,
       container: this.$refs.minimapContainer
     },
     mousewheel: {

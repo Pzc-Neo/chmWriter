@@ -107,6 +107,7 @@ export default {
   /* 设置滚动条的样式 */
   ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
   /* 滚动槽 */
   ::-webkit-scrollbar-track {

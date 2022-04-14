@@ -42,7 +42,9 @@ import {
   CheckboxButton,
   Divider,
   Drawer,
-  Cascader
+  Cascader,
+  ColorPicker,
+  InputNumber
 } from 'element-ui'
 
 Vue.use(Button)
@@ -88,3 +90,5 @@ Vue.use(Button)
   .use(Divider)
   .use(Drawer)
   .use(Cascader)
+  .use(ColorPicker)
+  .use(InputNumber)

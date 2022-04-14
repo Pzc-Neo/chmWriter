@@ -306,7 +306,11 @@ export default {
       const relations = this.$db.getGroups(this.relationTableName, false)
       this.relationLink = convertToRelationLink(relations)
 
-      return init.call(this)
+      init.call(this)
+
+      // show last group chart
+      const lastGroupId = this.$db.getConfig(makeLastId(this.groupTableName))
+      this.showGroupChart(lastGroupId)
     },
     getGroups() {
       return getGroups.call(this)

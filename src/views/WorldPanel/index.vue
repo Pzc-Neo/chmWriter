@@ -45,7 +45,8 @@
             </span>
 
             <WorldChart
-              :chartDataStr="currentGroup.chart_data"
+              :id="item.id"
+              :chartDataStr="item.chart_data"
               :panelName="panelName"
               @saveContent="saveContent"
             />
@@ -53,7 +54,7 @@
         </el-tabs>
       </ContentBar>
     </div>
-    <DetailBar :item="currentGroup">
+    <DetailBar :item="currentGroup" v-if="false">
       <InfoBox
         :title="$t('detailBar.attribute')"
         :isCollapse.sync="infoBoxCollapse.attribute"

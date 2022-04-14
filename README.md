@@ -7,6 +7,10 @@
 ![Writing Panel](./screenshot/writing_panel.png)
 ![Writing Panel pure](./screenshot/writing_panel_pure.png)
 
+### World Panel
+
+![World Panel](./screenshot/world_panel.png)
+
 ### Data Panel
 
 ![Data Panel](./screenshot/data_panel.png)

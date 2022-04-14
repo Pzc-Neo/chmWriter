@@ -35,6 +35,28 @@
             }
           }
         }
+        .tool_bar {
+          .tools {
+            .el-tag {
+              @include base-btn-1;
+            }
+            .el-input-number {
+              .el-input .el-input__inner {
+                border: 0;
+              }
+            }
+            .el-input-number span {
+              @include base-btn-1;
+            }
+            .el-color-picker.el-color-picker--small {
+              .el-color-picker__trigger {
+                .el-color-picker__color {
+                  border: 0;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
