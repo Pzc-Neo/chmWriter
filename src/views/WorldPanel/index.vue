@@ -48,6 +48,7 @@
               :id="item.id"
               :chartDataStr="item.chart_data"
               :panelName="panelName"
+              :currentGroupId="currentGroup.id"
               @saveContent="saveContent"
             />
           </el-tab-pane>

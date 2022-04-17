@@ -23,9 +23,9 @@
 </template>
 
 <script>
-import { Graph, Color } from '@antv/x6'
+import { Graph } from '@antv/x6'
 import { getGraphOption } from './graphOption'
-import { showContextmenu } from '@/util/base'
+import { debounce, showContextmenu } from '@/util/base'
 
 import { menuListFactory } from './menuList/index'
 import { registerKey } from './script/keyboard'
@@ -40,6 +40,15 @@ export default {
     StencilBar
   },
   props: {
+    id: {
+      type: String,
+      default: ''
+    },
+    // when switchTab it will change (for setScrollbarPos method)
+    currentGroupId: {
+      type: String,
+      default: ''
+    },
     panelName: {
       type: String,
       default: ''
@@ -57,7 +66,8 @@ export default {
       menuListEdge: menuListFactory.call(this, 'edge'),
       menuListBlank: menuListFactory.call(this, 'graph'),
       currentCellType: '',
-      currentCell: {}
+      currentCell: {},
+      scrollerPosKey: 'scrollerPos-' + this.id
     }
   },
   computed: {
@@ -78,6 +88,9 @@ export default {
   watch: {
     chartData(newValue) {
       this.graph.fromJSON(newValue)
+    },
+    currentGroupId() {
+      this.setScrollbarPos()
     }
   },
   mounted() {
@@ -92,7 +105,8 @@ export default {
       const graphOption = getGraphOption.call(this)
       const graph = new Graph(graphOption)
       this.graph = graph
-      window.gp = graph
+      graph.lockScroller()
+
       registerKey.call(this, this.graph)
 
       graph.on('cell:click', ({ cell }) => {
@@ -110,6 +124,11 @@ export default {
         } else {
           this.currentCellType = ''
         }
+      })
+
+      // 需要在鼠标按下后移动鼠标才能触发。
+      graph.on('blank:mousemove', () => {
+        this.saveScrollBarPos()
       })
 
       // 双击修改
@@ -197,16 +216,7 @@ export default {
                   y: '100%',
                   offset: { x: -18, y: -18 },
                   onClick({ view }) {
-                    const node = view.cell
-                    const fill = Color.randomHex()
-                    node.attr({
-                      body: {
-                        fill
-                      },
-                      label: {
-                        fill: Color.invert(fill, true)
-                      }
-                    })
+                    console.log(view)
                   }
                 }
               }
@@ -389,10 +399,33 @@ export default {
     },
     setEdgeConnector(type) {
       this.currentCell.setConnector(type)
+    },
+    // Save to localStorage
+    saveScrollBarPos: debounce(function () {
+      const pos = this.graph.getScrollbarPosition()
+      const posStr = pos.left + ',' + pos.top
+      console.log(this.scrollerPosKey)
+      localStorage.setItem(this.scrollerPosKey, posStr)
+    }, 300),
+    // Remove from localStorage
+    removeScrollbarPos() {
+      localStorage.removeItem(this.scrollerPosKey)
+    },
+    setScrollbarPos() {
+      const posStr = localStorage.getItem(this.scrollerPosKey)
+      if (posStr !== null) {
+        let pos = posStr.split(',')
+        pos = pos.map(str => Number(str))
+        this.graph.setScrollbarPosition(...pos)
+      }
     }
+  },
+  activated() {
+    this.setScrollbarPos()
   },
   beforeDestroy() {
     this.graph.dispose()
+    this.removeScrollbarPos()
   }
 }
 </script>
